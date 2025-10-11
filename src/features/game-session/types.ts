@@ -6,24 +6,31 @@ export enum GameSessionStatus {
   COMPLETED = 'completed',
 }
 
+export enum GameSessionPlayerStatus {
+  PLAYING = 'playing',
+  WAITING = 'waiting',
+  PASSED = 'passed',
+}
+
 export interface GameSession {
   uuid: string
   name: string
   game: Game
   status: GameSessionStatus
   players: GameSessionPlayer[]
-  currentPlayerUuids: string[]
+  currentTurnIndex: number
   createdAt: string
   updatedAt: string | null
 }
 
-export interface PlayerTurn {
+export interface PlayerMove {
   startTimestamp: string
   endTimestamp: string | null
-  turnIndex: number
+  moveIndex: number
 }
 
 export interface GameSessionPlayer extends Player {
-  turns?: PlayerTurn[]
+  moves: PlayerMove[]
+  status: GameSessionPlayerStatus
   previousTotalTimeMs: number
 }

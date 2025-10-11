@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-import type { GameSessionPlayer } from './types'
+import { usePlayerTimeTracking } from '@/features/game-session/composables/usePlayerTimeTracking'
 import { BaseCard, BaseCardContent, BaseCardHeader, BaseCardTitle } from '@/components/ui/base-card'
+import type { GameSessionPlayer } from '../types'
 
 export interface GameSessionPlayerItemProps {
   gameSessionPlayer: GameSessionPlayer
 }
 
-defineProps<GameSessionPlayerItemProps>()
+const props = defineProps<GameSessionPlayerItemProps>()
+const { displayedTime } = usePlayerTimeTracking(props.gameSessionPlayer)
 </script>
 
 <template>
@@ -16,7 +18,7 @@ defineProps<GameSessionPlayerItemProps>()
         <BaseCardTitle>{{ gameSessionPlayer.name }}</BaseCardTitle>
       </BaseCardHeader>
 
-      <BaseCardContent>0:00:00</BaseCardContent>
+      <BaseCardContent>{{ displayedTime }}</BaseCardContent>
     </BaseCard>
   </li>
 </template>
