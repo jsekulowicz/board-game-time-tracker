@@ -13,6 +13,8 @@ import { Icon } from '@iconify/vue'
       <DarkModeToggle class="ml-auto" />
     </PageHeader>
 
-    <slot></slot>
+    <section class="grid lg:max-w-[900px] gap-4 mx-auto mt-4 px-4">
+      <slot></slot>
+    </section>
   </main>
 </template>
