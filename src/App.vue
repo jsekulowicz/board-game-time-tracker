@@ -1,11 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import DarkModeToggle from './components/DarkModeToggle.vue'
+import PageHeader from './components/PageHeader.vue'
+import { Icon } from '@iconify/vue'
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <PageHeader>
+    <Icon icon="radix-icons:clock" class="h-[1.2rem] w-[1.2rem]" />
+    <h1 class="font-semibold">Board game time tracker</h1>
+
+    <DarkModeToggle class="ml-auto" />
+  </PageHeader>
 </template>
 
 <style scoped></style>
