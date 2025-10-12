@@ -2,13 +2,15 @@
 import { usePlayerTimeTracking } from '@/features/game-session/composables/usePlayerTimeTracking'
 import { BaseCard, BaseCardContent, BaseCardHeader, BaseCardTitle } from '@/components/ui/base-card'
 import type { GameSessionPlayer } from '../types'
+import { computed } from 'vue'
 
 export interface GameSessionPlayerItemProps {
   gameSessionPlayer: GameSessionPlayer
 }
 
 const props = defineProps<GameSessionPlayerItemProps>()
-const { displayedTime } = usePlayerTimeTracking(props.gameSessionPlayer)
+const sessionPlayer = computed(() => props.gameSessionPlayer)
+const { displayedTime } = usePlayerTimeTracking(sessionPlayer)
 </script>
 
 <template>

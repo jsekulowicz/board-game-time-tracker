@@ -27,6 +27,7 @@ export interface PlayerMove {
   startTimestamp: string
   endTimestamp: string | null
   moveIndex: number
+  turnIndex: number
 }
 
 export interface GameSessionPlayer extends Player {
