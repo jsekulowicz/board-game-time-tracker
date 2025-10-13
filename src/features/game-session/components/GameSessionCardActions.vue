@@ -23,14 +23,14 @@ const playPauseIcon = computed(() => {
     <template v-if="gameSessionActions.canComplete.value">
       <BaseButton
         variant="outline"
-        size="sm"
+        size="icon-sm"
         @click="gameSessionActions.toggleGameSessionPlayPause"
       >
-        <Icon :icon="playPauseIcon" class="h-[1.2rem] w-[1.2rem]" />
+        <Icon class="w-5! h-5!" :icon="playPauseIcon" />
       </BaseButton>
 
-      <BaseButton variant="outline" size="sm" @click="gameSessionActions.completeGameSession">
-        <Icon icon="radix-icons:stop" class="h-[1.2rem] w-[1.2rem]" />
+      <BaseButton variant="outline" size="icon-sm" @click="gameSessionActions.completeGameSession">
+        <Icon class="w-5! h-5!" icon="radix-icons:stop" />
       </BaseButton>
     </template>
 

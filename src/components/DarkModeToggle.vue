@@ -12,7 +12,7 @@ function toggleDarkMode() {
 
 <template>
   <BaseButton variant="outline" @click="toggleDarkMode">
-    <Icon icon="radix-icons:half-2" class="h-[1.2rem] w-[1.2rem]" />
+    <Icon icon="radix-icons:half-2" />
     <span class="sr-only">Toggle dark mode</span>
   </BaseButton>
 </template>

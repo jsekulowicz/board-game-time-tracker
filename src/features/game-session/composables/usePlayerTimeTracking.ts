@@ -4,7 +4,10 @@ import { formatTime } from '../utils'
 
 export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSessionPlayer>) => {
   const timer = ref(Date.now())
+
   const moves = computed(() => gameSessionPlayer.value.moves)
+  const hasOngoingMove = computed(() => moves.value[moves.value.length - 1]?.endTimestamp === null)
+
   let intervalId: ReturnType<typeof setInterval> | null = null
 
   const displayedTime = computed(() => {
@@ -24,8 +27,8 @@ export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSession
 
   watch(
     moves,
-    (newMoves: PlayerMove[]) => {
-      if (newMoves[newMoves.length - 1]?.endTimestamp === null) {
+    () => {
+      if (hasOngoingMove.value) {
         startTimer()
       } else {
         stopTimer()
@@ -50,5 +53,6 @@ export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSession
 
   return {
     displayedTime,
+    hasOngoingMove,
   }
 }

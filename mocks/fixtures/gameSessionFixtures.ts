@@ -38,6 +38,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
         })(),
       ],
       previousTotalTimeMs: 5000,
+      turnOrderIndex: 0,
     },
     {
       uuid: 'ef911ca6-c3ec-4e5c-911f-85c2549aebc1',
@@ -47,6 +48,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
       moves: [
         { moveIndex: 1, turnIndex: 1, startTimestamp: now.toISOString(), endTimestamp: null },
       ],
+      turnOrderIndex: 1,
     },
   ]
 }

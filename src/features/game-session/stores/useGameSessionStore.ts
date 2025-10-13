@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { GameSessionStatus, type GameSession } from '@/features/game-session/types'
-import { useGameSessionMockStore } from '../../../../mocks/stores/useGameSessionMockStore'
+import { useGameSessionMockStore } from 'mocks/stores/useGameSessionMockStore.ts'
 import { ref } from 'vue'
 
 export const useGameSessionStore = defineStore('gameSession', () => {
@@ -22,5 +22,13 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     }
   }
 
-  return { fetchGameSession, setGameSessionStatus, gameSession }
+  async function endPlayerMove(playerUuid: string): Promise<void> {
+    const response = await gameSessionsMockStore.endPlayerMove(gameSession.value!.uuid, playerUuid)
+
+    if (response) {
+      gameSession.value = response
+    }
+  }
+
+  return { fetchGameSession, setGameSessionStatus, endPlayerMove, gameSession }
 })

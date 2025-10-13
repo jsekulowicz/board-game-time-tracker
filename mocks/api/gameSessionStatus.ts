@@ -1,6 +1,7 @@
 import { GameSessionStatus, type GameSession } from '@/features/game-session/types'
 import { toRaw } from 'vue'
 import { waitForMs } from '@/helpers/concurrency.js'
+import { gameSessionPlayerMoveAPI } from './gameSessionPlayerMove'
 
 async function setGameSessionStatus(
   gameSession: GameSession,
@@ -43,17 +44,8 @@ function getResumedGameSession(gameSession: GameSession): GameSession {
 function getStoppedGameSession(gameSession: GameSession, status: GameSessionStatus): GameSession {
   const newGameSession = structuredClone(toRaw(gameSession))
 
-  newGameSession?.players.forEach((player) => {
-    const lastMove = player.moves[player.moves.length - 1]
-
-    if (lastMove && lastMove.endTimestamp === null) {
-      lastMove.endTimestamp = new Date().toISOString()
-
-      const lastMoveTotalTimeMs =
-        new Date(lastMove.endTimestamp).getTime() - new Date(lastMove.startTimestamp).getTime()
-
-      player.previousTotalTimeMs += lastMoveTotalTimeMs
-    }
+  newGameSession.players.forEach((player, index) => {
+    newGameSession.players[index] = gameSessionPlayerMoveAPI.getPlayerWithLastMoveEnded(player)
   })
 
   return { ...newGameSession, status }

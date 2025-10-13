@@ -34,4 +34,5 @@ export interface GameSessionPlayer extends Player {
   moves: PlayerMove[]
   status: GameSessionPlayerStatus
   previousTotalTimeMs: number
+  turnOrderIndex: number
 }

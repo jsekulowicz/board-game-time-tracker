@@ -4,6 +4,7 @@ import { getGameSessionFixture } from '../fixtures/gameSessionFixtures'
 import { gameSessionStatusAPI } from '../api/gameSessionStatus'
 import { type GameSession } from '@/features/game-session/types'
 import { waitForMs } from '@/helpers/concurrency.js'
+import { gameSessionPlayerMoveAPI } from '../api/gameSessionPlayerMove'
 
 export const useGameSessionMockStore = defineStore(
   'gameSessionMocks',
@@ -38,7 +39,23 @@ export const useGameSessionMockStore = defineStore(
       return gameSessionsMock.value[gameSessionIndex]
     }
 
-    return { getGameSessionPersistedMock, setGameSessionStatus, gameSessionsMock }
+    async function endPlayerMove(uuid: string, playerUuid: string): Promise<GameSession | void> {
+      const gameSessionIndex = gameSessionsMock.value.findIndex((session) => session.uuid === uuid)
+      const gameSession = gameSessionsMock.value[gameSessionIndex]
+
+      if (!gameSession) {
+        return
+      }
+
+      gameSessionsMock.value[gameSessionIndex] = await gameSessionPlayerMoveAPI.endPlayerMove(
+        gameSession,
+        playerUuid,
+      )
+
+      return gameSessionsMock.value[gameSessionIndex]
+    }
+
+    return { getGameSessionPersistedMock, setGameSessionStatus, endPlayerMove, gameSessionsMock }
   },
   {
     persist: {

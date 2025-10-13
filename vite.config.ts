@@ -16,6 +16,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      mocks: fileURLToPath(new URL('./mocks', import.meta.url)),
     },
   },
 })
