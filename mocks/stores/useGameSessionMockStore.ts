@@ -1,7 +1,9 @@
-import { ref, toRaw } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { getGameSessionFixture } from '../fixtures/gameSessionFixtures'
-import { GameSessionStatus, type GameSession } from '@/features/game-session/types'
+import { gameSessionStatusAPI } from '../api/gameSessionStatus'
+import { type GameSession } from '@/features/game-session/types'
+import { waitForMs } from '@/helpers/concurrency.js'
 
 export const useGameSessionMockStore = defineStore(
   'gameSessionMocks',
@@ -12,7 +14,8 @@ export const useGameSessionMockStore = defineStore(
       gameSessionsMock.value = [getGameSessionFixture()]
     }
 
-    function getGameSessionPersistedMock(uuid: string): GameSession | undefined {
+    async function getGameSessionPersistedMock(uuid: string): Promise<GameSession | undefined> {
+      await waitForMs(100)
       return gameSessionsMock.value.find((session: GameSession) => session.uuid === uuid)
     }
 
@@ -23,66 +26,16 @@ export const useGameSessionMockStore = defineStore(
       const gameSessionIndex = gameSessionsMock.value.findIndex((session) => session.uuid === uuid)
       const gameSession = gameSessionsMock.value[gameSessionIndex]
 
-      return new Promise<GameSession | void>((resolve) => {
-        setTimeout(() => {
-          if (!gameSession) {
-            return
-          }
+      if (!gameSession) {
+        return
+      }
 
-          if (status === GameSessionStatus.IN_PROGRESS) {
-            gameSessionsMock.value[gameSessionIndex] = getResumedGameSession(gameSession)
-          } else if ([GameSessionStatus.PAUSED, GameSessionStatus.COMPLETED].includes(status)) {
-            gameSessionsMock.value[gameSessionIndex] = {
-              ...getStoppedGameSession(gameSession),
-              status,
-            }
-          }
+      gameSessionsMock.value[gameSessionIndex] = await gameSessionStatusAPI.setGameSessionStatus(
+        gameSession,
+        status,
+      )
 
-          resolve(gameSessionsMock.value[gameSessionIndex])
-        }, 100)
-      })
-    }
-
-    function getResumedGameSession(gameSession: GameSession): GameSession {
-      const newGameSession = structuredClone(toRaw(gameSession))
-
-      newGameSession?.players.forEach((player) => {
-        const lastMove = player.moves[player.moves.length - 1]
-
-        if (!lastMove) {
-          return
-        }
-
-        if (lastMove?.turnIndex === gameSession.currentTurnIndex && lastMove.endTimestamp) {
-          player.moves.push({
-            moveIndex: lastMove.moveIndex,
-            turnIndex: lastMove.turnIndex,
-            startTimestamp: new Date().toISOString(),
-            endTimestamp: null,
-          })
-        }
-      })
-
-      return { ...newGameSession, status: GameSessionStatus.IN_PROGRESS }
-    }
-
-    function getStoppedGameSession(gameSession: GameSession): GameSession {
-      const newGameSession = structuredClone(toRaw(gameSession))
-
-      newGameSession?.players.forEach((player) => {
-        const lastMove = player.moves[player.moves.length - 1]
-
-        if (lastMove && lastMove.endTimestamp === null) {
-          lastMove.endTimestamp = new Date().toISOString()
-
-          const lastMoveTotalTimeMs =
-            new Date(lastMove.endTimestamp).getTime() - new Date(lastMove.startTimestamp).getTime()
-
-          player.previousTotalTimeMs += lastMoveTotalTimeMs
-        }
-      })
-
-      return newGameSession
+      return gameSessionsMock.value[gameSessionIndex]
     }
 
     return { getGameSessionPersistedMock, setGameSessionStatus, gameSessionsMock }

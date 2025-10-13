@@ -25,7 +25,6 @@ export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSession
   watch(
     moves,
     (newMoves: PlayerMove[]) => {
-      console.log('Moves changed', newMoves)
       if (newMoves[newMoves.length - 1]?.endTimestamp === null) {
         startTimer()
       } else {

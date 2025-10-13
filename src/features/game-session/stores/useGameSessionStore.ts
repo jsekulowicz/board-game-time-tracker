@@ -8,12 +8,7 @@ export const useGameSessionStore = defineStore('gameSession', () => {
   const gameSession = ref<GameSession | undefined>()
 
   async function fetchGameSession(uuid: string): Promise<void> {
-    const apiCall = new Promise<GameSession | undefined>((resolve) => {
-      setTimeout(() => {
-        resolve(gameSessionsMockStore.getGameSessionPersistedMock(uuid))
-      }, 200)
-    })
-    gameSession.value = await apiCall
+    gameSession.value = await gameSessionsMockStore.getGameSessionPersistedMock(uuid)
   }
 
   async function setGameSessionStatus(status: GameSessionStatus): Promise<void> {

@@ -11,9 +11,9 @@ export const useGameSessionActions = () => {
   const canPause = computed(
     () => gameSessionStore.gameSession?.status === GameSessionStatus.IN_PROGRESS,
   )
-  const canComplete = computed(() => {
-    return gameSessionStore.gameSession?.status !== GameSessionStatus.COMPLETED
-  })
+  const canComplete = computed(
+    () => gameSessionStore.gameSession?.status !== GameSessionStatus.COMPLETED,
+  )
 
   function toggleGameSessionPlayPause() {
     if (canPause.value) {
