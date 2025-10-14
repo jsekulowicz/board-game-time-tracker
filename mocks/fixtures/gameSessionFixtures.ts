@@ -26,7 +26,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     {
       uuid: 'a56de165-fbe5-421f-bea9-2fddebf08fa8',
       name: 'Player 1',
-      status: GameSessionPlayerStatus.PLAYING,
+      status: GameSessionPlayerStatus.WAITING,
       moves: [
         (() => {
           return {
@@ -43,12 +43,28 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     {
       uuid: 'ef911ca6-c3ec-4e5c-911f-85c2549aebc1',
       name: 'Player 2',
-      status: GameSessionPlayerStatus.WAITING,
+      status: GameSessionPlayerStatus.PLAYING,
       previousTotalTimeMs: 0,
       moves: [
         { moveIndex: 1, turnIndex: 1, startTimestamp: now.toISOString(), endTimestamp: null },
       ],
       turnOrderIndex: 1,
+    },
+    {
+      uuid: 'ef911ca6-c344-4e5c-911f-85c2549aebc1',
+      name: 'Player 3',
+      status: GameSessionPlayerStatus.WAITING,
+      previousTotalTimeMs: 0,
+      moves: [],
+      turnOrderIndex: 2,
+    },
+    {
+      uuid: 'ef993ca6-c344-4e5c-911f-85c2549aebc1',
+      name: 'Player 3',
+      status: GameSessionPlayerStatus.WAITING,
+      previousTotalTimeMs: 0,
+      moves: [],
+      turnOrderIndex: 3,
     },
   ]
 }

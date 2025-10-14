@@ -1,4 +1,8 @@
-import { type GameSession, type GameSessionPlayer } from '@/features/game-session/types'
+import {
+  GameSessionPlayerStatus,
+  type GameSession,
+  type GameSessionPlayer,
+} from '@/features/game-session/types'
 import { toRaw } from 'vue'
 import { waitForMs } from '@/helpers/concurrency.js'
 
@@ -10,7 +14,10 @@ async function endPlayerMove(gameSession: GameSession, playerUuid: string): Prom
   const playerThatEndsMove = newGameSession.players[playerThatEndsMoveIndex]
 
   if (playerThatEndsMove) {
-    newGameSession.players[playerThatEndsMoveIndex] = getPlayerWithLastMoveEnded(playerThatEndsMove)
+    newGameSession.players[playerThatEndsMoveIndex] = getPlayerWithLastMoveEnded(
+      playerThatEndsMove,
+      GameSessionPlayerStatus.WAITING,
+    )
     newGameSession.players = getPlayersWithNewMove(newGameSession.players, playerThatEndsMove)
     newGameSession.currentTurnIndex = getCurrentTurnIndex(newGameSession)
   }
@@ -19,7 +26,10 @@ async function endPlayerMove(gameSession: GameSession, playerUuid: string): Prom
   return newGameSession
 }
 
-function getPlayerWithLastMoveEnded(player: GameSessionPlayer): GameSessionPlayer {
+function getPlayerWithLastMoveEnded(
+  player: GameSessionPlayer,
+  playerNewStatus?: GameSessionPlayerStatus,
+): GameSessionPlayer {
   const newPlayer = structuredClone(toRaw(player))
 
   const lastMove = newPlayer.moves[newPlayer.moves.length - 1]
@@ -33,6 +43,9 @@ function getPlayerWithLastMoveEnded(player: GameSessionPlayer): GameSessionPlaye
     newPlayer.previousTotalTimeMs += lastMoveTotalTimeMs
   }
 
+  if (playerNewStatus) {
+    newPlayer.status = playerNewStatus
+  }
   return newPlayer
 }
 
@@ -70,6 +83,8 @@ function getPlayersWithNewMove(
       ? previousPlayerLastMove.turnIndex + 1
       : previousPlayerLastMove.turnIndex,
   })
+
+  newPlayers[nextPlayerIndex].status = GameSessionPlayerStatus.PLAYING
 
   return newPlayers
 }

@@ -1,4 +1,8 @@
-import { GameSessionStatus, type GameSession } from '@/features/game-session/types'
+import {
+  GameSessionPlayerStatus,
+  GameSessionStatus,
+  type GameSession,
+} from '@/features/game-session/types'
 import { toRaw } from 'vue'
 import { waitForMs } from '@/helpers/concurrency.js'
 import { gameSessionPlayerMoveAPI } from './gameSessionPlayerMove'
@@ -21,22 +25,24 @@ async function setGameSessionStatus(
 function getResumedGameSession(gameSession: GameSession): GameSession {
   const newGameSession = structuredClone(toRaw(gameSession))
 
-  newGameSession?.players.forEach((player) => {
-    const lastMove = player.moves[player.moves.length - 1]
+  newGameSession?.players
+    .filter((player) => player.status === GameSessionPlayerStatus.PLAYING)
+    .forEach((player) => {
+      const lastMove = player.moves[player.moves.length - 1]
 
-    if (!lastMove) {
-      return
-    }
+      if (!lastMove) {
+        return
+      }
 
-    if (lastMove?.turnIndex === gameSession.currentTurnIndex && lastMove.endTimestamp) {
-      player.moves.push({
-        moveIndex: lastMove.moveIndex,
-        turnIndex: lastMove.turnIndex,
-        startTimestamp: new Date().toISOString(),
-        endTimestamp: null,
-      })
-    }
-  })
+      if (lastMove?.turnIndex === gameSession.currentTurnIndex && lastMove.endTimestamp) {
+        player.moves.push({
+          moveIndex: lastMove.moveIndex,
+          turnIndex: lastMove.turnIndex,
+          startTimestamp: new Date().toISOString(),
+          endTimestamp: null,
+        })
+      }
+    })
 
   return { ...newGameSession, status: GameSessionStatus.IN_PROGRESS }
 }
