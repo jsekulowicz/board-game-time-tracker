@@ -7,15 +7,29 @@ import GameSessionCardActions from './GameSessionCardActions.vue'
 
 import { useGameSessionStore } from '../stores/useGameSessionStore'
 
-import type { GameSession } from '../types'
+import type { GameSession, GameSessionPlayer } from '../types'
+import { ref } from 'vue'
 
 export interface GameSessionCardProps {
   gameSession: GameSession
 }
 
-defineProps<GameSessionCardProps>()
+const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>[]>([])
+
+const props = defineProps<GameSessionCardProps>()
 
 const gameSessionStore = useGameSessionStore()
+
+async function endMoveAndFocusNextPlayer(gameSessionPlayer: GameSessionPlayer) {
+  await gameSessionStore.endPlayerMove(gameSessionPlayer.uuid)
+  gameSessionPlayerItemRefs.value[findNextPlayerItemIndex()]?.focusFinishButton()
+}
+
+function findNextPlayerItemIndex(): number {
+  return props.gameSession.players.findIndex(
+    (p) => p.moves[p.moves.length - 1]?.endTimestamp === null,
+  )
+}
 </script>
 
 <template>
@@ -33,10 +47,11 @@ const gameSessionStore = useGameSessionStore()
       <GridListContainer :maxCols="gameSession.players.length">
         <GameSessionPlayerItem
           v-for="gameSessionPlayer in gameSession.players"
+          ref="gameSessionPlayerItemRefs"
           :key="gameSessionPlayer.uuid"
           :gameSessionPlayer
           :gameSessionStatus="gameSession.status"
-          @end-move="gameSessionStore.endPlayerMove(gameSessionPlayer.uuid)"
+          @end-move="endMoveAndFocusNextPlayer(gameSessionPlayer)"
         />
       </GridListContainer>
     </BaseCardContent>

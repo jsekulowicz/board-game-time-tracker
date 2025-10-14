@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
-import { computed, type HTMLAttributes } from 'vue'
-import type { ButtonVariants } from '.'
+import { computed, ref, type HTMLAttributes } from 'vue'
+import type { BaseButton, ButtonVariants } from '.'
 import { Primitive } from 'reka-ui'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '.'
@@ -29,6 +29,8 @@ const props = withDefaults(defineProps<Props>(), {
   as: 'button',
 })
 
+const buttonRef = ref<InstanceType<typeof BaseButton> | null>(null)
+
 const stateClasses = computed(() => {
   return props.disabled ? 'opacity-50 cursor-not-allowed' : ''
 })
@@ -38,6 +40,14 @@ function ifEnabled(action: (...args: unknown[]) => unknown) {
     action()
   }
 }
+
+function focus() {
+  buttonRef.value?.$el.focus()
+}
+
+defineExpose({
+  focus,
+})
 </script>
 
 <template>
@@ -45,6 +55,7 @@ function ifEnabled(action: (...args: unknown[]) => unknown) {
     <BaseTooltip>
       <BaseTooltipTrigger as-child>
         <Primitive
+          ref="buttonRef"
           data-slot="button"
           :as="as"
           :as-child="asChild"
