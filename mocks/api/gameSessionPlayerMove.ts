@@ -13,8 +13,6 @@ async function endPlayerMove(gameSession: GameSession, playerUuid: string): Prom
     newGameSession.players[playerThatEndsMoveIndex] = getPlayerWithLastMoveEnded(playerThatEndsMove)
     newGameSession.players = getPlayersWithNewMove(newGameSession.players, playerThatEndsMove)
     newGameSession.currentTurnIndex = getCurrentTurnIndex(newGameSession)
-
-    console.log('currnet turn index', getCurrentTurnIndex(newGameSession))
   }
 
   await waitForMs(100)
