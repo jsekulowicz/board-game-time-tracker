@@ -19,8 +19,11 @@ export interface GameSessionPlayerItemProps {
 const props = defineProps<GameSessionPlayerItemProps>()
 
 const sessionPlayer = computed(() => props.gameSessionPlayer)
-
 const { displayedTime, hasOngoingMove } = usePlayerTimeTracking(sessionPlayer)
+
+const finishButtonTooltip = computed(() =>
+  hasOngoingMove.value ? 'Finish move' : 'Please wait for your move to finish',
+)
 
 defineEmits<{
   (e: 'end-move', playerUuid: string): void
@@ -31,12 +34,13 @@ defineEmits<{
   <li>
     <BaseCard>
       <BaseCardHeader class="flex flex-wrap items-center gap-4">
-        <BaseCardAction>
+        <BaseCardAction class="flex">
           <BaseButton
-            :class="{ 'bg-success!': !hasOngoingMove }"
-            variant="outline"
             size="icon-sm"
+            variant="outline"
+            :class="{ 'bg-success!': !hasOngoingMove }"
             :disabled="!hasOngoingMove"
+            :tooltip="finishButtonTooltip"
             @click="$emit('end-move', gameSessionPlayer.uuid)"
           >
             <Icon

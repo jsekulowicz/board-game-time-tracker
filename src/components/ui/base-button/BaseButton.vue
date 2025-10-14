@@ -5,12 +5,19 @@ import type { ButtonVariants } from '.'
 import { Primitive } from 'reka-ui'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '.'
+import {
+  BaseTooltip,
+  BaseTooltipProvider,
+  BaseTooltipTrigger,
+  BaseTooltipContent,
+} from '@/components/ui/base-tooltip'
 
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
   class?: HTMLAttributes['class']
   disabled?: boolean
+  tooltip?: string
 }
 
 defineEmits<{
@@ -34,14 +41,23 @@ function ifEnabled(action: (...args: unknown[]) => unknown) {
 </script>
 
 <template>
-  <Primitive
-    data-slot="button"
-    :as="as"
-    :as-child="asChild"
-    :class="cn(buttonVariants({ variant, size }), props.class, stateClasses)"
-    @click.stop.prevent="ifEnabled(() => $emit('click', $event))"
-    @keydown.enter.space.stop.prevent="ifEnabled(() => $emit('click', $event))"
-  >
-    <slot />
-  </Primitive>
+  <BaseTooltipProvider>
+    <BaseTooltip>
+      <BaseTooltipTrigger as-child>
+        <Primitive
+          data-slot="button"
+          :as="as"
+          :as-child="asChild"
+          :class="cn(buttonVariants({ variant, size }), props.class, stateClasses)"
+          @click.stop.prevent="ifEnabled(() => $emit('click', $event))"
+          @keydown.enter.space.stop.prevent="ifEnabled(() => $emit('click', $event))"
+        >
+          <slot />
+        </Primitive>
+      </BaseTooltipTrigger>
+      <BaseTooltipContent v-if="tooltip">
+        <p>{{ tooltip }}</p>
+      </BaseTooltipContent>
+    </BaseTooltip>
+  </BaseTooltipProvider>
 </template>
