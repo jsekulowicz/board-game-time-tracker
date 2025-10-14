@@ -1,0 +1,21 @@
+{
+  "$defs": {},
+  "/games": {
+    "$ref": "./games.json#/paths/~1games"
+  },
+  "/games/{uuid}": {
+    "$ref": "./games.json#/paths/~1games~1{uuid}"
+  },
+  "/players": {
+    "$ref": "./players.json#/paths/~1players"
+  },
+  "/players/{uuid}": {
+    "$ref": "./players.json#/paths/~1players~1{uuid}"
+  },
+  "/game-sessions": {
+    "$ref": "./game-sessions.json#/paths/~1game-sessions"
+  },
+  "/game-sessions/{uuid}": {
+    "$ref": "./game-sessions.json#/paths/~1game-sessions~1{uuid}"
+  }
+}

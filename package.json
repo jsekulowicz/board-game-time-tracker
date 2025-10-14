@@ -17,7 +17,8 @@
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "openapi-ts": "openapi-ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
@@ -35,6 +36,7 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "0.85.2",
     "@iconify-json/radix-icons": "^1.2.5",
     "@iconify/vue": "^5.0.0",
     "@playwright/test": "^1.55.1",
