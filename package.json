@@ -18,8 +18,7 @@
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
     "format": "prettier --write src/",
-    "openapi-ts": "openapi-ts",
-    "openapi-ts:generate": "openapi-ts generate"
+    "openapi-ts": "openapi-ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
