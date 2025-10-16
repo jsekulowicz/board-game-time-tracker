@@ -1,0 +1,19 @@
+{
+  "schemas": {
+    "Game": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "$ref": "./common.json#/schemas/UUID"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "uuid",
+        "name"
+      ]
+    }
+  }
+}
