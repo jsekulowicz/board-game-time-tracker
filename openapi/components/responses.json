@@ -1,21 +1,37 @@
 {
   "responses": {
     "Error400": {
-      "description": "Invalid input",
+      "description": "Bad Request",
       "content": {
         "application/json": {
           "schema": {
-            "$ref": "./schemas/common.json#/schemas/ErrorResponse"
+            "type": "object",
+            "properties": {
+              "error": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "statusCode": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "error",
+              "message",
+              "statusCode"
+            ]
           }
         }
       }
     },
     "Error404": {
-      "description": "Not found",
+      "description": "Not Found",
       "content": {
         "application/json": {
           "schema": {
-            "$ref": "./schemas/common.json#/schemas/ErrorResponse"
+            "$ref": "#/responses/Error400/schema"
           }
         }
       }
@@ -25,7 +41,7 @@
       "content": {
         "application/json": {
           "schema": {
-            "$ref": "./schemas/common.json#/schemas/ErrorResponse"
+            "$ref": "#/responses/Error400/schema"
           }
         }
       }

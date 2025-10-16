@@ -5,20 +5,27 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/games": {
-      "$ref": "./paths/games.json"
-    },
     "/players": {
       "$ref": "./paths/players.json"
     },
+    "/players/{uuid}": {
+      "$ref": "./paths/players.json"
+    },
+    "/games": {
+      "$ref": "./paths/games.json"
+    },
+    "/games/{uuid}": {
+      "$ref": "./paths/games.json"
+    },
     "/game-sessions": {
+      "$ref": "./paths/game-sessions.json"
+    },
+    "/game-sessions/{uuid}": {
       "$ref": "./paths/game-sessions.json"
     }
   },
   "components": {
-    "schemas": {
-      "$ref": "./components/schemas/common.json"
-    },
+    "schemas": {},
     "responses": {
       "$ref": "./components/responses.json"
     },
