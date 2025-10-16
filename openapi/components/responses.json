@@ -5,23 +5,7 @@
       "content": {
         "application/json": {
           "schema": {
-            "type": "object",
-            "properties": {
-              "error": {
-                "type": "string"
-              },
-              "message": {
-                "type": "string"
-              },
-              "statusCode": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "error",
-              "message",
-              "statusCode"
-            ]
+            "$ref": "./schemas/errors.json#/schemas/ErrorResponse"
           }
         }
       }
@@ -31,7 +15,7 @@
       "content": {
         "application/json": {
           "schema": {
-            "$ref": "#/responses/Error400/schema"
+            "$ref": "./schemas/errors.json#/schemas/ErrorResponse"
           }
         }
       }
@@ -41,7 +25,7 @@
       "content": {
         "application/json": {
           "schema": {
-            "$ref": "#/responses/Error400/schema"
+            "$ref": "./schemas/errors.json#/schemas/ErrorResponse"
           }
         }
       }
