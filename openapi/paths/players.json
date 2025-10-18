@@ -12,41 +12,26 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "../components/schemas.json#/schemas/Player"
+                    "$ref": "../components/schemas/players.json#/schemas/Player"
                   }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
+            "$ref": "../components/responses.json#/responses/Error500"
           }
         }
       },
       "post": {
-        "summary": "Create a new player",
+        "summary": "Create a player",
         "operationId": "createPlayer",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "name"
-                ]
+                "$ref": "../components/schemas/players.json#/schemas/Player"
               }
             }
           }
@@ -57,119 +42,31 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "../components/schemas.json#/schemas/Player"
+                  "$ref": "../components/schemas/players.json#/schemas/Player"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
+            "$ref": "../components/responses.json#/responses/Error400"
           }
         }
       }
     },
     "/players/{uuid}": {
       "get": {
-        "summary": "Get a player by UUID",
-        "operationId": "getPlayer",
+        "summary": "Get player by UUID",
         "parameters": [
           {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "$ref": "../components/parameters.json#/parameters/UuidParam"
           }
         ],
         "responses": {
           "200": {
-            "description": "Player details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/Player"
-                }
-              }
-            }
+            "$ref": "../components/schemas/players.json#/schemas/Player"
           },
           "404": {
-            "description": "Player not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a player",
-        "operationId": "deletePlayer",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted"
-          },
-          "404": {
-            "description": "Player not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
+            "$ref": "../components/responses.json#/responses/Error404"
           }
         }
       }

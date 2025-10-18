@@ -1,0 +1,129 @@
+{
+  "schemas": {
+    "GameSessionStatus": {
+      "type": "string",
+      "enum": [
+        "in_progress",
+        "paused",
+        "completed"
+      ]
+    },
+    "GameSessionPlayerStatus": {
+      "type": "string",
+      "enum": [
+        "playing",
+        "waiting",
+        "passed"
+      ]
+    },
+    "PlayerMove": {
+      "type": "object",
+      "properties": {
+        "startTimestamp": {
+          "$ref": "./common.json#/schemas/Timestamp"
+        },
+        "endTimestamp": {
+          "anyOf": [
+            {
+              "$ref": "./common.json#/schemas/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "moveIndex": {
+          "type": "integer"
+        },
+        "turnIndex": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "startTimestamp",
+        "moveIndex",
+        "turnIndex"
+      ]
+    },
+    "GameSessionPlayer": {
+      "allOf": [
+        {
+          "$ref": "./players.json#/schemas/Player"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "moves": {
+              "type": "array",
+              "items": {
+                "$ref": "#/schemas/PlayerMove"
+              }
+            },
+            "status": {
+              "$ref": "#/schemas/GameSessionPlayerStatus"
+            },
+            "previousTotalTimeMs": {
+              "type": "integer"
+            },
+            "turnOrderIndex": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "moves",
+            "status",
+            "turnOrderIndex"
+          ]
+        }
+      ]
+    },
+    "GameSession": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "$ref": "./common.json#/schemas/UUID"
+        },
+        "name": {
+          "type": "string"
+        },
+        "game": {
+          "$ref": "./games.json#/schemas/Game"
+        },
+        "status": {
+          "$ref": "#/schemas/GameSessionStatus"
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "$ref": "#/schemas/GameSessionPlayer"
+          }
+        },
+        "currentTurnIndex": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "$ref": "./common.json#/schemas/Timestamp"
+        },
+        "updatedAt": {
+          "anyOf": [
+            {
+              "$ref": "./common.json#/schemas/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "uuid",
+        "name",
+        "game",
+        "status",
+        "players",
+        "currentTurnIndex",
+        "createdAt"
+      ]
+    }
+  }
+}

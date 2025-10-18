@@ -2,64 +2,36 @@
   "paths": {
     "/game-sessions": {
       "get": {
-        "summary": "List all game sessions",
+        "summary": "List game sessions",
         "operationId": "listGameSessions",
         "responses": {
           "200": {
-            "description": "List of sessions",
+            "description": "List of game sessions",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "../components/schemas.json#/schemas/GameSession"
+                    "$ref": "../components/schemas/game-sessions.json#/schemas/GameSession"
                   }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
+            "$ref": "../components/responses.json#/responses/Error500"
           }
         }
       },
       "post": {
-        "summary": "Create a new game session",
+        "summary": "Create a game session",
         "operationId": "createGameSession",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "gameUuid": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "playerUuids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "uuid"
-                    }
-                  }
-                },
-                "required": [
-                  "name",
-                  "gameUuid",
-                  "playerUuids"
-                ]
+                "$ref": "../components/schemas/game-sessions.json#/schemas/GameSession"
               }
             }
           }
@@ -70,193 +42,31 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "../components/schemas.json#/schemas/GameSession"
+                  "$ref": "../components/schemas/game-sessions.json#/schemas/GameSession"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
+            "$ref": "../components/responses.json#/responses/Error400"
           }
         }
       }
     },
     "/game-sessions/{uuid}": {
       "get": {
-        "summary": "Get a game session by UUID",
-        "operationId": "getGameSession",
+        "summary": "Get game session by UUID",
         "parameters": [
           {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "$ref": "../components/parameters.json#/parameters/UuidParam"
           }
         ],
         "responses": {
           "200": {
-            "description": "Game session details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/GameSession"
-                }
-              }
-            }
+            "$ref": "../components/schemas/game-sessions.json#/schemas/GameSession"
           },
           "404": {
-            "description": "Game session not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "summary": "Update a game session",
-        "operationId": "updateGameSession",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "$ref": "../components/schemas.json#/schemas/GameSessionStatus"
-                  },
-                  "currentTurnIndex": {
-                    "type": "integer"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Updated game session",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/GameSession"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Game session not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a game session",
-        "operationId": "deleteGameSession",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted"
-          },
-          "404": {
-            "description": "Game session not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "../components/schemas.json#/schemas/ErrorResponse"
-                }
-              }
-            }
+            "$ref": "../components/responses.json#/responses/Error404"
           }
         }
       }

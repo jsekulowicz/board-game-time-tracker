@@ -1,19 +1,27 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Board Game Timer API",
-    "version": "1.0.0",
-    "description": "OpenAPI contract for the board game time tracking app."
+    "title": "Board Game Time Tracker API",
+    "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "https://api.example.com"
-    }
-  ],
   "paths": {
-    "$ref": "./paths/index.json"
-  },
-  "components": {
-    "$ref": "./components/schemas.json"
+    "/players": {
+      "$ref": "./paths/players.json"
+    },
+    "/players/{uuid}": {
+      "$ref": "./paths/players.json"
+    },
+    "/games": {
+      "$ref": "./paths/games.json"
+    },
+    "/games/{uuid}": {
+      "$ref": "./paths/games.json"
+    },
+    "/game-sessions": {
+      "$ref": "./paths/game-sessions.json"
+    },
+    "/game-sessions/{uuid}": {
+      "$ref": "./paths/game-sessions.json"
+    }
   }
 }
