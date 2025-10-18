@@ -23,14 +23,5 @@
     "/game-sessions/{uuid}": {
       "$ref": "./paths/game-sessions.json"
     }
-  },
-  "components": {
-    "schemas": {},
-    "responses": {
-      "$ref": "./components/responses.json"
-    },
-    "parameters": {
-      "$ref": "./components/parameters.json"
-    }
   }
 }
