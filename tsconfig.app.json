@@ -7,7 +7,7 @@
 
     "paths": {
       "@/*": ["./src/*"],
-      "mocks/*": ["./mocks/*"]
+      "mocks/*": ["src/api/mocks/*"]
     }
   }
 }

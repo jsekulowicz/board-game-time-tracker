@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { RouteName } from './consts'
-import { getGameSessionFixture } from 'mocks/fixtures/gameSessionFixtures'
+import { getGameSessionFixture } from '@/api/mocks/fixtures/gameSessionFixtures'
 
 const { uuid: initialGameSessionUuid } = getGameSessionFixture()
 

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { GameSessionStatus, type GameSession } from '@/features/game-session/types'
-import { useGameSessionMockStore } from 'mocks/stores/useGameSessionMockStore.ts'
+import { useGameSessionMockStore } from '@/api/mocks/stores/useGameSessionMockStore'
 import { ref } from 'vue'
 
 export const useGameSessionStore = defineStore('gameSession', () => {
