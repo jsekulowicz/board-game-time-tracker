@@ -1,0 +1,61 @@
+schemas:
+  Status:
+    type: string
+    enum: [in_progress, paused, completed]
+
+  PlayerStatus:
+    type: string
+    enum: [playing, waiting, passed]
+
+  PlayerMove:
+    type: object
+    properties:
+      startTimestamp:
+        $ref: ./common.yaml#/schemas/Timestamp
+      endTimestamp:
+        $ref: ./common.yaml#/schemas/Timestamp
+      moveIndex:
+        type: integer
+      turnIndex:
+        type: integer
+    required: [startTimestamp, moveIndex, turnIndex]
+
+  Player:
+    allOf:
+      - $ref: ./player.yaml#/schemas/Resource
+      - type: object
+        properties:
+          moves:
+            type: array
+            items:
+              $ref: '#/schemas/PlayerMove'
+          status:
+            $ref: '#/schemas/PlayerStatus'
+          previousTotalTimeMs:
+            type: integer
+          turnOrderIndex:
+            type: integer
+        required: [status, turnOrderIndex]
+
+  Resource:
+    type: object
+    properties:
+      uuid:
+        $ref: ./common.yaml#/schemas/Uuid
+      name:
+        type: string
+      game:
+        $ref: './game.yaml#/schemas/Resource'
+      status:
+        $ref: '#/schemas/Status'
+      players:
+        type: array
+        items:
+          $ref: '#/schemas/Player'
+      currentTurnIndex:
+        type: integer
+      createdAt:
+        $ref: ./common.yaml#/schemas/Timestamp
+      updatedAt:
+        $ref: ./common.yaml#/schemas/Timestamp
+    required: [uuid, name, game, status, players, currentTurnIndex, createdAt]

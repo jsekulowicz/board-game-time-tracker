@@ -11,6 +11,10 @@ const props = defineProps<GameSessionViewProps>()
 const gameSessionStore = useGameSessionStore()
 
 gameSessionStore.fetchGameSession(props.uuid)
+
+fetch('/game-sessions/123')
+  .then((r) => r.json())
+  .then(console.log)
 </script>
 
 <template>

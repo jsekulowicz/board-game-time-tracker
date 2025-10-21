@@ -1,0 +1,11 @@
+schemas:
+  Response:
+    type: object
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+      statusCode:
+        type: integer
+    required: [error, message, statusCode]

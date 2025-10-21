@@ -1,0 +1,8 @@
+schemas:
+  Uuid:
+    type: string
+    format: uuid
+
+  Timestamp:
+    type: string
+    format: date-time

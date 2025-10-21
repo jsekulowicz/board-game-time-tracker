@@ -1,0 +1,10 @@
+openapi: 3.1.0
+info:
+  title: Board Game Time Tracker API
+  version: 1.0.0
+
+paths:
+  /game-sessions:
+    $ref: ./paths/game-sessions-list.yaml
+  /game-sessions/{uuid}:
+    $ref: ./paths/game-sessions-detail.yaml

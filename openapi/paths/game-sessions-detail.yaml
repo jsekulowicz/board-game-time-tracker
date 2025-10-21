@@ -1,0 +1,24 @@
+get:
+  summary: Get a single game session by UUID
+  operationId: getGameSessionById
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      schema:
+        $ref: ../components/schemas/common.yaml#/schemas/Uuid
+  responses:
+    '200':
+      description: Single game session
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: ../components/schemas/game-session.yaml#/schemas/Resource
+            required: [data]
+    '404':
+      $ref: ../components/responses.yaml#/responses/Error404
+    '500':
+      $ref: ../components/responses.yaml#/responses/Error500

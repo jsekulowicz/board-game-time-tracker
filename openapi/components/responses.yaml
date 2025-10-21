@@ -1,0 +1,22 @@
+responses:
+  Error400:
+    description: Bad Request
+    content:
+      application/json:
+        schema:
+          $ref: ./schemas/error.yaml#/schemas/Response
+
+  Error404:
+    description: Not Found
+    content:
+      application/json:
+        schema:
+          $ref: ./schemas/error.yaml#/schemas/Response
+
+  Error500:
+    description: Internal Server Error
+    content:
+      application/json:
+        schema:
+          $ref: ./schemas/error.yaml#/schemas/Response
+          responses:

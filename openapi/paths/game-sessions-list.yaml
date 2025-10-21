@@ -1,0 +1,30 @@
+get:
+  summary: List all game sessions
+  operationId: listGameSessions
+  responses:
+    '200':
+      description: Paginated list of game sessions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: ../components/schemas/game-session.yaml#/schemas/Resource
+              meta:
+                type: object
+                properties:
+                  total: { type: integer }
+                  page: { type: integer }
+                  pageSize: { type: integer }
+                  totalPages: { type: integer }
+                required: [total, page, pageSize, totalPages]
+            required: [data, meta]
+    '400':
+      $ref: ../components/responses.yaml#/responses/Error400
+    '404':
+      $ref: ../components/responses.yaml#/responses/Error404
+    '500':
+      $ref: ../components/responses.yaml#/responses/Error500

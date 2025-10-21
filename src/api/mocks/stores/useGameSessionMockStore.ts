@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getGameSessionFixture } from '../fixtures/gameSessionFixtures'
-import { gameSessionStatusAPI } from '../api/gameSessionStatus'
+import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
+import { gameSessionStatusAPI } from 'mocks/game-sessions/gameSessionStatus'
 import { type GameSession } from '@/features/game-session/types'
 import { waitForMs } from '@/helpers/concurrency.js'
-import { gameSessionPlayerMoveAPI } from '../api/gameSessionPlayerMove'
+import { gameSessionPlayerMoveAPI } from 'mocks/game-sessions/gameSessionPlayerMove'
 
 export const useGameSessionMockStore = defineStore(
   'gameSessionMocks',
