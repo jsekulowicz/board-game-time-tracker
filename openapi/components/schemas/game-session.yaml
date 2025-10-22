@@ -13,7 +13,9 @@ schemas:
       startTimestamp:
         $ref: ./common.yaml#/schemas/Timestamp
       endTimestamp:
-        $ref: ./common.yaml#/schemas/Timestamp
+        oneOf:
+          - $ref: ./common.yaml#/schemas/Timestamp
+          - type: 'null'
       moveIndex:
         type: integer
       turnIndex:
@@ -35,7 +37,7 @@ schemas:
             type: integer
           turnOrderIndex:
             type: integer
-        required: [status, turnOrderIndex]
+        required: [status, turnOrderIndex, moves, previousTotalTimeMs]
 
   Resource:
     type: object

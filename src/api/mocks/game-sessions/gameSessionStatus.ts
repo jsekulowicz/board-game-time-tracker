@@ -1,32 +1,28 @@
-import {
-  GameSessionPlayerStatus,
-  GameSessionStatus,
-  type GameSession,
-} from '@/features/game-session/types'
 import { toRaw } from 'vue'
 import { waitForMs } from '@/helpers/concurrency.js'
 import { gameSessionPlayerMoveAPI } from './gameSessionPlayerMove'
+import type { GameSessionPlayer, GameSessionResource, GameSessionStatus } from '@/api/generated'
 
 async function setGameSessionStatus(
-  gameSession: GameSession,
-  status: GameSession['status'],
-): Promise<GameSession> {
+  gameSession: GameSessionResource,
+  status: GameSessionStatus,
+): Promise<GameSessionResource> {
   await waitForMs(100)
 
-  if (status === GameSessionStatus.IN_PROGRESS) {
+  if (status === 'in_progress') {
     return getResumedGameSession(gameSession)
-  } else if ([GameSessionStatus.PAUSED, GameSessionStatus.COMPLETED].includes(status)) {
+  } else if (['paused', 'completed'].includes(status)) {
     return getStoppedGameSession(gameSession, status)
   }
 
   return gameSession
 }
 
-function getResumedGameSession(gameSession: GameSession): GameSession {
+function getResumedGameSession(gameSession: GameSessionResource): GameSessionResource {
   const newGameSession = structuredClone(toRaw(gameSession))
 
   newGameSession?.players
-    .filter((player) => player.status === GameSessionPlayerStatus.PLAYING)
+    .filter((player) => player.status === 'playing')
     .forEach((player) => {
       const lastMove = player.moves[player.moves.length - 1]
 
@@ -44,13 +40,16 @@ function getResumedGameSession(gameSession: GameSession): GameSession {
       }
     })
 
-  return { ...newGameSession, status: GameSessionStatus.IN_PROGRESS }
+  return { ...newGameSession, status: 'in_progress' }
 }
 
-function getStoppedGameSession(gameSession: GameSession, status: GameSessionStatus): GameSession {
+function getStoppedGameSession(
+  gameSession: GameSessionResource,
+  status: GameSessionStatus,
+): GameSessionResource {
   const newGameSession = structuredClone(toRaw(gameSession))
 
-  newGameSession.players.forEach((player, index) => {
+  newGameSession.players.forEach((player: GameSessionPlayer, index: number) => {
     newGameSession.players[index] = gameSessionPlayerMoveAPI.getPlayerWithLastMoveEnded(player)
   })
 

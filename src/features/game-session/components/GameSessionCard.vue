@@ -7,11 +7,11 @@ import GameSessionCardActions from './GameSessionCardActions.vue'
 
 import { useGameSessionStore } from '../stores/useGameSessionStore'
 
-import type { GameSession, GameSessionPlayer } from '../types'
 import { ref } from 'vue'
+import type { GameSessionResource, GameSessionPlayer } from '@/api/generated'
 
 export interface GameSessionCardProps {
-  gameSession: GameSession
+  gameSession: GameSessionResource
 }
 
 const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>[]>([])

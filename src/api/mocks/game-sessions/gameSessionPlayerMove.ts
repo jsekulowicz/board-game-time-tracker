@@ -1,22 +1,25 @@
-import {
+import type {
+  GameSessionResource,
+  GameSessionPlayer,
   GameSessionPlayerStatus,
-  type GameSession,
-  type GameSessionPlayer,
-} from '@/features/game-session/types'
+} from '@/api/generated/'
 import { toRaw } from 'vue'
 import { waitForMs } from '@/helpers/concurrency.js'
 
-async function endPlayerMove(gameSession: GameSession, playerUuid: string): Promise<GameSession> {
+async function endPlayerMove(
+  gameSession: GameSessionResource,
+  playerUuid: string,
+): Promise<GameSessionResource> {
   const newGameSession = structuredClone(toRaw(gameSession))
   const playerThatEndsMoveIndex = newGameSession.players.findIndex(
-    (player) => player.uuid === playerUuid,
+    (player: GameSessionPlayer) => player.uuid === playerUuid,
   )
   const playerThatEndsMove = newGameSession.players[playerThatEndsMoveIndex]
 
   if (playerThatEndsMove) {
     newGameSession.players[playerThatEndsMoveIndex] = getPlayerWithLastMoveEnded(
       playerThatEndsMove,
-      GameSessionPlayerStatus.WAITING,
+      'waiting',
     )
     newGameSession.players = getPlayersWithNewMove(newGameSession.players, playerThatEndsMove)
     newGameSession.currentTurnIndex = getCurrentTurnIndex(newGameSession)
@@ -84,12 +87,12 @@ function getPlayersWithNewMove(
       : previousPlayerLastMove.turnIndex,
   })
 
-  newPlayers[nextPlayerIndex].status = GameSessionPlayerStatus.PLAYING
+  newPlayers[nextPlayerIndex].status = 'playing'
 
   return newPlayers
 }
 
-function getCurrentTurnIndex(gameSession: GameSession) {
+function getCurrentTurnIndex(gameSession: GameSessionResource) {
   const turnIndexesForPlayers = gameSession.players.map((player) => {
     if (!player.moves.length) {
       return 0

@@ -15,15 +15,15 @@ export type ErrorResponse = {
 };
 
 export type GameSessionPlayer = PlayerResource & {
-    moves?: Array<GameSessionPlayerMove>;
+    moves: Array<GameSessionPlayerMove>;
     status: GameSessionPlayerStatus;
-    previousTotalTimeMs?: number;
+    previousTotalTimeMs: number;
     turnOrderIndex: number;
 };
 
 export type GameSessionPlayerMove = {
     startTimestamp: CommonTimestamp;
-    endTimestamp?: CommonTimestamp;
+    endTimestamp?: CommonTimestamp | null;
     moveIndex: number;
     turnIndex: number;
 };
@@ -56,6 +56,8 @@ export type PlayerResource = {
 export type GameSessionsDetailRoot = unknown;
 
 export type GameSessionsListRoot = unknown;
+
+export type GameSessionsMovesEndRoot = unknown;
 
 export type ListGameSessionsData = {
     body?: never;
@@ -124,9 +126,84 @@ export type GetGameSessionByIdResponses = {
     /**
      * Single game session
      */
-    200: {
-        data: GameSessionResource;
-    };
+    200: GameSessionResource;
 };
 
 export type GetGameSessionByIdResponse = GetGameSessionByIdResponses[keyof GetGameSessionByIdResponses];
+
+export type PatchGameSessionByIdData = {
+    body: {
+        /**
+         * New name of the game session
+         */
+        name?: string;
+        status?: GameSessionStatus;
+    };
+    path: {
+        uuid: CommonUuid;
+    };
+    query?: never;
+    url: '/game-sessions/{uuid}';
+};
+
+export type PatchGameSessionByIdErrors = {
+    /**
+     * Bad Request
+     */
+    400: ErrorResponse;
+    /**
+     * Not Found
+     */
+    404: ErrorResponse;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorResponse;
+};
+
+export type PatchGameSessionByIdError = PatchGameSessionByIdErrors[keyof PatchGameSessionByIdErrors];
+
+export type PatchGameSessionByIdResponses = {
+    /**
+     * Updated game session
+     */
+    200: GameSessionResource;
+};
+
+export type PatchGameSessionByIdResponse = PatchGameSessionByIdResponses[keyof PatchGameSessionByIdResponses];
+
+export type EndPlayerMoveData = {
+    /**
+     * The player whose current move should be ended
+     */
+    body: {
+        playerUuid: CommonUuid;
+    };
+    path: {
+        sessionUuid: CommonUuid;
+    };
+    query?: never;
+    url: '/game-sessions/{sessionUuid}/moves/end';
+};
+
+export type EndPlayerMoveErrors = {
+    /**
+     * Not Found
+     */
+    404: ErrorResponse;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorResponse;
+};
+
+export type EndPlayerMoveError = EndPlayerMoveErrors[keyof EndPlayerMoveErrors];
+
+export type EndPlayerMoveResponses = {
+    /**
+     * The game session after ending the player's move
+     */
+    200: GameSessionResource;
+};
+
+export type EndPlayerMoveResponse = EndPlayerMoveResponses[keyof EndPlayerMoveResponses];

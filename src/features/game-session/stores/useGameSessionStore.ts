@@ -1,34 +1,45 @@
 import { defineStore } from 'pinia'
-import { GameSessionStatus, type GameSession } from '@/features/game-session/types'
-import { useGameSessionMockStore } from '@/api/mocks/stores/useGameSessionMockStore'
+import type { GameSessionResource, GameSessionStatus } from '@/api/generated'
 import { ref } from 'vue'
+import {
+  getGameSessionById as apiGetGameSessionById,
+  patchGameSessionById as apiPatchGameSessionById,
+  endPlayerMove as apiEndPlayerMove,
+} from '@/api/generated/sdk.gen'
 
 export const useGameSessionStore = defineStore('gameSession', () => {
-  const gameSessionsMockStore = useGameSessionMockStore()
-  const gameSession = ref<GameSession | undefined>()
+  const gameSession = ref<GameSessionResource | undefined>()
 
-  async function fetchGameSession(uuid: string): Promise<void> {
-    gameSession.value = await gameSessionsMockStore.getGameSessionPersistedMock(uuid)
+  async function getGameSessionById(uuid: string): Promise<void> {
+    const response = await apiGetGameSessionById({ path: { uuid } })
+    gameSession.value = response.data
   }
 
   async function setGameSessionStatus(status: GameSessionStatus): Promise<void> {
-    const response = await gameSessionsMockStore.setGameSessionStatus(
-      gameSession.value!.uuid,
-      status,
-    )
-
-    if (response) {
-      gameSession.value = response
+    if (!gameSession.value) {
+      return
     }
+
+    const response = await apiPatchGameSessionById({
+      path: { uuid: gameSession.value.uuid },
+      body: { status },
+    })
+
+    gameSession.value = response.data
   }
 
   async function endPlayerMove(playerUuid: string): Promise<void> {
-    const response = await gameSessionsMockStore.endPlayerMove(gameSession.value!.uuid, playerUuid)
-
-    if (response) {
-      gameSession.value = response
+    if (!gameSession.value) {
+      return
     }
+
+    const response = await apiEndPlayerMove({
+      path: { sessionUuid: gameSession.value.uuid },
+      body: { playerUuid },
+    })
+
+    gameSession.value = response.data
   }
 
-  return { fetchGameSession, setGameSessionStatus, endPlayerMove, gameSession }
+  return { getGameSessionById, setGameSessionStatus, endPlayerMove, gameSession }
 })

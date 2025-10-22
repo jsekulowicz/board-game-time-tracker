@@ -1,31 +1,24 @@
 import { computed } from 'vue'
 import { useGameSessionStore } from '../stores/useGameSessionStore'
-import { GameSessionStatus } from '../types'
 
 export const useGameSessionActions = () => {
   const gameSessionStore = useGameSessionStore()
 
-  const canResume = computed(
-    () => gameSessionStore.gameSession?.status === GameSessionStatus.PAUSED,
-  )
-  const canPause = computed(
-    () => gameSessionStore.gameSession?.status === GameSessionStatus.IN_PROGRESS,
-  )
-  const canComplete = computed(
-    () => gameSessionStore.gameSession?.status !== GameSessionStatus.COMPLETED,
-  )
+  const canResume = computed(() => gameSessionStore.gameSession?.status === 'paused')
+  const canPause = computed(() => gameSessionStore.gameSession?.status === 'in_progress')
+  const canComplete = computed(() => gameSessionStore.gameSession?.status !== 'completed')
 
   function toggleGameSessionPlayPause() {
     if (canPause.value) {
-      gameSessionStore.setGameSessionStatus(GameSessionStatus.PAUSED)
+      gameSessionStore.setGameSessionStatus('paused')
     } else if (canResume.value) {
-      gameSessionStore.setGameSessionStatus(GameSessionStatus.IN_PROGRESS)
+      gameSessionStore.setGameSessionStatus('in_progress')
     }
   }
 
   function completeGameSession() {
     if (canComplete.value) {
-      gameSessionStore.setGameSessionStatus(GameSessionStatus.COMPLETED)
+      gameSessionStore.setGameSessionStatus('completed')
     }
   }
 

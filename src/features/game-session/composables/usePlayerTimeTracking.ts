@@ -1,4 +1,4 @@
-import type { GameSessionPlayer, PlayerMove } from '@/features/game-session/types'
+import type { GameSessionPlayer } from '@/api/generated'
 import { ref, computed, onUnmounted, watch, type ComputedRef } from 'vue'
 import { formatTime } from '../utils'
 

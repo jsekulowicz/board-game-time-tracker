@@ -1,10 +1,6 @@
-import {
-  type GameSessionPlayer,
-  GameSessionPlayerStatus,
-  GameSessionStatus,
-} from '@/features/game-session/types'
+import type { GameSessionPlayer, GameSessionResource } from '@/api/generated'
 
-export const getGameSessionFixture = () => ({
+export const getGameSessionFixture = (): GameSessionResource => ({
   uuid: 'c3fe6db7-aae7-42e9-a552-6d341e899ac3',
   name: 'Casual chess game 2025.10.11',
   currentTurnIndex: 1,
@@ -14,8 +10,8 @@ export const getGameSessionFixture = () => ({
   },
   players: getGameSessionPlayersFixture(),
   createdAt: new Date().toISOString(),
-  updatedAt: null,
-  status: GameSessionStatus.IN_PROGRESS,
+  updatedAt: undefined,
+  status: 'in_progress',
 })
 
 export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
@@ -26,7 +22,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     {
       uuid: 'a56de165-fbe5-421f-bea9-2fddebf08fa8',
       name: 'Player 1',
-      status: GameSessionPlayerStatus.WAITING,
+      status: 'playing',
       moves: [
         (() => {
           return {
@@ -43,7 +39,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     {
       uuid: 'ef911ca6-c3ec-4e5c-911f-85c2549aebc1',
       name: 'Player 2',
-      status: GameSessionPlayerStatus.PLAYING,
+      status: 'playing',
       previousTotalTimeMs: 0,
       moves: [
         { moveIndex: 1, turnIndex: 1, startTimestamp: now.toISOString(), endTimestamp: null },
@@ -53,7 +49,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     {
       uuid: 'ef911ca6-c344-4e5c-911f-85c2549aebc1',
       name: 'Player 3',
-      status: GameSessionPlayerStatus.WAITING,
+      status: 'waiting',
       previousTotalTimeMs: 0,
       moves: [],
       turnOrderIndex: 2,
@@ -61,7 +57,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     {
       uuid: 'ef993ca6-c344-4e5c-911f-85c2549aebc1',
       name: 'Player 3',
-      status: GameSessionPlayerStatus.WAITING,
+      status: 'waiting',
       previousTotalTimeMs: 0,
       moves: [],
       turnOrderIndex: 3,

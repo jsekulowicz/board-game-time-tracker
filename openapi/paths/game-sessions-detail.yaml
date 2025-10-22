@@ -13,11 +13,44 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              data:
-                $ref: ../components/schemas/game-session.yaml#/schemas/Resource
-            required: [data]
+            $ref: ../components/schemas/game-session.yaml#/schemas/Resource
+    '404':
+      $ref: ../components/responses.yaml#/responses/Error404
+    '500':
+      $ref: ../components/responses.yaml#/responses/Error500
+
+patch:
+  summary: Update a game session's name or status
+  operationId: patchGameSessionById
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      schema:
+        $ref: ../components/schemas/common.yaml#/schemas/Uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: New name of the game session
+            status:
+              $ref: ../components/schemas/game-session.yaml#/schemas/Status
+          minProperties: 1
+          additionalProperties: false
+  responses:
+    '200':
+      description: Updated game session
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/game-session.yaml#/schemas/Resource
+    '400':
+      $ref: ../components/responses.yaml#/responses/Error400
     '404':
       $ref: ../components/responses.yaml#/responses/Error404
     '500':
