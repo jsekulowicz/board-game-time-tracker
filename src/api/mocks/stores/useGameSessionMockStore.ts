@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
 import { gameSessionStatusAPI } from 'mocks/game-sessions/gameSessionStatus'
 import type { GameSessionResource, GameSessionStatus } from '@/api/generated'
-import { waitForMs } from '@/helpers/concurrency.js'
 import { gameSessionPlayerMoveAPI } from 'mocks/game-sessions/gameSessionPlayerMove'
 
 export const useGameSessionMockStore = defineStore(
@@ -18,7 +17,6 @@ export const useGameSessionMockStore = defineStore(
     async function getGameSessionPersistedMock(
       uuid: string,
     ): Promise<GameSessionResource | undefined> {
-      await waitForMs(100)
       return gameSessionsMock.value.find((session: GameSessionResource) => session.uuid === uuid)
     }
 

@@ -1,5 +1,4 @@
 import { toRaw } from 'vue'
-import { waitForMs } from '@/helpers/concurrency.js'
 import { gameSessionPlayerMoveAPI } from './gameSessionPlayerMove'
 import type { GameSessionPlayer, GameSessionResource, GameSessionStatus } from '@/api/generated'
 
@@ -7,8 +6,6 @@ async function setGameSessionStatus(
   gameSession: GameSessionResource,
   status: GameSessionStatus,
 ): Promise<GameSessionResource> {
-  await waitForMs(100)
-
   if (status === 'in_progress') {
     return getResumedGameSession(gameSession)
   } else if (['paused', 'completed'].includes(status)) {

@@ -1,10 +1,13 @@
 import { http, HttpResponse } from 'msw'
 import { useGameSessionMockStore } from '../stores/useGameSessionMockStore'
 import type { EndPlayerMoveData, PatchGameSessionByIdData } from '@/api/generated'
+import { simulateAPIDelay } from '../utils'
 const gameSessionMockStore = useGameSessionMockStore()
 
 export const gameSessionHandlers = [
   http.get('/game-sessions/:uuid', async ({ params }) => {
+    await simulateAPIDelay()
+
     const { uuid } = params
     const session = await gameSessionMockStore.getGameSessionPersistedMock(uuid as string)
     if (!session) {
@@ -14,6 +17,8 @@ export const gameSessionHandlers = [
   }),
 
   http.patch('/game-sessions/:uuid', async ({ params, request }) => {
+    await simulateAPIDelay()
+
     const { uuid } = params
     const body = (await request.json()) as PatchGameSessionByIdData['body']
 
@@ -42,6 +47,8 @@ export const gameSessionHandlers = [
   }),
 
   http.patch('/game-sessions/:sessionUuid/moves/end', async ({ params, request }) => {
+    await simulateAPIDelay()
+
     const { sessionUuid } = params
     const { playerUuid } = (await request.json()) as EndPlayerMoveData['body']
 

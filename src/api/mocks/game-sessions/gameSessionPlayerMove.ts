@@ -4,7 +4,6 @@ import type {
   GameSessionPlayerStatus,
 } from '@/api/generated/'
 import { toRaw } from 'vue'
-import { waitForMs } from '@/helpers/concurrency.js'
 
 async function endPlayerMove(
   gameSession: GameSessionResource,
@@ -25,7 +24,6 @@ async function endPlayerMove(
     newGameSession.currentTurnIndex = getCurrentTurnIndex(newGameSession)
   }
 
-  await waitForMs(100)
   return newGameSession
 }
 

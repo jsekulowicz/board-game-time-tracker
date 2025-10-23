@@ -1,11 +1,21 @@
 <script lang="ts" setup>
+import { computed, onMounted, onUnmounted } from 'vue'
+
 import { BaseButton } from '@/components/ui/base-button'
-import { Icon } from '@iconify/vue'
+import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
 import { useGameSessionActions } from '../composables/useGameSessionActions'
-import { computed } from 'vue'
-import BaseCard from '@/components/ui/base-card/BaseCard.vue'
+
+import { Icon } from '@iconify/vue'
 
 const gameSessionActions = useGameSessionActions()
+
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown)
+})
 
 const playPauseIcon = computed(() => {
   if (gameSessionActions.canPause.value) {
@@ -16,32 +26,55 @@ const playPauseIcon = computed(() => {
 
   return ''
 })
+
+const playPauseLabel = computed(() => {
+  if (gameSessionActions.canPause.value) {
+    return 'Pause'
+  } else if (gameSessionActions.canResume.value) {
+    return 'Resume'
+  }
+
+  return ''
+})
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === ' ') {
+    gameSessionActions.toggleGameSessionPlayPause()
+  }
+
+  if (event.ctrlKey && event.key === 'Escape') {
+    gameSessionActions.completeGameSession()
+  }
+}
 </script>
 
 <template>
   <section class="flex items-center gap-4 ml-auto h-2.5">
     <template v-if="gameSessionActions.canComplete.value">
       <BaseButton
-        size="icon-sm"
+        class="w-36 flex justify-between"
+        size="sm"
         variant="outline"
-        tooltip="Pause game session"
         @click="gameSessionActions.toggleGameSessionPlayPause"
       >
-        <Icon class="w-5! h-5!" :icon="playPauseIcon" />
+        <Icon :icon="playPauseIcon" />
+        <div>{{ playPauseLabel }}</div>
+        <BaseKbd>Space</BaseKbd>
       </BaseButton>
 
-      <BaseButton
-        size="icon-sm"
-        variant="outline"
-        tooltip="Complete game session"
-        @click="gameSessionActions.completeGameSession"
-      >
-        <Icon class="w-5! h-5!" icon="radix-icons:stop" />
+      <BaseButton size="sm" variant="outline" @click="gameSessionActions.completeGameSession">
+        <Icon icon="radix-icons:stop" />
+        <BaseKbdGroup>
+          <div>End</div>
+          <BaseKbd>Ctrl</BaseKbd>
+          <span>+</span>
+          <BaseKbd>Esc</BaseKbd>
+        </BaseKbdGroup>
       </BaseButton>
     </template>
 
     <div v-else>
-      <BaseCard class="text-sm p-2">Session completed</BaseCard>
+      <div class="text-sm p-2">Session completed</div>
     </div>
   </section>
 </template>
