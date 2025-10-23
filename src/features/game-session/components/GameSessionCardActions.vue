@@ -17,16 +17,6 @@ onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
 })
 
-const playPauseIcon = computed(() => {
-  if (gameSessionActions.canPause.value) {
-    return 'radix-icons:pause'
-  } else if (gameSessionActions.canResume.value) {
-    return 'radix-icons:play'
-  }
-
-  return ''
-})
-
 const playPauseLabel = computed(() => {
   if (gameSessionActions.canPause.value) {
     return 'Pause'
@@ -56,12 +46,11 @@ function handleKeydown(event: KeyboardEvent) {
   <section class="flex items-center gap-4">
     <template v-if="gameSessionActions.canComplete.value">
       <BaseButton
-        class="w-36 flex justify-between"
+        class="w-30"
         size="sm"
         variant="outline"
         @click="gameSessionActions.toggleGameSessionPlayPause"
       >
-        <Icon :icon="playPauseIcon" />
         <div>{{ playPauseLabel }}</div>
         <BaseKbd>Space</BaseKbd>
       </BaseButton>
@@ -81,7 +70,6 @@ function handleKeydown(event: KeyboardEvent) {
         variant="outline"
         @click="gameSessionActions.endMoveAndSwitchToNextPlayer"
       >
-        <Icon icon="radix-icons:stop" />
         <BaseKbdGroup>
           <div>Next player</div>
           <BaseKbd>→</BaseKbd>

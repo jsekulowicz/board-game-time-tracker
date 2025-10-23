@@ -47,23 +47,6 @@ defineExpose({
   <li>
     <BaseCard>
       <BaseCardHeader class="flex flex-wrap items-center gap-4">
-        <BaseCardAction class="flex">
-          <BaseButton
-            ref="finishButtonRef"
-            size="icon-sm"
-            variant="outline"
-            :class="{ 'bg-success!': !hasOngoingMove }"
-            :disabled="!hasOngoingMove"
-            :tooltip="finishButtonTooltip"
-            @click="$emit('end-move', gameSessionPlayer.uuid)"
-          >
-            <!-- <Icon
-              class="w-6! h-6!"
-              icon="radix-icons:check"
-              :color="!hasOngoingMove ? 'var(--background)' : 'var(--success)'"
-            /> -->
-          </BaseButton>
-        </BaseCardAction>
         <BaseCardTitle class="mr-auto">{{ gameSessionPlayer.name }}</BaseCardTitle>
         <BaseCardContent class="pl-0">{{ displayedTime }}</BaseCardContent>
       </BaseCardHeader>
