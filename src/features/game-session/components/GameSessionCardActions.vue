@@ -3,7 +3,7 @@ import { computed, onMounted, onUnmounted } from 'vue'
 
 import { BaseButton } from '@/components/ui/base-button'
 import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
-import { useGameSessionActions } from '../composables/useGameSessionActions'
+import { useGameSessionActions } from '@/features/game-session/composables/useGameSessionActions'
 
 import { Icon } from '@iconify/vue'
 
@@ -45,11 +45,15 @@ function handleKeydown(event: KeyboardEvent) {
   if (event.ctrlKey && event.key === 'Escape') {
     gameSessionActions.completeGameSession()
   }
+
+  if (event.key === 'ArrowRight') {
+    gameSessionActions.endMoveAndSwitchToNextPlayer()
+  }
 }
 </script>
 
 <template>
-  <section class="flex items-center gap-4 ml-auto h-2.5">
+  <section class="flex items-center gap-4">
     <template v-if="gameSessionActions.canComplete.value">
       <BaseButton
         class="w-36 flex justify-between"
@@ -69,6 +73,18 @@ function handleKeydown(event: KeyboardEvent) {
           <BaseKbd>Ctrl</BaseKbd>
           <span>+</span>
           <BaseKbd>Esc</BaseKbd>
+        </BaseKbdGroup>
+      </BaseButton>
+
+      <BaseButton
+        size="sm"
+        variant="outline"
+        @click="gameSessionActions.endMoveAndSwitchToNextPlayer"
+      >
+        <Icon icon="radix-icons:stop" />
+        <BaseKbdGroup>
+          <div>Next player</div>
+          <BaseKbd>→</BaseKbd>
         </BaseKbdGroup>
       </BaseButton>
     </template>

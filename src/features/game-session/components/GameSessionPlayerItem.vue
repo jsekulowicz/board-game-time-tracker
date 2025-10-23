@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { computed, ref, onMounted, onUnmounted } from 'vue'
+import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
+
+import { useGameSessionStore } from '@/features/game-session/stores/useGameSessionStore'
 import { usePlayerTimeTracking } from '@/features/game-session/composables/usePlayerTimeTracking'
 import {
   BaseCard,
@@ -7,9 +11,8 @@ import {
   BaseCardTitle,
   BaseCardAction,
 } from '@/components/ui/base-card'
-import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
-import { computed, ref } from 'vue'
-import BaseButton from '@/components/ui/base-button/BaseButton.vue'
+
+import { BaseButton } from '@/components/ui/base-button'
 import { Icon } from '@iconify/vue'
 
 export interface GameSessionPlayerItemProps {
@@ -54,11 +57,11 @@ defineExpose({
             :tooltip="finishButtonTooltip"
             @click="$emit('end-move', gameSessionPlayer.uuid)"
           >
-            <Icon
+            <!-- <Icon
               class="w-6! h-6!"
               icon="radix-icons:check"
               :color="!hasOngoingMove ? 'var(--background)' : 'var(--success)'"
-            />
+            /> -->
           </BaseButton>
         </BaseCardAction>
         <BaseCardTitle class="mr-auto">{{ gameSessionPlayer.name }}</BaseCardTitle>
