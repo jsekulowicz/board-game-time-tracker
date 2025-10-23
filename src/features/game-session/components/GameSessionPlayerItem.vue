@@ -7,7 +7,7 @@ import {
   BaseCardTitle,
   BaseCardAction,
 } from '@/components/ui/base-card'
-import type { GameSessionPlayer, GameSessionStatus } from '../types'
+import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
 import { computed, ref } from 'vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
 import { Icon } from '@iconify/vue'
