@@ -1,16 +1,15 @@
 <script lang="ts" setup>
-import { usePlayerTimeTracking } from '@/features/game-session/composables/usePlayerTimeTracking'
-import {
-  BaseCard,
-  BaseCardContent,
-  BaseCardHeader,
-  BaseCardTitle,
-  BaseCardAction,
-} from '@/components/ui/base-card'
-import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
 import { computed, ref } from 'vue'
-import BaseButton from '@/components/ui/base-button/BaseButton.vue'
-import { Icon } from '@iconify/vue'
+import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
+
+import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
+import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
+import { BaseCardHeader, BaseCardTitle } from '@/components/ui/base-card'
+import { BaseButton } from '@/components/ui/base-button'
+
+import GameSessionPlayerStatusTag from './GameSessionPlayerStatusTag.vue'
+import { usePlayerTimeTracking } from '../composables/usePlayerTimeTracking'
+import { useSwitchPlayerMove } from '../composables/useSwitchPlayerMove'
 
 export interface GameSessionPlayerItemProps {
   gameSessionPlayer: GameSessionPlayer
@@ -19,13 +18,22 @@ export interface GameSessionPlayerItemProps {
 const props = defineProps<GameSessionPlayerItemProps>()
 
 const sessionPlayer = computed(() => props.gameSessionPlayer)
-const { displayedTime, hasOngoingMove } = usePlayerTimeTracking(sessionPlayer)
+const { displayedTime, timeTrackingDisabled } = usePlayerTimeTracking(sessionPlayer)
+const { switchPlayerMove, switchPlayerKeyLabel } = useSwitchPlayerMove(sessionPlayer)
 
 const finishButtonRef = ref<InstanceType<typeof BaseButton> | null>(null)
 
-const finishButtonTooltip = computed(() =>
-  hasOngoingMove.value ? 'Finish move' : 'Please wait for your move to finish',
-)
+const finishButtonTooltip = computed<string | null>(() => {
+  if (props.gameSessionStatus !== 'in_progress') {
+    return 'Please resume the game session to track.'
+  }
+
+  if (timeTrackingDisabled.value) {
+    return 'Player already moved this turn. Please wait for the next turn to track.'
+  }
+
+  return null
+})
 
 function focusFinishButton() {
   finishButtonRef.value?.focus()
@@ -41,29 +49,34 @@ defineExpose({
 </script>
 
 <template>
-  <li>
-    <BaseCard>
-      <BaseCardHeader class="flex flex-wrap items-center gap-4">
-        <BaseCardAction class="flex">
+  <li class="flex">
+    <CardWithStatusTag class="w-full gap-4 py-4">
+      <template v-if="gameSessionStatus !== 'completed'" #status>
+        <GameSessionPlayerStatusTag :player="gameSessionPlayer" :gameStatus="gameSessionStatus" />
+      </template>
+
+      <BaseCardHeader class="flex flex-wrap justify-center items-start h-full gap-2">
+        <BaseCardTitle class="w-full text-base/normal text-center wrap-break-word" lang="en">{{ gameSessionPlayer.name }}</BaseCardTitle>
+        <div class="flex flex-col items-center justify-between gap-2 pl-0 mt-auto">
+          <div>{{ displayedTime }}</div>
+
           <BaseButton
-            ref="finishButtonRef"
-            size="icon-sm"
+            class="min-w-26 min-h-10 px-3"
             variant="outline"
-            :class="{ 'bg-success!': !hasOngoingMove }"
-            :disabled="!hasOngoingMove"
+            :disabled="timeTrackingDisabled"
             :tooltip="finishButtonTooltip"
-            @click="$emit('end-move', gameSessionPlayer.uuid)"
+            @click="switchPlayerMove"
           >
-            <Icon
-              class="w-6! h-6!"
-              icon="radix-icons:check"
-              :color="!hasOngoingMove ? 'var(--background)' : 'var(--success)'"
-            />
+            <BaseKbdGroup>
+              <div>Track</div>
+
+              <template #kbd>
+                <BaseKbd>{{ switchPlayerKeyLabel }}</BaseKbd>
+              </template>
+            </BaseKbdGroup>
           </BaseButton>
-        </BaseCardAction>
-        <BaseCardTitle class="mr-auto">{{ gameSessionPlayer.name }}</BaseCardTitle>
-        <BaseCardContent class="pl-0">{{ displayedTime }}</BaseCardContent>
+        </div>
       </BaseCardHeader>
-    </BaseCard>
+    </CardWithStatusTag>
   </li>
 </template>

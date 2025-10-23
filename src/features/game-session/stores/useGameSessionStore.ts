@@ -1,18 +1,23 @@
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { GameSessionResource, GameSessionStatus } from '@/api/generated'
-import { ref } from 'vue'
 import {
   getGameSessionById as apiGetGameSessionById,
   patchGameSessionById as apiPatchGameSessionById,
-  endPlayerMove as apiEndPlayerMove,
+  switchPlayerMove as apiSwitchPlayerMove,
 } from '@/api/generated/sdk.gen'
 
 export const useGameSessionStore = defineStore('gameSession', () => {
   const gameSession = ref<GameSessionResource | undefined>()
+  const loadingGameSession = ref(true)
+
+  const hasLastMoveInTurn = computed(() => gameSession.value?.players?.every((player) => player.status !== 'ready_to_move'))
+  const isInProgress = computed(() => gameSession.value?.status === 'in_progress')
 
   async function getGameSessionById(uuid: string): Promise<void> {
     const response = await apiGetGameSessionById({ path: { uuid } })
     gameSession.value = response.data
+    loadingGameSession.value = false
   }
 
   async function setGameSessionStatus(status: GameSessionStatus): Promise<void> {
@@ -28,18 +33,20 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     gameSession.value = response.data
   }
 
-  async function endPlayerMove(playerUuid: string): Promise<void> {
+  async function switchPlayerMove(playerUuid: string): Promise<void> {
     if (!gameSession.value) {
       return
     }
 
-    const response = await apiEndPlayerMove({
+    const response = await apiSwitchPlayerMove({
       path: { sessionUuid: gameSession.value.uuid },
       body: { playerUuid },
     })
 
-    gameSession.value = response.data
+    if (response.data) {
+      gameSession.value = response.data
+    }
   }
 
-  return { getGameSessionById, setGameSessionStatus, endPlayerMove, gameSession }
+  return { getGameSessionById, setGameSessionStatus, switchPlayerMove, hasLastMoveInTurn, isInProgress, gameSession, loadingGameSession }
 })

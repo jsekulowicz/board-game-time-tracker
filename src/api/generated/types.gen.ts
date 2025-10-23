@@ -28,7 +28,7 @@ export type GameSessionPlayerMove = {
     turnIndex: number;
 };
 
-export type GameSessionPlayerStatus = 'playing' | 'waiting' | 'passed';
+export type GameSessionPlayerStatus = 'tracking' | 'ready_to_move' | 'turn_completed' | 'passed';
 
 export type GameSessionResource = {
     uuid: CommonUuid;
@@ -37,6 +37,7 @@ export type GameSessionResource = {
     status: GameSessionStatus;
     players: Array<GameSessionPlayer>;
     currentTurnIndex: number;
+    currentMoveIndex: number;
     createdAt: CommonTimestamp;
     updatedAt?: CommonTimestamp;
 };
@@ -57,7 +58,7 @@ export type GameSessionsDetailRoot = unknown;
 
 export type GameSessionsListRoot = unknown;
 
-export type GameSessionsMovesEndRoot = unknown;
+export type GameSessionsMovesSwitchRoot = unknown;
 
 export type ListGameSessionsData = {
     body?: never;
@@ -172,9 +173,9 @@ export type PatchGameSessionByIdResponses = {
 
 export type PatchGameSessionByIdResponse = PatchGameSessionByIdResponses[keyof PatchGameSessionByIdResponses];
 
-export type EndPlayerMoveData = {
+export type SwitchPlayerMoveData = {
     /**
-     * The player whose current move should be ended
+     * The player whose next move should be started
      */
     body: {
         playerUuid: CommonUuid;
@@ -183,10 +184,10 @@ export type EndPlayerMoveData = {
         sessionUuid: CommonUuid;
     };
     query?: never;
-    url: '/game-sessions/{sessionUuid}/moves/end';
+    url: '/game-sessions/{sessionUuid}/moves/switch';
 };
 
-export type EndPlayerMoveErrors = {
+export type SwitchPlayerMoveErrors = {
     /**
      * Not Found
      */
@@ -197,13 +198,13 @@ export type EndPlayerMoveErrors = {
     500: ErrorResponse;
 };
 
-export type EndPlayerMoveError = EndPlayerMoveErrors[keyof EndPlayerMoveErrors];
+export type SwitchPlayerMoveError = SwitchPlayerMoveErrors[keyof SwitchPlayerMoveErrors];
 
-export type EndPlayerMoveResponses = {
+export type SwitchPlayerMoveResponses = {
     /**
-     * The game session after ending the player's move
+     * The game session after switching the player's move
      */
     200: GameSessionResource;
 };
 
-export type EndPlayerMoveResponse = EndPlayerMoveResponses[keyof EndPlayerMoveResponses];
+export type SwitchPlayerMoveResponse = SwitchPlayerMoveResponses[keyof SwitchPlayerMoveResponses];

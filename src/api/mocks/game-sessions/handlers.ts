@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
-import { useGameSessionMockStore } from '../stores/useGameSessionMockStore'
-import type { EndPlayerMoveData, PatchGameSessionByIdData } from '@/api/generated'
+import { useGameSessionMockStore } from './stores/useGameSessionMockStore'
+import type { PatchGameSessionByIdData, SwitchPlayerMoveData } from '@/api/generated'
 import { simulateAPIDelay } from '../utils'
 const gameSessionMockStore = useGameSessionMockStore()
 
@@ -9,11 +9,12 @@ export const gameSessionHandlers = [
     await simulateAPIDelay()
 
     const { uuid } = params
-    const session = await gameSessionMockStore.getGameSessionPersistedMock(uuid as string)
-    if (!session) {
-      return HttpResponse.json({ message: 'Not found' }, { status: 404 })
+    const result = await gameSessionMockStore.getGameSessionPersistedMock(uuid as string)
+    if ('error' in result) {
+      return HttpResponse.json(result, { status: result.statusCode })
     }
-    return HttpResponse.json(session)
+
+    return HttpResponse.json(result)
   }),
 
   http.patch('/game-sessions/:uuid', async ({ params, request }) => {
@@ -23,46 +24,45 @@ export const gameSessionHandlers = [
     const body = (await request.json()) as PatchGameSessionByIdData['body']
 
     if (!body.status && !body.name) {
-      return HttpResponse.json(
-        { message: 'At least one of "status" or "name" must be provided' },
-        { status: 400 },
-      )
+      return HttpResponse.json({ message: 'At least one of "status" or "name" must be provided' }, { status: 400 })
     }
 
-    const session = await gameSessionMockStore.getGameSessionPersistedMock(uuid as string)
-    if (!session) {
-      return HttpResponse.json({ message: 'Not found' }, { status: 404 })
+    let result = await gameSessionMockStore.getGameSessionPersistedMock(uuid as string)
+    if ('error' in result) {
+      return HttpResponse.json(result, { status: result.statusCode })
     }
 
     if (body.status) {
-      await gameSessionMockStore.setGameSessionStatus(uuid as string, body.status)
+      result = await gameSessionMockStore.setGameSessionStatus(uuid as string, body.status)
+
+      if ('error' in result) {
+        return HttpResponse.json(result, { status: result.statusCode })
+      }
     }
 
     if (body.name) {
-      await gameSessionMockStore.setGameSessionName(uuid as string, body.name)
+      result = await gameSessionMockStore.setGameSessionName(uuid as string, body.name)
+
+      if ('error' in result) {
+        return HttpResponse.json(result, { status: result.statusCode })
+      }
     }
 
-    const updated = await gameSessionMockStore.getGameSessionPersistedMock(uuid as string)
-    return HttpResponse.json(updated)
+    return HttpResponse.json(result)
   }),
 
-  http.patch('/game-sessions/:sessionUuid/moves/end', async ({ params, request }) => {
+  http.patch('/game-sessions/:sessionUuid/moves/switch', async ({ params, request }) => {
     await simulateAPIDelay()
 
     const { sessionUuid } = params
-    const { playerUuid } = (await request.json()) as EndPlayerMoveData['body']
+    const { playerUuid } = (await request.json()) as SwitchPlayerMoveData['body']
 
-    try {
-      const session = await gameSessionMockStore.endPlayerMove(sessionUuid as string, playerUuid)
+    const result = await gameSessionMockStore.switchPlayerMove(sessionUuid as string, playerUuid)
 
-      if (!session) {
-        return HttpResponse.json({ message: 'Not found' }, { status: 404 })
-      }
-
-      return HttpResponse.json(session)
-    } catch (error) {
-      console.error(error)
-      return HttpResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    if ('error' in result) {
+      return HttpResponse.json(result, { status: result.statusCode })
     }
+
+    return HttpResponse.json(result)
   }),
 ]

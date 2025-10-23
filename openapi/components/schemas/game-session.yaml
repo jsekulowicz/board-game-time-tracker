@@ -5,7 +5,7 @@ schemas:
 
   PlayerStatus:
     type: string
-    enum: [playing, waiting, passed]
+    enum: [tracking, ready_to_move, turn_completed, passed]
 
   PlayerMove:
     type: object
@@ -56,8 +56,10 @@ schemas:
           $ref: '#/schemas/Player'
       currentTurnIndex:
         type: integer
+      currentMoveIndex:
+        type: integer
       createdAt:
         $ref: ./common.yaml#/schemas/Timestamp
       updatedAt:
         $ref: ./common.yaml#/schemas/Timestamp
-    required: [uuid, name, game, status, players, currentTurnIndex, createdAt]
+    required: [uuid, name, game, status, players, currentTurnIndex, currentMoveIndex, createdAt]

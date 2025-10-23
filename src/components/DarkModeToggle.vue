@@ -1,14 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useColorMode } from '@vueuse/core'
 import { BaseButton } from '@/components/ui/base-button'
 import { Icon } from '@iconify/vue'
-import { useColorMode } from '@vueuse/core'
-import { computed } from 'vue'
 
 const mode = useColorMode({ initialValue: 'system', disableTransition: false })
 
-const toggleTooltip = computed(() =>
-  mode.value === 'dark' ? 'Toggle light mode' : 'Toggle dark mode',
-)
+const toggleTooltip = computed(() => (mode.value === 'dark' ? 'Toggle light mode' : 'Toggle dark mode'))
 
 function toggleDarkMode() {
   mode.value = mode.value === 'dark' ? 'light' : 'dark'

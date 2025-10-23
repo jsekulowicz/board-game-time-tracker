@@ -7,13 +7,13 @@ import { Icon } from '@iconify/vue'
 <template>
   <main>
     <PageHeader>
-      <Icon icon="radix-icons:clock" class="h-[1.5rem] w-[1.5rem]" />
+      <Icon icon="radix-icons:clock" class="shrink-0 h-[1.5rem] w-[1.5rem]" />
       <h1 class="font-semibold">Board game time tracker</h1>
 
       <DarkModeToggle class="ml-auto" />
     </PageHeader>
 
-    <section class="grid lg:max-w-[900px] gap-4 mx-auto mt-4 px-4">
+    <section class="grid lg:max-w-[1200px] gap-4 mx-auto mt-4 px-4">
       <slot></slot>
     </section>
   </main>
