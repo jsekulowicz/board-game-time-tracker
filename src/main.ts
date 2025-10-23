@@ -5,13 +5,14 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import router from './router'
 import './index.css'
-import 'mocks/browser'
 
 const app = createApp(App)
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
+
+import('mocks/browser')
 
 app.use(router)
 
