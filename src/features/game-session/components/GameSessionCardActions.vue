@@ -5,8 +5,6 @@ import { BaseButton } from '@/components/ui/base-button'
 import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
 import { useGameSessionActions } from '@/features/game-session/composables/useGameSessionActions'
 
-import { Icon } from '@iconify/vue'
-
 const gameSessionActions = useGameSessionActions()
 
 onMounted(() => {
@@ -54,8 +52,12 @@ function handleKeydown(event: KeyboardEvent) {
       <BaseKbd class="min-w-none">Space</BaseKbd>
     </BaseButton>
 
-    <BaseButton size="sm" variant="outline" @click="gameSessionActions.completeGameSession">
-      <Icon icon="radix-icons:stop" />
+    <BaseButton
+      class="px-3"
+      size="sm"
+      variant="outline"
+      @click="gameSessionActions.completeGameSession"
+    >
       <BaseKbdGroup>
         <div>End</div>
         <BaseKbd>Ctrl</BaseKbd>
