@@ -11,7 +11,7 @@ const colCountClasses = computed(() => {
   return [
     getColCountClass(1),
     getColCountClass(2, 'sm:'),
-    getColCountClass(3, 'md:'),
+    getColCountClass(2, 'md:'),
     getColCountClass(4, 'lg:'),
   ].join(' ')
 })

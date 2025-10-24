@@ -22,7 +22,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     {
       uuid: 'a56de165-fbe5-421f-bea9-2fddebf08fa8',
       name: 'Player 1',
-      status: 'playing',
+      status: 'waiting',
       moves: [
         (() => {
           return {

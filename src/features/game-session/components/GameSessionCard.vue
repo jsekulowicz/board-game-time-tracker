@@ -1,19 +1,19 @@
 <script lang="ts" setup>
 import {
-  BaseCard,
   BaseCardHeader,
   BaseCardTitle,
   BaseCardContent,
   BaseCardFooter,
 } from '@/components/ui/base-card'
 import GridListContainer from '@/components/GridListContainer.vue'
+import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
 
 import GameSessionPlayerItem from './GameSessionPlayerItem.vue'
 import GameSessionCardActions from './GameSessionCardActions.vue'
+import GameSessionStatusTag from './GameSessionStatusTag.vue'
 
 import { ref } from 'vue'
 import type { GameSessionResource } from '@/api/generated'
-import StatusBadge from '@/components/StatusBadge.vue'
 
 export interface GameSessionCardProps {
   gameSession: GameSessionResource
@@ -24,14 +24,18 @@ defineProps<GameSessionCardProps>()
 </script>
 
 <template>
-  <BaseCard class="gap-8">
+  <CardWithStatusTag class="gap-8">
+    <template #status>
+      <GameSessionStatusTag :status="gameSession.status" />
+    </template>
+
     <BaseCardHeader class="flex items-center justify-between">
       <BaseCardTitle>
         {{ gameSession.name }}, {{ gameSession.game.name }}, turn
         {{ gameSession.currentTurnIndex + 1 }}
       </BaseCardTitle>
 
-      <StatusBadge variant="active">Active</StatusBadge>
+      <!-- <StatusBadge variant="active">Active</StatusBadge> -->
     </BaseCardHeader>
 
     <BaseCardContent>
@@ -46,8 +50,8 @@ defineProps<GameSessionCardProps>()
       </GridListContainer>
     </BaseCardContent>
 
-    <BaseCardFooter>
+    <BaseCardFooter v-if="gameSession.status !== 'completed'">
       <GameSessionCardActions />
     </BaseCardFooter>
-  </BaseCard>
+  </CardWithStatusTag>
 </template>

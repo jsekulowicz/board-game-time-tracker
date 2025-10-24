@@ -45,13 +45,13 @@ function handleKeydown(event: KeyboardEvent) {
 <template>
   <section class="flex items-center gap-4">
     <BaseButton
-      class="w-30"
+      class="w-32 flex justify-between"
       size="sm"
       variant="outline"
       @click="gameSessionActions.toggleGameSessionPlayPause"
     >
       <div>{{ playPauseLabel }}</div>
-      <BaseKbd>Space</BaseKbd>
+      <BaseKbd class="min-w-none">Space</BaseKbd>
     </BaseButton>
 
     <BaseButton size="sm" variant="outline" @click="gameSessionActions.completeGameSession">

@@ -1,16 +1,13 @@
 <script lang="ts" setup>
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref } from 'vue'
 import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
+
+import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
+import GameSessionPlayerStatusTag from './GameSessionPlayerStatusTag.vue'
 
 import { useGameSessionStore } from '@/features/game-session/stores/useGameSessionStore'
 import { usePlayerTimeTracking } from '@/features/game-session/composables/usePlayerTimeTracking'
-import {
-  BaseCard,
-  BaseCardContent,
-  BaseCardHeader,
-  BaseCardTitle,
-  BaseCardAction,
-} from '@/components/ui/base-card'
+import { BaseCardContent, BaseCardHeader, BaseCardTitle } from '@/components/ui/base-card'
 
 import { BaseButton } from '@/components/ui/base-button'
 import { Icon } from '@iconify/vue'
@@ -45,11 +42,18 @@ defineExpose({
 
 <template>
   <li>
-    <BaseCard>
+    <CardWithStatusTag>
+      <template v-if="gameSessionStatus !== 'completed'" #status>
+        <GameSessionPlayerStatusTag
+          :playerStatus="gameSessionPlayer.status"
+          :gameStatus="gameSessionStatus"
+        />
+      </template>
+
       <BaseCardHeader class="flex flex-wrap items-center gap-4">
         <BaseCardTitle class="mr-auto">{{ gameSessionPlayer.name }}</BaseCardTitle>
         <BaseCardContent class="pl-0">{{ displayedTime }}</BaseCardContent>
       </BaseCardHeader>
-    </BaseCard>
+    </CardWithStatusTag>
   </li>
 </template>
