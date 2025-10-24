@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-export type StatusTagVariant = 'active' | 'inactive' | 'completed'
+export type StatusTagVariant = 'active' | 'inactive' | 'completed' | 'default'
 
 const props = defineProps<{ variant: StatusTagVariant }>()
 
@@ -11,8 +11,10 @@ const colorClasses = computed(() => {
       return 'text-background bg-success-foreground'
     case 'inactive':
       return 'text-foreground bg-border'
-    default:
+    case 'completed':
       return 'text-background bg-foreground'
+    default:
+      return 'text-foreground bg-background'
   }
 })
 </script>

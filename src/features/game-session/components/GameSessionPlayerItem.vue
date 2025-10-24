@@ -23,9 +23,7 @@ const { displayedTime, hasOngoingMove } = usePlayerTimeTracking(sessionPlayer)
 
 const finishButtonRef = ref<InstanceType<typeof BaseButton> | null>(null)
 
-const finishButtonTooltip = computed(() =>
-  hasOngoingMove.value ? 'Finish move' : 'Please wait for your move to finish',
-)
+const finishButtonTooltip = computed(() => (hasOngoingMove.value ? 'Finish move' : 'Please wait for your move to finish'))
 
 function focusFinishButton() {
   finishButtonRef.value?.focus()
@@ -44,10 +42,7 @@ defineExpose({
   <li>
     <CardWithStatusTag>
       <template v-if="gameSessionStatus !== 'completed'" #status>
-        <GameSessionPlayerStatusTag
-          :playerStatus="gameSessionPlayer.status"
-          :gameStatus="gameSessionStatus"
-        />
+        <GameSessionPlayerStatusTag :player="gameSessionPlayer" :gameStatus="gameSessionStatus" />
       </template>
 
       <BaseCardHeader class="flex flex-wrap items-center gap-4">

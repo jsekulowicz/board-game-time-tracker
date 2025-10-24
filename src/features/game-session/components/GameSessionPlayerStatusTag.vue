@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import type { GameSessionPlayerStatus, GameSessionStatus } from '@/api/generated'
+import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
 import type { StatusTagVariant } from '@/components/CardStatusTag.vue'
 import CardStatusTag from '@/components/CardStatusTag.vue'
+import BaseKbd from '@/components/ui/base-kbd/BaseKbd.vue'
 import { computed } from 'vue'
 
 export interface GameSessionStatusTagProps {
-  playerStatus: GameSessionPlayerStatus
+  player: GameSessionPlayer
   gameStatus: GameSessionStatus
 }
 
@@ -19,11 +20,11 @@ const gameSessionStatusTagVariant = computed<StatusTagVariant>(() => {
       return 'inactive'
   }
 
-  switch (props.playerStatus) {
+  switch (props.player.status) {
     case 'playing':
       return 'active'
     case 'waiting':
-      return 'inactive'
+      return 'default'
     case 'passed':
     default:
       return 'completed'
@@ -31,11 +32,11 @@ const gameSessionStatusTagVariant = computed<StatusTagVariant>(() => {
 })
 
 const gameSessionStatusTagText = computed<string>(() => {
-  switch (props.playerStatus) {
+  switch (props.player.status) {
     case 'playing':
-      return props.gameStatus === 'paused' ? 'Paused' : 'Playing'
+      return props.gameStatus === 'paused' ? 'Paused' : 'Tracking'
     case 'waiting':
-      return 'Waiting'
+      return 'to track'
     case 'passed':
     default:
       return 'Passed'
@@ -44,7 +45,10 @@ const gameSessionStatusTagText = computed<string>(() => {
 </script>
 
 <template>
-  <CardStatusTag class="px-2" :variant="gameSessionStatusTagVariant">{{
-    gameSessionStatusTagText
-  }}</CardStatusTag>
+  <CardStatusTag class="px-2" :variant="gameSessionStatusTagVariant">
+    <div class="flex items-center gap-2">
+      <BaseKbd v-if="player.status === 'waiting' && gameStatus === 'in_progress'">{{ player.turnOrderIndex + 1 }}</BaseKbd>
+      <span>{{ gameSessionStatusTagText }}</span>
+    </div>
+  </CardStatusTag>
 </template>
