@@ -13,6 +13,7 @@ import GameSessionCardActions from './GameSessionCardActions.vue'
 
 import { ref } from 'vue'
 import type { GameSessionResource } from '@/api/generated'
+import StatusBadge from '@/components/StatusBadge.vue'
 
 export interface GameSessionCardProps {
   gameSession: GameSessionResource
@@ -24,11 +25,13 @@ defineProps<GameSessionCardProps>()
 
 <template>
   <BaseCard class="gap-8">
-    <BaseCardHeader class="flex flex-col">
+    <BaseCardHeader class="flex items-center justify-between">
       <BaseCardTitle>
         {{ gameSession.name }}, {{ gameSession.game.name }}, turn
         {{ gameSession.currentTurnIndex + 1 }}
       </BaseCardTitle>
+
+      <StatusBadge variant="active">Active</StatusBadge>
     </BaseCardHeader>
 
     <BaseCardContent>

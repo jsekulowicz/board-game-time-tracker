@@ -44,41 +44,35 @@ function handleKeydown(event: KeyboardEvent) {
 
 <template>
   <section class="flex items-center gap-4">
-    <template v-if="gameSessionActions.canComplete.value">
-      <BaseButton
-        class="w-30"
-        size="sm"
-        variant="outline"
-        @click="gameSessionActions.toggleGameSessionPlayPause"
-      >
-        <div>{{ playPauseLabel }}</div>
-        <BaseKbd>Space</BaseKbd>
-      </BaseButton>
+    <BaseButton
+      class="w-30"
+      size="sm"
+      variant="outline"
+      @click="gameSessionActions.toggleGameSessionPlayPause"
+    >
+      <div>{{ playPauseLabel }}</div>
+      <BaseKbd>Space</BaseKbd>
+    </BaseButton>
 
-      <BaseButton size="sm" variant="outline" @click="gameSessionActions.completeGameSession">
-        <Icon icon="radix-icons:stop" />
-        <BaseKbdGroup>
-          <div>End</div>
-          <BaseKbd>Ctrl</BaseKbd>
-          <span>+</span>
-          <BaseKbd>Esc</BaseKbd>
-        </BaseKbdGroup>
-      </BaseButton>
+    <BaseButton size="sm" variant="outline" @click="gameSessionActions.completeGameSession">
+      <Icon icon="radix-icons:stop" />
+      <BaseKbdGroup>
+        <div>End</div>
+        <BaseKbd>Ctrl</BaseKbd>
+        <span>+</span>
+        <BaseKbd>Esc</BaseKbd>
+      </BaseKbdGroup>
+    </BaseButton>
 
-      <BaseButton
-        size="sm"
-        variant="outline"
-        @click="gameSessionActions.endMoveAndSwitchToNextPlayer"
-      >
-        <BaseKbdGroup>
-          <div>Next player</div>
-          <BaseKbd>→</BaseKbd>
-        </BaseKbdGroup>
-      </BaseButton>
-    </template>
-
-    <div v-else>
-      <div class="text-sm p-2">Session completed</div>
-    </div>
+    <BaseButton
+      size="sm"
+      variant="outline"
+      @click="gameSessionActions.endMoveAndSwitchToNextPlayer"
+    >
+      <BaseKbdGroup>
+        <div>Next player</div>
+        <BaseKbd>→</BaseKbd>
+      </BaseKbdGroup>
+    </BaseButton>
   </section>
 </template>
