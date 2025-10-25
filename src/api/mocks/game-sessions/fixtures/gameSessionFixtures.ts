@@ -21,7 +21,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
   return [
     {
       uuid: 'a56de165-fbe5-421f-bea9-2fddebf08fa8',
-      name: 'Player 1',
+      name: 'Anastasia de la Vega Moreno',
       status: 'waiting',
       moves: [
         (() => {
@@ -38,17 +38,15 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     },
     {
       uuid: 'ef911ca6-c3ec-4e5c-911f-85c2549aebc1',
-      name: 'Player 2',
+      name: 'Marcus',
       status: 'playing',
       previousTotalTimeMs: 0,
-      moves: [
-        { moveIndex: 1, turnIndex: 1, startTimestamp: now.toISOString(), endTimestamp: null },
-      ],
+      moves: [{ moveIndex: 1, turnIndex: 1, startTimestamp: now.toISOString(), endTimestamp: null }],
       turnOrderIndex: 1,
     },
     {
       uuid: 'ef911ca6-c344-4e5c-911f-85c2549aebc1',
-      name: 'Player 3',
+      name: 'Tara',
       status: 'waiting',
       previousTotalTimeMs: 0,
       moves: [],
@@ -56,7 +54,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     },
     {
       uuid: 'ef993ca6-c344-4e5c-911f-85c2549aebc1',
-      name: 'Player 3',
+      name: 'Bartholomew Kosciuszko',
       status: 'waiting',
       previousTotalTimeMs: 0,
       moves: [],
