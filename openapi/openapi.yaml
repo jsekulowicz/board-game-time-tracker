@@ -10,3 +10,5 @@ paths:
     $ref: ./paths/game-sessions-detail.yaml
   /game-sessions/{sessionUuid}/moves/end:
     $ref: ./paths/game-sessions-moves-end.yaml
+  /game-sessions/{sessionUuid}/moves/switch:
+    $ref: ./paths/game-sessions-moves-switch.yaml

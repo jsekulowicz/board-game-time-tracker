@@ -1,0 +1,31 @@
+patch:
+  summary: Switch the current move to a specific player in a game session
+  operationId: switchPlayerMove
+  parameters:
+    - name: sessionUuid
+      in: path
+      required: true
+      schema:
+        $ref: ../components/schemas/common.yaml#/schemas/Uuid
+  requestBody:
+    required: true
+    description: The player whose next move should be started
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            playerUuid:
+              $ref: ../components/schemas/common.yaml#/schemas/Uuid
+          required: [playerUuid]
+  responses:
+    '200':
+      description: The game session after switching the player's move
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/game-session.yaml#/schemas/Resource
+    '404':
+      $ref: ../components/responses.yaml#/responses/Error404
+    '500':
+      $ref: ../components/responses.yaml#/responses/Error500

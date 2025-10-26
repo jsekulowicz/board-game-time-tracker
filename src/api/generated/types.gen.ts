@@ -59,6 +59,8 @@ export type GameSessionsListRoot = unknown;
 
 export type GameSessionsMovesEndRoot = unknown;
 
+export type GameSessionsMovesSwitchRoot = unknown;
+
 export type ListGameSessionsData = {
     body?: never;
     path?: never;
@@ -207,3 +209,39 @@ export type EndPlayerMoveResponses = {
 };
 
 export type EndPlayerMoveResponse = EndPlayerMoveResponses[keyof EndPlayerMoveResponses];
+
+export type SwitchPlayerMoveData = {
+    /**
+     * The player whose next move should be started
+     */
+    body: {
+        playerUuid: CommonUuid;
+    };
+    path: {
+        sessionUuid: CommonUuid;
+    };
+    query?: never;
+    url: '/game-sessions/{sessionUuid}/moves/switch';
+};
+
+export type SwitchPlayerMoveErrors = {
+    /**
+     * Not Found
+     */
+    404: ErrorResponse;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorResponse;
+};
+
+export type SwitchPlayerMoveError = SwitchPlayerMoveErrors[keyof SwitchPlayerMoveErrors];
+
+export type SwitchPlayerMoveResponses = {
+    /**
+     * The game session after switching the player's move
+     */
+    200: GameSessionResource;
+};
+
+export type SwitchPlayerMoveResponse = SwitchPlayerMoveResponses[keyof SwitchPlayerMoveResponses];
