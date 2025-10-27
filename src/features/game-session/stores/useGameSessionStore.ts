@@ -4,7 +4,6 @@ import { ref } from 'vue'
 import {
   getGameSessionById as apiGetGameSessionById,
   patchGameSessionById as apiPatchGameSessionById,
-  endPlayerMove as apiEndPlayerMove,
   switchPlayerMove as apiSwitchPlayerMove,
 } from '@/api/generated/sdk.gen'
 
@@ -29,19 +28,6 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     gameSession.value = response.data
   }
 
-  async function endPlayerMove(playerUuid: string): Promise<void> {
-    if (!gameSession.value) {
-      return
-    }
-
-    const response = await apiEndPlayerMove({
-      path: { sessionUuid: gameSession.value.uuid },
-      body: { playerUuid },
-    })
-
-    gameSession.value = response.data
-  }
-
   async function switchPlayerMove(playerUuid: string): Promise<void> {
     if (!gameSession.value) {
       return
@@ -55,5 +41,5 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     gameSession.value = response.data
   }
 
-  return { getGameSessionById, setGameSessionStatus, endPlayerMove, switchPlayerMove, gameSession }
+  return { getGameSessionById, setGameSessionStatus, switchPlayerMove, gameSession }
 })

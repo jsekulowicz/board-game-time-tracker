@@ -33,16 +33,12 @@ function handleKeydown(event: KeyboardEvent) {
   if (event.ctrlKey && event.key === 'Escape') {
     gameSessionStateActions.completeGameSession()
   }
-
-  if (event.key === 'ArrowRight') {
-    gameSessionStateActions.endMoveAndSwitchToNextPlayer()
-  }
 }
 </script>
 
 <template>
   <section class="flex items-center gap-4">
-    <BaseButton class="w-32 flex justify-between" size="sm" variant="outline" @click="gameSessionStateActions.toggleGameSessionPlayPause">
+    <BaseButton class="w-34 flex justify-between" size="sm" variant="outline" @click="gameSessionStateActions.toggleGameSessionPlayPause">
       <div>{{ playPauseLabel }}</div>
       <BaseKbd class="min-w-none">Space</BaseKbd>
     </BaseButton>
@@ -53,13 +49,6 @@ function handleKeydown(event: KeyboardEvent) {
         <BaseKbd>Ctrl</BaseKbd>
         <span>+</span>
         <BaseKbd>Esc</BaseKbd>
-      </BaseKbdGroup>
-    </BaseButton>
-
-    <BaseButton size="sm" variant="outline" @click="gameSessionStateActions.endMoveAndSwitchToNextPlayer">
-      <BaseKbdGroup>
-        <div>Next player</div>
-        <BaseKbd>→</BaseKbd>
       </BaseKbdGroup>
     </BaseButton>
   </section>

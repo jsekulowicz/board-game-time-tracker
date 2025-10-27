@@ -58,8 +58,6 @@ export type GameSessionsDetailRoot = unknown;
 
 export type GameSessionsListRoot = unknown;
 
-export type GameSessionsMovesEndRoot = unknown;
-
 export type GameSessionsMovesSwitchRoot = unknown;
 
 export type ListGameSessionsData = {
@@ -174,42 +172,6 @@ export type PatchGameSessionByIdResponses = {
 };
 
 export type PatchGameSessionByIdResponse = PatchGameSessionByIdResponses[keyof PatchGameSessionByIdResponses];
-
-export type EndPlayerMoveData = {
-    /**
-     * The player whose current move should be ended
-     */
-    body: {
-        playerUuid: CommonUuid;
-    };
-    path: {
-        sessionUuid: CommonUuid;
-    };
-    query?: never;
-    url: '/game-sessions/{sessionUuid}/moves/end';
-};
-
-export type EndPlayerMoveErrors = {
-    /**
-     * Not Found
-     */
-    404: ErrorResponse;
-    /**
-     * Internal Server Error
-     */
-    500: ErrorResponse;
-};
-
-export type EndPlayerMoveError = EndPlayerMoveErrors[keyof EndPlayerMoveErrors];
-
-export type EndPlayerMoveResponses = {
-    /**
-     * The game session after ending the player's move
-     */
-    200: GameSessionResource;
-};
-
-export type EndPlayerMoveResponse = EndPlayerMoveResponses[keyof EndPlayerMoveResponses];
 
 export type SwitchPlayerMoveData = {
     /**
