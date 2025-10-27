@@ -3,9 +3,9 @@ import { computed, onMounted, onUnmounted } from 'vue'
 
 import { BaseButton } from '@/components/ui/base-button'
 import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
-import { useGameSessionActions } from '@/features/game-session/composables/useGameSessionActions'
+import { useGameSessionStateActions } from '@/features/game-session/composables/useGameSessionStateActions'
 
-const gameSessionActions = useGameSessionActions()
+const gameSessionStateActions = useGameSessionStateActions()
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
@@ -16,9 +16,9 @@ onUnmounted(() => {
 })
 
 const playPauseLabel = computed(() => {
-  if (gameSessionActions.canPause.value) {
+  if (gameSessionStateActions.canPause.value) {
     return 'Pause'
-  } else if (gameSessionActions.canResume.value) {
+  } else if (gameSessionStateActions.canResume.value) {
     return 'Resume'
   }
 
@@ -27,37 +27,27 @@ const playPauseLabel = computed(() => {
 
 function handleKeydown(event: KeyboardEvent) {
   if (event.key === ' ') {
-    gameSessionActions.toggleGameSessionPlayPause()
+    gameSessionStateActions.toggleGameSessionPlayPause()
   }
 
   if (event.ctrlKey && event.key === 'Escape') {
-    gameSessionActions.completeGameSession()
+    gameSessionStateActions.completeGameSession()
   }
 
   if (event.key === 'ArrowRight') {
-    gameSessionActions.endMoveAndSwitchToNextPlayer()
+    gameSessionStateActions.endMoveAndSwitchToNextPlayer()
   }
 }
 </script>
 
 <template>
   <section class="flex items-center gap-4">
-    <BaseButton
-      class="w-32 flex justify-between"
-      size="sm"
-      variant="outline"
-      @click="gameSessionActions.toggleGameSessionPlayPause"
-    >
+    <BaseButton class="w-32 flex justify-between" size="sm" variant="outline" @click="gameSessionStateActions.toggleGameSessionPlayPause">
       <div>{{ playPauseLabel }}</div>
       <BaseKbd class="min-w-none">Space</BaseKbd>
     </BaseButton>
 
-    <BaseButton
-      class="px-3"
-      size="sm"
-      variant="outline"
-      @click="gameSessionActions.completeGameSession"
-    >
+    <BaseButton class="px-3" size="sm" variant="outline" @click="gameSessionStateActions.completeGameSession">
       <BaseKbdGroup>
         <div>End</div>
         <BaseKbd>Ctrl</BaseKbd>
@@ -66,11 +56,7 @@ function handleKeydown(event: KeyboardEvent) {
       </BaseKbdGroup>
     </BaseButton>
 
-    <BaseButton
-      size="sm"
-      variant="outline"
-      @click="gameSessionActions.endMoveAndSwitchToNextPlayer"
-    >
+    <BaseButton size="sm" variant="outline" @click="gameSessionStateActions.endMoveAndSwitchToNextPlayer">
       <BaseKbdGroup>
         <div>Next player</div>
         <BaseKbd>→</BaseKbd>

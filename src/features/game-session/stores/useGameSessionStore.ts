@@ -5,6 +5,7 @@ import {
   getGameSessionById as apiGetGameSessionById,
   patchGameSessionById as apiPatchGameSessionById,
   endPlayerMove as apiEndPlayerMove,
+  switchPlayerMove as apiSwitchPlayerMove,
 } from '@/api/generated/sdk.gen'
 
 export const useGameSessionStore = defineStore('gameSession', () => {
@@ -41,5 +42,18 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     gameSession.value = response.data
   }
 
-  return { getGameSessionById, setGameSessionStatus, endPlayerMove, gameSession }
+  async function switchPlayerMove(playerUuid: string): Promise<void> {
+    if (!gameSession.value) {
+      return
+    }
+
+    const response = await apiSwitchPlayerMove({
+      path: { sessionUuid: gameSession.value.uuid },
+      body: { playerUuid },
+    })
+
+    gameSession.value = response.data
+  }
+
+  return { getGameSessionById, setGameSessionStatus, endPlayerMove, switchPlayerMove, gameSession }
 })

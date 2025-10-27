@@ -28,7 +28,7 @@ export type GameSessionPlayerMove = {
     turnIndex: number;
 };
 
-export type GameSessionPlayerStatus = 'playing' | 'waiting' | 'passed';
+export type GameSessionPlayerStatus = 'tracking' | 'ready_to_move' | 'turn_completed' | 'passed';
 
 export type GameSessionResource = {
     uuid: CommonUuid;
@@ -37,6 +37,7 @@ export type GameSessionResource = {
     status: GameSessionStatus;
     players: Array<GameSessionPlayer>;
     currentTurnIndex: number;
+    currentMoveIndex: number;
     createdAt: CommonTimestamp;
     updatedAt?: CommonTimestamp;
 };

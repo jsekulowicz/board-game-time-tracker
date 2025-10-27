@@ -14,16 +14,11 @@ export const useGameSessionMockStore = defineStore(
       gameSessionsMock.value = [getGameSessionFixture()]
     }
 
-    async function getGameSessionPersistedMock(
-      uuid: string,
-    ): Promise<GameSessionResource | undefined> {
+    async function getGameSessionPersistedMock(uuid: string): Promise<GameSessionResource | undefined> {
       return gameSessionsMock.value.find((session: GameSessionResource) => session.uuid === uuid)
     }
 
-    async function setGameSessionName(
-      uuid: string,
-      name: string,
-    ): Promise<GameSessionResource | void> {
+    async function setGameSessionName(uuid: string, name: string): Promise<GameSessionResource | void> {
       const gameSessionIndex = gameSessionsMock.value.findIndex((session) => session.uuid === uuid)
       const gameSession = gameSessionsMock.value[gameSessionIndex]
 
@@ -38,10 +33,7 @@ export const useGameSessionMockStore = defineStore(
       return gameSessionsMock.value[gameSessionIndex]
     }
 
-    async function setGameSessionStatus(
-      uuid: string,
-      status: GameSessionStatus,
-    ): Promise<GameSessionResource | void> {
+    async function setGameSessionStatus(uuid: string, status: GameSessionStatus): Promise<GameSessionResource | void> {
       const gameSessionIndex = gameSessionsMock.value.findIndex((session) => session.uuid === uuid)
       const gameSession = gameSessionsMock.value[gameSessionIndex]
 
@@ -49,18 +41,12 @@ export const useGameSessionMockStore = defineStore(
         return
       }
 
-      gameSessionsMock.value[gameSessionIndex] = await gameSessionStatusAPI.setGameSessionStatus(
-        gameSession,
-        status,
-      )
+      gameSessionsMock.value[gameSessionIndex] = await gameSessionStatusAPI.setGameSessionStatus(gameSession, status)
 
       return gameSessionsMock.value[gameSessionIndex]
     }
 
-    async function endPlayerMove(
-      uuid: string,
-      playerUuid: string,
-    ): Promise<GameSessionResource | void> {
+    async function endPlayerMove(uuid: string, playerUuid: string): Promise<GameSessionResource | void> {
       const gameSessionIndex = gameSessionsMock.value.findIndex((session) => session.uuid === uuid)
       const gameSession = gameSessionsMock.value[gameSessionIndex]
 
@@ -68,10 +54,20 @@ export const useGameSessionMockStore = defineStore(
         return
       }
 
-      gameSessionsMock.value[gameSessionIndex] = await gameSessionPlayerMoveAPI.endPlayerMove(
-        gameSession,
-        playerUuid,
-      )
+      gameSessionsMock.value[gameSessionIndex] = await gameSessionPlayerMoveAPI.endPlayerMove(gameSession, playerUuid)
+
+      return gameSessionsMock.value[gameSessionIndex]
+    }
+
+    async function switchPlayerMove(gameSessionUuid: string, playerUuid: string): Promise<GameSessionResource | void> {
+      const gameSessionIndex = gameSessionsMock.value.findIndex((session) => session.uuid === gameSessionUuid)
+      const gameSession = gameSessionsMock.value[gameSessionIndex]
+
+      if (!gameSession) {
+        return
+      }
+
+      gameSessionsMock.value[gameSessionIndex] = await gameSessionPlayerMoveAPI.switchPlayerMove(gameSession, playerUuid)
 
       return gameSessionsMock.value[gameSessionIndex]
     }
@@ -81,6 +77,7 @@ export const useGameSessionMockStore = defineStore(
       setGameSessionStatus,
       setGameSessionName,
       endPlayerMove,
+      switchPlayerMove,
       gameSessionsMock,
     }
   },

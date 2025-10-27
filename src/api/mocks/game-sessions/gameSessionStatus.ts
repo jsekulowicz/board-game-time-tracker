@@ -2,10 +2,7 @@ import { toRaw } from 'vue'
 import { gameSessionPlayerMoveAPI } from './gameSessionPlayerMove'
 import type { GameSessionPlayer, GameSessionResource, GameSessionStatus } from '@/api/generated'
 
-async function setGameSessionStatus(
-  gameSession: GameSessionResource,
-  status: GameSessionStatus,
-): Promise<GameSessionResource> {
+async function setGameSessionStatus(gameSession: GameSessionResource, status: GameSessionStatus): Promise<GameSessionResource> {
   if (status === 'in_progress') {
     return getResumedGameSession(gameSession)
   } else if (['paused', 'completed'].includes(status)) {
@@ -19,7 +16,7 @@ function getResumedGameSession(gameSession: GameSessionResource): GameSessionRes
   const newGameSession = structuredClone(toRaw(gameSession))
 
   newGameSession?.players
-    .filter((player) => player.status === 'playing')
+    .filter((player) => player.status === 'tracking')
     .forEach((player) => {
       const lastMove = player.moves[player.moves.length - 1]
 
@@ -40,10 +37,7 @@ function getResumedGameSession(gameSession: GameSessionResource): GameSessionRes
   return { ...newGameSession, status: 'in_progress' }
 }
 
-function getStoppedGameSession(
-  gameSession: GameSessionResource,
-  status: GameSessionStatus,
-): GameSessionResource {
+function getStoppedGameSession(gameSession: GameSessionResource, status: GameSessionStatus): GameSessionResource {
   const newGameSession = structuredClone(toRaw(gameSession))
 
   newGameSession.players.forEach((player: GameSessionPlayer, index: number) => {

@@ -6,12 +6,11 @@ import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
 import GameSessionPlayerStatusTag from './GameSessionPlayerStatusTag.vue'
 import BaseKbd from '@/components/ui/base-kbd/BaseKbd.vue'
 
-import { useGameSessionStore } from '@/features/game-session/stores/useGameSessionStore'
 import { usePlayerTimeTracking } from '@/features/game-session/composables/usePlayerTimeTracking'
 import { BaseCardContent, BaseCardHeader, BaseCardTitle } from '@/components/ui/base-card'
 
 import { BaseButton } from '@/components/ui/base-button'
-import { Icon } from '@iconify/vue'
+import { useGameSessionState } from '@/features/game-session/composables/useGameSessionState'
 
 export interface GameSessionPlayerItemProps {
   gameSessionPlayer: GameSessionPlayer
@@ -20,11 +19,12 @@ export interface GameSessionPlayerItemProps {
 const props = defineProps<GameSessionPlayerItemProps>()
 
 const sessionPlayer = computed(() => props.gameSessionPlayer)
-const { displayedTime, hasOngoingMove } = usePlayerTimeTracking(sessionPlayer)
+const { displayedTime } = usePlayerTimeTracking(sessionPlayer)
+const { hasLastMoveInTurn } = useGameSessionState()
 
 const finishButtonRef = ref<InstanceType<typeof BaseButton> | null>(null)
 
-const finishButtonTooltip = computed(() => (hasOngoingMove.value ? 'Finish move' : 'Please wait for your move to finish'))
+// const finishButtonTooltip = computed(() => (hasOngoingMove.value ? 'Finish move' : 'Please wait for your move to finish'))
 
 const playerOrdinalNumber = computed(() => props.gameSessionPlayer.turnOrderIndex + 1)
 
@@ -54,7 +54,7 @@ defineExpose({
 
       <BaseCardContent class="flex items-center justify-between px-4">
         <div class="pl-0">{{ displayedTime }}</div>
-        <BaseButton variant="outline" size="sm">
+        <BaseButton variant="outline" size="sm" :disabled="gameSessionPlayer.status !== 'ready_to_move' && !hasLastMoveInTurn">
           Track
           <BaseKbd>{{ playerOrdinalNumber }}</BaseKbd>
         </BaseButton>

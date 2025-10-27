@@ -4,9 +4,7 @@ import { formatTime } from '../utils'
 
 export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSessionPlayer>) => {
   const timer = ref(Date.now())
-
   const moves = computed(() => gameSessionPlayer.value.moves)
-  const hasOngoingMove = computed(() => moves.value[moves.value.length - 1]?.endTimestamp === null)
 
   let intervalId: ReturnType<typeof setInterval> | null = null
 
@@ -14,10 +12,7 @@ export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSession
     updateTimer()
 
     const currentMove = moves.value[moves.value.length - 1]
-    const currentMoveTimeMs =
-      currentMove?.endTimestamp === null
-        ? timer.value - new Date(currentMove.startTimestamp).getTime()
-        : 0
+    const currentMoveTimeMs = currentMove?.endTimestamp === null ? timer.value - new Date(currentMove.startTimestamp).getTime() : 0
     const totalTimeMs = gameSessionPlayer.value.previousTotalTimeMs + currentMoveTimeMs
 
     return formatTime(totalTimeMs)
@@ -26,15 +21,15 @@ export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSession
   onUnmounted(stopTimer)
 
   watch(
-    moves,
-    () => {
-      if (hasOngoingMove.value) {
+    () => gameSessionPlayer.value.status,
+    (newValue) => {
+      if (newValue === 'tracking') {
         startTimer()
       } else {
         stopTimer()
       }
     },
-    { immediate: true, deep: true },
+    { immediate: true },
   )
 
   function startTimer() {
@@ -53,6 +48,5 @@ export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSession
 
   return {
     displayedTime,
-    hasOngoingMove,
   }
 }

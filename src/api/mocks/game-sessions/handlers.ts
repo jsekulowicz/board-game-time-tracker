@@ -23,10 +23,7 @@ export const gameSessionHandlers = [
     const body = (await request.json()) as PatchGameSessionByIdData['body']
 
     if (!body.status && !body.name) {
-      return HttpResponse.json(
-        { message: 'At least one of "status" or "name" must be provided' },
-        { status: 400 },
-      )
+      return HttpResponse.json({ message: 'At least one of "status" or "name" must be provided' }, { status: 400 })
     }
 
     const session = await gameSessionMockStore.getGameSessionPersistedMock(uuid as string)
@@ -54,6 +51,26 @@ export const gameSessionHandlers = [
 
     try {
       const session = await gameSessionMockStore.endPlayerMove(sessionUuid as string, playerUuid)
+
+      if (!session) {
+        return HttpResponse.json({ message: 'Not found' }, { status: 404 })
+      }
+
+      return HttpResponse.json(session)
+    } catch (error) {
+      console.error(error)
+      return HttpResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    }
+  }),
+
+  http.patch('/game-sessions/:sessionUuid/moves/switch', async ({ params, request }) => {
+    await simulateAPIDelay()
+
+    const { sessionUuid } = params
+    const { playerUuid } = (await request.json()) as EndPlayerMoveData['body']
+
+    try {
+      const session = await gameSessionMockStore.switchPlayerMove(sessionUuid as string, playerUuid)
 
       if (!session) {
         return HttpResponse.json({ message: 'Not found' }, { status: 404 })
