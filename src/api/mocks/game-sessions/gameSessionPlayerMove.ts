@@ -2,8 +2,18 @@ import type { GameSessionResource, GameSessionPlayer, GameSessionPlayerStatus, C
 import { toRaw } from 'vue'
 
 async function switchPlayerMove(gameSession: GameSessionResource, targetPlayerUuid: string): Promise<GameSessionResource> {
-  let newGameSession = getGameSessionWithAllMovesEnded(gameSession)
+  const targetPlayer = gameSession.players.find((player) => player.uuid === targetPlayerUuid)
+  if (!targetPlayer) {
+    return gameSession
+  }
 
+  if (targetPlayer.status !== 'ready_to_move' && !getShouldStartNewTurn(gameSession)) {
+    console.log('HME 1!!!')
+    handleAlreadyMovedError(targetPlayer)
+    return gameSession
+  }
+
+  let newGameSession = getGameSessionWithAllMovesEnded(gameSession)
   newGameSession = getGameSessionWithOnePlayerTracking(newGameSession, targetPlayerUuid)
 
   return newGameSession
@@ -26,9 +36,9 @@ function getGameSessionWithAllMovesEnded(gameSession: GameSessionResource) {
 }
 
 function getGameSessionWithOnePlayerTracking(gameSession: GameSessionResource, targetPlayerUuid: CommonUuid): GameSessionResource {
-  const shouldStartNewTurn = gameSession.players.every((player) => player.status === 'turn_completed')
   const nextPlayerIndex = gameSession.players.findIndex((player) => player.uuid === targetPlayerUuid)
   const nextPlayer = gameSession.players[nextPlayerIndex]
+  const shouldStartNewTurn = getShouldStartNewTurn(gameSession)
 
   if (!nextPlayer) {
     console.error('Could not find the next GameSessionPlayer when creating a new move.')
@@ -36,9 +46,8 @@ function getGameSessionWithOnePlayerTracking(gameSession: GameSessionResource, t
   }
 
   if (!shouldStartNewTurn && gameSession.players[nextPlayerIndex]?.status === 'turn_completed') {
-    console.error(
-      `GameSessionPlayer ${nextPlayer.name} has already ended their move this turn. There are other players that need to end their turn.`,
-    )
+    console.log('HME 2!!!')
+    handleAlreadyMovedError(nextPlayer)
     return gameSession
   }
 
@@ -61,6 +70,16 @@ function getGameSessionWithOnePlayerTracking(gameSession: GameSessionResource, t
   newGameSession.players[nextPlayerIndex]!.status = 'tracking'
 
   return newGameSession
+}
+
+function getShouldStartNewTurn(gameSession: GameSessionResource) {
+  return gameSession.players.every((player) => player.status !== 'ready_to_move')
+}
+
+function handleAlreadyMovedError(player: GameSessionPlayer) {
+  console.error(
+    `GameSessionPlayer ${player.name} has already ended their move this turn. There are other players that need to end their turn.`,
+  )
 }
 
 function getPlayerWithLastMoveEnded(player: GameSessionPlayer, playerNewStatus?: GameSessionPlayerStatus): GameSessionPlayer {

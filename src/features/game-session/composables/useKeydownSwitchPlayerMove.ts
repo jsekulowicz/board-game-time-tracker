@@ -13,7 +13,7 @@ export const useKeydownSwitchPlayerMove = () => {
   })
 
   function keydownSwitchPlayerMove(event: KeyboardEvent) {
-    if (!/^[1-8]$/.test(event.key)) {
+    if (!/^[1-8]$/.test(event.key) || !event.ctrlKey) {
       return
     }
 

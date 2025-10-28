@@ -4,7 +4,7 @@ import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
 
 import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
 import GameSessionPlayerStatusTag from './GameSessionPlayerStatusTag.vue'
-import BaseKbd from '@/components/ui/base-kbd/BaseKbd.vue'
+import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
 
 import { usePlayerTimeTracking } from '@/features/game-session/composables/usePlayerTimeTracking'
 import { BaseCardContent, BaseCardHeader, BaseCardTitle } from '@/components/ui/base-card'
@@ -24,7 +24,11 @@ const { hasLastMoveInTurn } = useGameSessionState()
 
 const finishButtonRef = ref<InstanceType<typeof BaseButton> | null>(null)
 
-// const finishButtonTooltip = computed(() => (hasOngoingMove.value ? 'Finish move' : 'Please wait for your move to finish'))
+const finishButtonTooltip = computed(() =>
+  props.gameSessionPlayer.status !== 'ready_to_move' && !hasLastMoveInTurn
+    ? 'Player already moved this turn. Please wait for the next turn to track.'
+    : undefined,
+)
 
 const playerOrdinalNumber = computed(() => props.gameSessionPlayer.turnOrderIndex + 1)
 
@@ -54,9 +58,22 @@ defineExpose({
 
       <BaseCardContent class="flex items-center justify-between px-4">
         <div class="pl-0">{{ displayedTime }}</div>
-        <BaseButton variant="outline" size="sm" :disabled="gameSessionPlayer.status !== 'ready_to_move' && !hasLastMoveInTurn">
-          Track
-          <BaseKbd>{{ playerOrdinalNumber }}</BaseKbd>
+        <BaseButton
+          class="flex-wrap-none"
+          variant="outline"
+          size="sm"
+          :disabled="gameSessionPlayer.status !== 'ready_to_move' && !hasLastMoveInTurn"
+          :tooltip="finishButtonTooltip"
+        >
+          <BaseKbdGroup class="flex justify-between flex-nowrap gap-2">
+            <div>Track</div>
+
+            <div class="flex gap-1">
+              <BaseKbd>Ctrl</BaseKbd>
+              <span>+</span>
+              <BaseKbd>{{ playerOrdinalNumber }}</BaseKbd>
+            </div>
+          </BaseKbdGroup>
         </BaseButton>
       </BaseCardContent>
     </CardWithStatusTag>

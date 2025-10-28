@@ -38,7 +38,9 @@ export const useGameSessionStore = defineStore('gameSession', () => {
       body: { playerUuid },
     })
 
-    gameSession.value = response.data
+    if (response.data) {
+      gameSession.value = response.data
+    }
   }
 
   return { getGameSessionById, setGameSessionStatus, switchPlayerMove, gameSession }
