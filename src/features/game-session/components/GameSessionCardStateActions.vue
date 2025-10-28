@@ -37,18 +37,24 @@ function handleKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <section class="flex items-center gap-4">
-    <BaseButton class="w-34 flex justify-between" size="sm" variant="outline" @click="gameSessionStateActions.toggleGameSessionPlayPause">
-      <div>{{ playPauseLabel }}</div>
-      <BaseKbd class="min-w-none">Space</BaseKbd>
+  <section class="flex items-center w-full gap-4">
+    <BaseButton class="flex-grow md:max-w-36" size="sm" variant="outline" @click="gameSessionStateActions.toggleGameSessionPlayPause">
+      <BaseKbdGroup>
+        <div>{{ playPauseLabel }}</div>
+        <template #kbd>
+          <BaseKbd>Space</BaseKbd>
+        </template>
+      </BaseKbdGroup>
     </BaseButton>
 
-    <BaseButton class="px-3" size="sm" variant="outline" @click="gameSessionStateActions.completeGameSession">
+    <BaseButton class="flex-grow md:max-w-36 px-3" size="sm" variant="outline" @click="gameSessionStateActions.completeGameSession">
       <BaseKbdGroup>
         <div>End</div>
-        <BaseKbd>Ctrl</BaseKbd>
-        <span>+</span>
-        <BaseKbd>Esc</BaseKbd>
+        <template #kbd>
+          <BaseKbd>Ctrl</BaseKbd>
+          <span>+</span>
+          <BaseKbd>Esc</BaseKbd>
+        </template>
       </BaseKbdGroup>
     </BaseButton>
   </section>

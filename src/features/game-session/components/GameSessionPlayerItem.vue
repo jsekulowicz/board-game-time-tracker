@@ -52,30 +52,35 @@ defineExpose({
         <GameSessionPlayerStatusTag :player="gameSessionPlayer" :gameStatus="gameSessionStatus" />
       </template>
 
-      <BaseCardHeader class="mb-auto">
-        <BaseCardTitle class="w-full text-center">{{ gameSessionPlayer.name }}</BaseCardTitle>
+      <BaseCardHeader class="flex flex-wrap justify-center items-start h-full gap-4">
+        <BaseCardTitle class="w-full text-base/normal text-center wrap-break-word" lang="en">{{ gameSessionPlayer.name }}</BaseCardTitle>
+        <div class="flex flex-col items-center justify-between gap-4 pl-0 mt-auto">
+          <div>
+            {{ displayedTime }}
+          </div>
+
+          <BaseButton
+            class="max-h-none h-auto"
+            variant="outline"
+            :disabled="gameSessionPlayer.status !== 'ready_to_move' && !hasLastMoveInTurn"
+            :tooltip="finishButtonTooltip"
+          >
+            <BaseKbdGroup class="flex flex-col justify-between gap-2">
+              <div>Track</div>
+
+              <div class="flex gap-1">
+                <BaseKbd>Ctrl</BaseKbd>
+                <span>+</span>
+                <BaseKbd>{{ playerOrdinalNumber }}</BaseKbd>
+              </div>
+            </BaseKbdGroup>
+          </BaseButton>
+        </div>
       </BaseCardHeader>
 
-      <BaseCardContent class="flex items-center justify-between px-4">
-        <div class="pl-0">{{ displayedTime }}</div>
-        <BaseButton
-          class="flex-wrap-none"
-          variant="outline"
-          size="sm"
-          :disabled="gameSessionPlayer.status !== 'ready_to_move' && !hasLastMoveInTurn"
-          :tooltip="finishButtonTooltip"
-        >
-          <BaseKbdGroup class="flex justify-between flex-nowrap gap-2">
-            <div>Track</div>
+      <!-- <BaseCardContent class="flex items-center justify-between px-4">
 
-            <div class="flex gap-1">
-              <BaseKbd>Ctrl</BaseKbd>
-              <span>+</span>
-              <BaseKbd>{{ playerOrdinalNumber }}</BaseKbd>
-            </div>
-          </BaseKbdGroup>
-        </BaseButton>
-      </BaseCardContent>
+      </BaseCardContent> -->
     </CardWithStatusTag>
   </li>
 </template>
