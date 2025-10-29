@@ -9,11 +9,14 @@ type GameSessionMethodReturnType = GameSessionResource | ErrorResponse
 export const useGameSessionMockStore = defineStore(
   'gameSessionMocks',
   () => {
+    const gameSessionResources = ref<GameSessionResource[]>([])
     const gameSessions = ref<GameSession[]>([])
 
-    if (gameSessions.value.length === 0) {
+    if (gameSessionResources.value.length === 0) {
       gameSessions.value = [new GameSession(getGameSessionFixture())]
     }
+
+    gameSessionResources.value.map((gsr) => new GameSession(gsr))
 
     function getSession(uuid: string): GameSession | ErrorResponse {
       const session = gameSessions.value.find((s) => s.data?.uuid === uuid) as GameSession
@@ -24,28 +27,39 @@ export const useGameSessionMockStore = defineStore(
     }
 
     function setGameSessionStatus(uuid: string, status: GameSessionStatus): GameSessionMethodReturnType {
-      const result = getSession(uuid)
-      if ('error' in result) {
-        return result
+      const getResult = getSession(uuid)
+      if ('error' in getResult) {
+        return getResult
       }
 
-      return result.setStatus(status)
+      const updateResult = getResult.setStatus(status)
+      updatePersistedResource(uuid, updateResult)
+
+      return updateResult
     }
 
     function switchPlayerMove(uuid: string, playerUuid: string): GameSessionMethodReturnType {
-      const result = getSession(uuid)
-      if ('error' in result) {
-        return result
+      const getResult = getSession(uuid)
+      if ('error' in getResult) {
+        return getResult
       }
-      return result.switchPlayerMove(playerUuid)
+
+      const updateResult = getResult.switchPlayerMove(playerUuid)
+      updatePersistedResource(uuid, updateResult)
+
+      return updateResult
     }
 
     function setGameSessionName(uuid: string, name: string): GameSessionMethodReturnType {
-      const result = getSession(uuid)
-      if ('error' in result) {
-        return result
+      const getResult = getSession(uuid)
+      if ('error' in getResult) {
+        return getResult
       }
-      return result.setName(name)
+
+      const updateResult = getResult.setName(name)
+      updatePersistedResource(uuid, updateResult)
+
+      return updateResult
     }
 
     function getGameSessionPersistedMock(uuid: string): GameSessionMethodReturnType {
@@ -53,7 +67,17 @@ export const useGameSessionMockStore = defineStore(
       if ('error' in result) {
         return result
       }
+
       return result.data
+    }
+
+    function updatePersistedResource(uuid: GameSessionResource['uuid'], updateResult: GameSessionMethodReturnType) {
+      if ('error' in updateResult) {
+        return
+      }
+
+      const resourceIndex = gameSessionResources.value.findIndex((resource) => resource.uuid === uuid)
+      gameSessionResources.value[resourceIndex] = updateResult
     }
 
     return {
@@ -67,7 +91,7 @@ export const useGameSessionMockStore = defineStore(
   {
     persist: {
       storage: localStorage,
-      pick: ['gameSessions'],
+      pick: ['gameSessionResources'],
     },
   },
 )
