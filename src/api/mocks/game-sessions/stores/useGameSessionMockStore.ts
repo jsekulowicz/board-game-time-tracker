@@ -4,6 +4,12 @@ import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionF
 import { GameSession } from '../models/GameSession'
 import type { ErrorResponse, GameSessionStatus } from '@/api/generated'
 
+const NOT_FOUND_ERROR: ErrorResponse = {
+  error: 'NOT_FOUND',
+  message: 'Game session not found',
+  statusCode: 404,
+}
+
 export const useGameSessionMockStore = defineStore(
   'gameSessionMocks',
   () => {
@@ -13,39 +19,45 @@ export const useGameSessionMockStore = defineStore(
       gameSessions.value = [new GameSession(getGameSessionFixture())]
     }
 
-    function findSession(uuid: string): GameSession | undefined {
-      return gameSessions.value.find((session) => session.data.uuid === uuid)
+    function getSession(uuid: string): { session: GameSession } | { error: ErrorResponse } {
+      const session = gameSessions.value.find((s) => s.data.uuid === uuid) as GameSession
+      if (!session) {
+        return { error: NOT_FOUND_ERROR }
+      }
+
+      return { session }
     }
 
     async function setGameSessionStatus(uuid: string, status: GameSessionStatus): Promise<GameSession | ErrorResponse> {
-      const session = findSession(uuid)
-      if (!session) {
-        return { error: 'NOT_FOUND', message: 'Game session not found', statusCode: 404 }
+      const result = getSession(uuid)
+      if ('error' in result) {
+        return result.error
       }
-
-      return session.setStatus(status)
+      return result.session.setStatus(status)
     }
 
     async function switchPlayerMove(uuid: string, playerUuid: string): Promise<GameSession | ErrorResponse> {
-      const session = findSession(uuid)
-      if (!session) {
-        return { error: 'NOT_FOUND', message: 'Game session not found', statusCode: 404 }
+      const result = getSession(uuid)
+      if ('error' in result) {
+        return result.error
       }
-
-      return session.switchPlayerMove(playerUuid)
+      return result.session.switchPlayerMove(playerUuid)
     }
 
     async function setGameSessionName(uuid: string, name: string): Promise<GameSession | ErrorResponse> {
-      const session = findSession(uuid)
-      if (!session) {
-        return { error: 'NOT_FOUND', message: 'Game session not found', statusCode: 404 }
+      const result = getSession(uuid)
+      if ('error' in result) {
+        return result.error
       }
-
-      return session.setName(name)
+      return result.session.setName(name)
     }
 
-    function getGameSessionPersistedMock(uuid: string): GameSession | undefined {
-      return findSession(uuid)
+    function getGameSessionPersistedMock(uuid: string): GameSession | ErrorResponse {
+      const result = getSession(uuid)
+      if ('error' in result) {
+        return result.error
+      }
+      return result.session
     }
 
     return {

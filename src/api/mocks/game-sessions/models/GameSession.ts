@@ -2,6 +2,7 @@ import { toRaw } from 'vue'
 import type { GameSessionResource, GameSessionStatus, CommonUuid, ErrorResponse } from '@/api/generated'
 import { gameSessionStatusAPI } from '../gameSessionStatus'
 import { gameSessionPlayerMoveAPI } from '../gameSessionPlayerMove'
+import { deepFreeze } from '@/object-utils'
 
 export class GameSession {
   private resource: GameSessionResource
@@ -11,7 +12,7 @@ export class GameSession {
   }
 
   get data(): GameSessionResource {
-    return structuredClone(this.resource)
+    return deepFreeze(this.resource)
   }
 
   setName(name: string): GameSession | ErrorResponse {
@@ -24,12 +25,12 @@ export class GameSession {
   }
 
   async setStatus(status: GameSessionStatus): Promise<GameSession | ErrorResponse> {
-    try {
-      this.resource = await gameSessionStatusAPI.setGameSessionStatus(this.resource, status)
-      return this
-    } catch (e: any) {
-      return { error: 'SET_STATUS_FAILED', message: e?.message || 'Failed to set status', statusCode: 500 }
+    const { resource, error } = await gameSessionStatusAPI.setGameSessionStatus(this.resource, status)
+    if (error) {
+      return error
     }
+
+    this.resource = resource
   }
 
   async switchPlayerMove(playerUuid: CommonUuid): Promise<GameSession | ErrorResponse> {
