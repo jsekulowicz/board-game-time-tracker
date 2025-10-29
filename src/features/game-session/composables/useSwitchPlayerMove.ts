@@ -16,7 +16,7 @@ export const useSwitchPlayerMove = (player: GameSessionPlayer) => {
   })
 
   function keydownSwitchPlayerMove(event: KeyboardEvent) {
-    if (event.key !== PLAYER_INDEX_TO_KEYBOARD_KEY[player.turnOrderIndex]) {
+    if (event.ctrlKey || event.metaKey || event.key !== PLAYER_INDEX_TO_KEYBOARD_KEY[player.turnOrderIndex]) {
       return
     }
 
