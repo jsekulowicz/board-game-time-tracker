@@ -17,7 +17,7 @@ export class GameSession {
   }
 
   get data(): GameSessionResource {
-    return this.resource
+    return structuredClone(toRaw(this.resource))
   }
 
   setName(name: string): GameSessionResource | ErrorResponse {
@@ -25,21 +25,21 @@ export class GameSession {
     return this.data
   }
 
-  async setStatus(status: GameSessionStatus): Promise<GameSessionResource | ErrorResponse> {
+  async setStatus(status: GameSessionStatus): GameSessionResource | ErrorResponse {
     switch (status) {
       case 'in_progress':
         this.resumeTracking()
         break
       case 'paused':
       case 'completed':
-        this.stopTracking(status)
+        this.stopTracking()
         break
     }
     this.resource.status = status
     return this.data
   }
 
-  async switchPlayerMove(playerUuid: CommonUuid): Promise<GameSessionResource | ErrorResponse> {
+  async switchPlayerMove(playerUuid: CommonUuid): GameSessionResource | ErrorResponse {
     const player = this.resource.players.find((p) => p.uuid === playerUuid)
     if (!player) {
       return { error: 'PLAYER_NOT_FOUND', message: 'Player not found', statusCode: 404 }
@@ -56,15 +56,13 @@ export class GameSession {
 
   endPlayerMove(playerUuid: CommonUuid): GameSessionResource | ErrorResponse {
     const player = this.resource.players.find((p) => p.uuid === playerUuid)
-    if (!player) return { error: 'PLAYER_NOT_FOUND', message: 'Player not found', statusCode: 404 }
+    if (!player) {
+      return { error: 'PLAYER_NOT_FOUND', message: 'Player not found', statusCode: 404 }
+    }
 
     this.endLastMove(player)
     return this.data
   }
-
-  // ---------------------------
-  // Private helpers
-  // ---------------------------
 
   private resumeTracking() {
     for (const player of this.resource.players) {
@@ -82,20 +80,21 @@ export class GameSession {
     }
   }
 
-  private stopTracking(status: GameSessionStatus) {
-    this.resource.players = this.resource.players.map((p) => this.endLastMove(p))
+  private stopTracking() {
+    this.resource.players.forEach((p) => this.endLastMove(p))
   }
 
-  private endLastMove(player: GameSessionPlayer, newStatus?: GameSessionPlayerStatus): GameSessionPlayer {
-    const copy = structuredClone(player)
-    const lastMove = copy.moves.at(-1)
+  private endLastMove(player: GameSessionPlayer, newStatus?: GameSessionPlayerStatus): void {
+    // const playerIndex = this.resource.players.findIndex((p) => p.uuid === player.uuid)
+    const lastMove = player.moves.at(-1)
     if (lastMove && !lastMove.endTimestamp) {
       lastMove.endTimestamp = new Date().toISOString()
       const duration = new Date(lastMove.endTimestamp).getTime() - new Date(lastMove.startTimestamp).getTime()
-      copy.previousTotalTimeMs += duration
+      player.previousTotalTimeMs += duration
     }
-    if (newStatus) copy.status = newStatus
-    return copy
+    if (newStatus) {
+      player.status = newStatus
+    }
   }
 
   private endAllCurrentMoves() {

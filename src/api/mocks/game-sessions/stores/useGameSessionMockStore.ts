@@ -4,11 +4,7 @@ import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionF
 import { GameSession } from '../models/GameSession'
 import type { ErrorResponse, GameSessionResource, GameSessionStatus } from '@/api/generated'
 
-const NOT_FOUND_ERROR: ErrorResponse = {
-  error: 'NOT_FOUND',
-  message: 'Game session not found',
-  statusCode: 404,
-}
+type GameSessionMethodReturnType = GameSessionResource | ErrorResponse
 
 export const useGameSessionMockStore = defineStore(
   'gameSessionMocks',
@@ -19,44 +15,45 @@ export const useGameSessionMockStore = defineStore(
       gameSessions.value = [new GameSession(getGameSessionFixture())]
     }
 
-    function getSession(uuid: string): { session: GameSession } | { error: ErrorResponse } {
-      const session = gameSessions.value.find((s) => s.data.uuid === uuid) as GameSession
+    function getSession(uuid: string): GameSession | ErrorResponse {
+      const session = gameSessions.value.find((s) => s.data?.uuid === uuid) as GameSession
       if (!session) {
-        return { error: NOT_FOUND_ERROR }
+        return { error: 'GAME_SESSION_NOT_FOUND', message: `Could not find session ${uuid}`, statusCode: 404 }
       }
-      return { session }
+      return session
     }
 
-    async function setGameSessionStatus(uuid: string, status: GameSessionStatus): Promise<GameSessionResource | ErrorResponse> {
+    function setGameSessionStatus(uuid: string, status: GameSessionStatus): GameSessionMethodReturnType {
       const result = getSession(uuid)
       if ('error' in result) {
-        return result.error
+        return result
       }
-      return result.session.setStatus(status)
+
+      return result.setStatus(status)
     }
 
-    async function switchPlayerMove(uuid: string, playerUuid: string): Promise<GameSessionResource | ErrorResponse> {
+    function switchPlayerMove(uuid: string, playerUuid: string): GameSessionMethodReturnType {
       const result = getSession(uuid)
       if ('error' in result) {
-        return result.error
+        return result
       }
-      return result.session.switchPlayerMove(playerUuid)
+      return result.switchPlayerMove(playerUuid)
     }
 
-    async function setGameSessionName(uuid: string, name: string): Promise<GameSessionResource | ErrorResponse> {
+    function setGameSessionName(uuid: string, name: string): GameSessionMethodReturnType {
       const result = getSession(uuid)
       if ('error' in result) {
-        return result.error
+        return result
       }
-      return result.session.setName(name)
+      return result.setName(name)
     }
 
-    function getGameSessionPersistedMock(uuid: string): GameSessionResource | ErrorResponse {
+    function getGameSessionPersistedMock(uuid: string): GameSessionMethodReturnType {
       const result = getSession(uuid)
       if ('error' in result) {
-        return result.error
+        return result
       }
-      return result.session.data
+      return result.data
     }
 
     return {
