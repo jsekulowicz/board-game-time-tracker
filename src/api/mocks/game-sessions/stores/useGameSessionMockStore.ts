@@ -27,39 +27,39 @@ export const useGameSessionMockStore = defineStore(
     }
 
     function setGameSessionStatus(uuid: string, status: GameSessionStatus): GameSessionMethodReturnType {
-      const getResult = getSession(uuid)
-      if ('error' in getResult) {
-        return getResult
+      const resultGet = getSession(uuid)
+      if ('error' in resultGet) {
+        return resultGet
       }
 
-      const updateResult = getResult.setStatus(status)
-      updatePersistedResource(uuid, updateResult)
+      const resultUpdate = resultGet.setStatus(status)
+      updatePersistedResource(uuid, resultUpdate)
 
-      return updateResult
+      return resultUpdate
     }
 
     function switchPlayerMove(uuid: string, playerUuid: string): GameSessionMethodReturnType {
-      const getResult = getSession(uuid)
-      if ('error' in getResult) {
-        return getResult
+      const resultGet = getSession(uuid)
+      if ('error' in resultGet) {
+        return resultGet
       }
 
-      const updateResult = getResult.switchPlayerMove(playerUuid)
-      updatePersistedResource(uuid, updateResult)
+      const resultUpdate = resultGet.switchPlayerMove(playerUuid)
+      updatePersistedResource(uuid, resultUpdate)
 
-      return updateResult
+      return resultUpdate
     }
 
     function setGameSessionName(uuid: string, name: string): GameSessionMethodReturnType {
-      const getResult = getSession(uuid)
-      if ('error' in getResult) {
-        return getResult
+      const resultGet = getSession(uuid)
+      if ('error' in resultGet) {
+        return resultGet
       }
 
-      const updateResult = getResult.setName(name)
-      updatePersistedResource(uuid, updateResult)
+      const resultUpdate = resultGet.setName(name)
+      updatePersistedResource(uuid, resultUpdate)
 
-      return updateResult
+      return resultUpdate
     }
 
     function getGameSessionPersistedMock(uuid: string): GameSessionMethodReturnType {
@@ -71,13 +71,13 @@ export const useGameSessionMockStore = defineStore(
       return result.data
     }
 
-    function updatePersistedResource(uuid: GameSessionResource['uuid'], updateResult: GameSessionMethodReturnType) {
-      if ('error' in updateResult) {
+    function updatePersistedResource(uuid: GameSessionResource['uuid'], resultUpdate: GameSessionMethodReturnType) {
+      if ('error' in resultUpdate) {
         return
       }
 
       const resourceIndex = gameSessionResources.value.findIndex((resource) => resource.uuid === uuid)
-      gameSessionResources.value[resourceIndex] = updateResult
+      gameSessionResources.value[resourceIndex] = resultUpdate
     }
 
     return {
