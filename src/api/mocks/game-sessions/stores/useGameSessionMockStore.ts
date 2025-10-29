@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
 import { GameSession } from '../models/GameSession'
@@ -10,86 +10,83 @@ export const useGameSessionMockStore = defineStore(
   'gameSessionMocks',
   () => {
     const gameSessionResources = ref<GameSessionResource[]>([])
-    // const gameSessions = ref<GameSession[]>([])
 
-    // if (gameSessionResources.value.length === 0) {
-    //   gameSessionResources.value = [getGameSessionFixture()]
-    // }
     if (gameSessionResources.value.length === 0) {
-      const fixture = getGameSessionFixture()
-      gameSessionResources.value = [fixture]
+      gameSessionResources.value = [getGameSessionFixture()]
     }
 
-    // Keep gameSessions reactive and in sync with resources
     const gameSessions = computed(() => gameSessionResources.value.map((res) => new GameSession(res)))
 
+    const NOT_FOUND_ERROR: ErrorResponse = {
+      error: 'GAME_SESSION_NOT_FOUND',
+      message: 'Could not find game session',
+      statusCode: 404,
+    }
+
     function getSession(uuid: string): GameSession | ErrorResponse {
-      const session = gameSessions.value.find((s) => s.data?.uuid === uuid) as GameSession
-      if (!session) {
-        return { error: 'GAME_SESSION_NOT_FOUND', message: `Could not find session ${uuid}`, statusCode: 404 }
-      }
-      return session
-    }
-
-    function setGameSessionStatus(uuid: string, status: GameSessionStatus): GameSessionMethodReturnType {
-      const resultGet = getSession(uuid)
-      if ('error' in resultGet) {
-        return resultGet
+      const resource = gameSessionResources.value.find((r) => r.uuid === uuid)
+      if (!resource) {
+        return NOT_FOUND_ERROR
       }
 
-      const resultUpdate = resultGet.setStatus(status)
-      updatePersistedResource(uuid, resultUpdate)
-
-      return resultUpdate
+      return new GameSession(resource)
     }
 
-    function switchPlayerMove(uuid: string, playerUuid: string): GameSessionMethodReturnType {
-      const resultGet = getSession(uuid)
-      if ('error' in resultGet) {
-        return resultGet
-      }
-
-      const resultUpdate = resultGet.switchPlayerMove(playerUuid)
-      updatePersistedResource(uuid, resultUpdate)
-
-      return resultUpdate
-    }
-
-    function setGameSessionName(uuid: string, name: string): GameSessionMethodReturnType {
-      const resultGet = getSession(uuid)
-      if ('error' in resultGet) {
-        return resultGet
-      }
-
-      const resultUpdate = resultGet.setName(name)
-      updatePersistedResource(uuid, resultUpdate)
-
-      return resultUpdate
-    }
-
-    function getGameSessionPersistedMock(uuid: string): GameSessionMethodReturnType {
-      const result = getSession(uuid)
-      if ('error' in result) {
-        return result
-      }
-
-      return result.data
-    }
-
-    function updatePersistedResource(uuid: GameSessionResource['uuid'], resultUpdate: GameSessionMethodReturnType) {
-      if ('error' in resultUpdate) {
+    function updatePersistedResource(uuid: string, updated: GameSessionMethodReturnType) {
+      if ('error' in updated) {
         return
       }
 
-      const resourceIndex = gameSessionResources.value.findIndex((resource) => resource.uuid === uuid)
-      if (resourceIndex >= 0) {
-        gameSessionResources.value[resourceIndex] = resultUpdate
+      const index = gameSessionResources.value.findIndex((r) => r.uuid === uuid)
+      if (index >= 0) {
+        gameSessionResources.value[index] = updated
+      }
+    }
+
+    function setGameSessionStatus(uuid: string, status: GameSessionStatus): GameSessionMethodReturnType {
+      const session = getSession(uuid)
+      if ('error' in session) {
+        return session
       }
 
-      console.log('updated!', gameSessionResources.value[resourceIndex])
+      const updated = session.setStatus(status)
+      updatePersistedResource(uuid, updated)
+      return updated
+    }
+
+    function switchPlayerMove(uuid: string, playerUuid: string): GameSessionMethodReturnType {
+      const session = getSession(uuid)
+      if ('error' in session) {
+        return session
+      }
+
+      const updated = session.switchPlayerMove(playerUuid)
+      updatePersistedResource(uuid, updated)
+      return updated
+    }
+
+    function setGameSessionName(uuid: string, name: string): GameSessionMethodReturnType {
+      const session = getSession(uuid)
+      if ('error' in session) {
+        return session
+      }
+
+      const updated = session.setName(name)
+      updatePersistedResource(uuid, updated)
+      return updated
+    }
+
+    function getGameSessionPersistedMock(uuid: string): GameSessionMethodReturnType {
+      const resource = gameSessionResources.value.find((r) => r.uuid === uuid)
+      if (!resource) {
+        return NOT_FOUND_ERROR
+      }
+
+      return resource
     }
 
     return {
+      gameSessionResources,
       gameSessions,
       getGameSessionPersistedMock,
       setGameSessionStatus,
