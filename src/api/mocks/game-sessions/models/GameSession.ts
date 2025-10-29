@@ -6,7 +6,6 @@ import type {
   GameSessionResource,
   GameSessionStatus,
 } from '@/api/generated'
-import { deepFreeze } from '@/object-utils'
 import { toRaw } from 'vue'
 
 export class GameSession {
@@ -25,7 +24,7 @@ export class GameSession {
     return this.data
   }
 
-  async setStatus(status: GameSessionStatus): GameSessionResource | ErrorResponse {
+  setStatus(status: GameSessionStatus): GameSessionResource | ErrorResponse {
     switch (status) {
       case 'in_progress':
         this.resumeTracking()
@@ -35,11 +34,13 @@ export class GameSession {
         this.stopTracking()
         break
     }
+
+    console.log('SET STATUS', status)
     this.resource.status = status
     return this.data
   }
 
-  async switchPlayerMove(playerUuid: CommonUuid): GameSessionResource | ErrorResponse {
+  switchPlayerMove(playerUuid: CommonUuid): GameSessionResource | ErrorResponse {
     const player = this.resource.players.find((p) => p.uuid === playerUuid)
     if (!player) {
       return { error: 'PLAYER_NOT_FOUND', message: 'Player not found', statusCode: 404 }
@@ -51,16 +52,6 @@ export class GameSession {
 
     this.endAllCurrentMoves()
     this.startNewMoveFor(playerUuid)
-    return this.data
-  }
-
-  endPlayerMove(playerUuid: CommonUuid): GameSessionResource | ErrorResponse {
-    const player = this.resource.players.find((p) => p.uuid === playerUuid)
-    if (!player) {
-      return { error: 'PLAYER_NOT_FOUND', message: 'Player not found', statusCode: 404 }
-    }
-
-    this.endLastMove(player)
     return this.data
   }
 
@@ -85,7 +76,6 @@ export class GameSession {
   }
 
   private endLastMove(player: GameSessionPlayer, newStatus?: GameSessionPlayerStatus): void {
-    // const playerIndex = this.resource.players.findIndex((p) => p.uuid === player.uuid)
     const lastMove = player.moves.at(-1)
     if (lastMove && !lastMove.endTimestamp) {
       lastMove.endTimestamp = new Date().toISOString()

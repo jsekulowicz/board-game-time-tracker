@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
 import { GameSession } from '../models/GameSession'
@@ -10,13 +10,18 @@ export const useGameSessionMockStore = defineStore(
   'gameSessionMocks',
   () => {
     const gameSessionResources = ref<GameSessionResource[]>([])
-    const gameSessions = ref<GameSession[]>([])
+    // const gameSessions = ref<GameSession[]>([])
 
+    // if (gameSessionResources.value.length === 0) {
+    //   gameSessionResources.value = [getGameSessionFixture()]
+    // }
     if (gameSessionResources.value.length === 0) {
-      gameSessions.value = [new GameSession(getGameSessionFixture())]
+      const fixture = getGameSessionFixture()
+      gameSessionResources.value = [fixture]
     }
 
-    gameSessionResources.value.map((gsr) => new GameSession(gsr))
+    // Keep gameSessions reactive and in sync with resources
+    const gameSessions = computed(() => gameSessionResources.value.map((res) => new GameSession(res)))
 
     function getSession(uuid: string): GameSession | ErrorResponse {
       const session = gameSessions.value.find((s) => s.data?.uuid === uuid) as GameSession
@@ -77,7 +82,11 @@ export const useGameSessionMockStore = defineStore(
       }
 
       const resourceIndex = gameSessionResources.value.findIndex((resource) => resource.uuid === uuid)
-      gameSessionResources.value[resourceIndex] = resultUpdate
+      if (resourceIndex >= 0) {
+        gameSessionResources.value[resourceIndex] = resultUpdate
+      }
+
+      console.log('updated!', gameSessionResources.value[resourceIndex])
     }
 
     return {
