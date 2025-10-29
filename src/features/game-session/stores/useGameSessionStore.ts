@@ -12,6 +12,7 @@ export const useGameSessionStore = defineStore('gameSession', () => {
 
   async function getGameSessionById(uuid: string): Promise<void> {
     const response = await apiGetGameSessionById({ path: { uuid } })
+    console.log('============GAME SESSION', response)
     gameSession.value = response.data
   }
 

@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
 import { GameSession } from '../models/GameSession'
-import type { ErrorResponse, GameSessionStatus } from '@/api/generated'
+import type { ErrorResponse, GameSessionResource, GameSessionStatus } from '@/api/generated'
 
 const NOT_FOUND_ERROR: ErrorResponse = {
   error: 'NOT_FOUND',
@@ -24,11 +24,10 @@ export const useGameSessionMockStore = defineStore(
       if (!session) {
         return { error: NOT_FOUND_ERROR }
       }
-
       return { session }
     }
 
-    async function setGameSessionStatus(uuid: string, status: GameSessionStatus): Promise<GameSession | ErrorResponse> {
+    async function setGameSessionStatus(uuid: string, status: GameSessionStatus): Promise<GameSessionResource | ErrorResponse> {
       const result = getSession(uuid)
       if ('error' in result) {
         return result.error
@@ -36,7 +35,7 @@ export const useGameSessionMockStore = defineStore(
       return result.session.setStatus(status)
     }
 
-    async function switchPlayerMove(uuid: string, playerUuid: string): Promise<GameSession | ErrorResponse> {
+    async function switchPlayerMove(uuid: string, playerUuid: string): Promise<GameSessionResource | ErrorResponse> {
       const result = getSession(uuid)
       if ('error' in result) {
         return result.error
@@ -44,7 +43,7 @@ export const useGameSessionMockStore = defineStore(
       return result.session.switchPlayerMove(playerUuid)
     }
 
-    async function setGameSessionName(uuid: string, name: string): Promise<GameSession | ErrorResponse> {
+    async function setGameSessionName(uuid: string, name: string): Promise<GameSessionResource | ErrorResponse> {
       const result = getSession(uuid)
       if ('error' in result) {
         return result.error
@@ -52,12 +51,12 @@ export const useGameSessionMockStore = defineStore(
       return result.session.setName(name)
     }
 
-    function getGameSessionPersistedMock(uuid: string): GameSession | ErrorResponse {
+    function getGameSessionPersistedMock(uuid: string): GameSessionResource | ErrorResponse {
       const result = getSession(uuid)
       if ('error' in result) {
         return result.error
       }
-      return result.session
+      return result.session.data
     }
 
     return {
