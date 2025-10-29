@@ -9,8 +9,6 @@ import GameSessionStatusTag from './GameSessionStatusTag.vue'
 
 import { ref } from 'vue'
 import type { GameSessionResource } from '@/api/generated'
-import { useGameSessionStore } from '../stores/useGameSessionStore'
-import { useKeydownSwitchPlayerMove } from '../composables/useKeydownSwitchPlayerMove'
 
 export interface GameSessionCardProps {
   gameSession: GameSessionResource
@@ -18,13 +16,10 @@ export interface GameSessionCardProps {
 
 defineProps<GameSessionCardProps>()
 const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>[]>([])
-
-const gameSessionStore = useGameSessionStore()
-useKeydownSwitchPlayerMove()
 </script>
 
 <template>
-  <CardWithStatusTag class="gap-8">
+  <CardWithStatusTag class="gap-6">
     <template #status>
       <GameSessionStatusTag :status="gameSession.status" />
     </template>

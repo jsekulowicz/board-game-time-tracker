@@ -7,10 +7,11 @@ import GameSessionPlayerStatusTag from './GameSessionPlayerStatusTag.vue'
 import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
 
 import { usePlayerTimeTracking } from '@/features/game-session/composables/usePlayerTimeTracking'
-import { BaseCardContent, BaseCardHeader, BaseCardTitle } from '@/components/ui/base-card'
+import { BaseCardHeader, BaseCardTitle } from '@/components/ui/base-card'
 
 import { BaseButton } from '@/components/ui/base-button'
 import { useGameSessionState } from '@/features/game-session/composables/useGameSessionState'
+import { useSwitchPlayerMove } from '@/features/game-session/composables/useSwitchPlayerMove'
 
 export interface GameSessionPlayerItemProps {
   gameSessionPlayer: GameSessionPlayer
@@ -21,6 +22,7 @@ const props = defineProps<GameSessionPlayerItemProps>()
 const sessionPlayer = computed(() => props.gameSessionPlayer)
 const { displayedTime } = usePlayerTimeTracking(sessionPlayer)
 const { hasLastMoveInTurn } = useGameSessionState()
+const { switchPlayerMove, switchPlayerKeyLabel } = useSwitchPlayerMove(sessionPlayer.value)
 
 const finishButtonRef = ref<InstanceType<typeof BaseButton> | null>(null)
 
@@ -29,8 +31,6 @@ const finishButtonTooltip = computed(() =>
     ? 'Player already moved this turn. Please wait for the next turn to track.'
     : undefined,
 )
-
-const playerOrdinalNumber = computed(() => props.gameSessionPlayer.turnOrderIndex + 1)
 
 function focusFinishButton() {
   finishButtonRef.value?.focus()
@@ -47,40 +47,35 @@ defineExpose({
 
 <template>
   <li class="flex">
-    <CardWithStatusTag class="gap-4 w-full">
+    <CardWithStatusTag class="w-full gap-4 py-4">
       <template v-if="gameSessionStatus !== 'completed'" #status>
         <GameSessionPlayerStatusTag :player="gameSessionPlayer" :gameStatus="gameSessionStatus" />
       </template>
 
-      <BaseCardHeader class="flex flex-wrap justify-center items-start h-full gap-4">
+      <BaseCardHeader class="flex flex-wrap justify-center items-start h-full gap-2">
         <BaseCardTitle class="w-full text-base/normal text-center wrap-break-word" lang="en">{{ gameSessionPlayer.name }}</BaseCardTitle>
-        <div class="flex flex-col items-center justify-between gap-4 pl-0 mt-auto">
+        <div class="flex flex-col items-center justify-between gap-2 pl-0 mt-auto">
           <div>
             {{ displayedTime }}
           </div>
 
           <BaseButton
-            class="max-h-none h-auto"
+            class="min-w-26 min-h-10 px-3"
             variant="outline"
             :disabled="gameSessionPlayer.status !== 'ready_to_move' && !hasLastMoveInTurn"
             :tooltip="finishButtonTooltip"
+            @click="switchPlayerMove"
           >
-            <BaseKbdGroup class="flex flex-col justify-between gap-2">
+            <BaseKbdGroup>
               <div>Track</div>
 
-              <div class="flex gap-1">
-                <BaseKbd>Ctrl</BaseKbd>
-                <span>+</span>
-                <BaseKbd>{{ playerOrdinalNumber }}</BaseKbd>
-              </div>
+              <template #kbd>
+                <BaseKbd>{{ switchPlayerKeyLabel }}</BaseKbd>
+              </template>
             </BaseKbdGroup>
           </BaseButton>
         </div>
       </BaseCardHeader>
-
-      <!-- <BaseCardContent class="flex items-center justify-between px-4">
-
-      </BaseCardContent> -->
     </CardWithStatusTag>
   </li>
 </template>
