@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
 import { GameSession } from '../models/GameSession'
 import type { ErrorResponse, GameSessionResource, GameSessionStatus } from '@/api/generated'
+import { GAME_SESSION_ERROR_CODES } from '../errors'
 
 type GameSessionMethodReturnType = GameSessionResource | ErrorResponse
 
@@ -18,7 +19,7 @@ export const useGameSessionMockStore = defineStore(
     const gameSessions = computed(() => gameSessionResources.value.map((res) => new GameSession(res)))
 
     const NOT_FOUND_ERROR: ErrorResponse = {
-      error: 'GAME_SESSION_NOT_FOUND',
+      error: GAME_SESSION_ERROR_CODES.GAME_SESSION_NOT_FOUND,
       message: 'Could not find game session',
       statusCode: 404,
     }

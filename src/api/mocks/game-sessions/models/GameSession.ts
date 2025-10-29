@@ -7,6 +7,7 @@ import type {
   GameSessionStatus,
 } from '@/api/generated'
 import { toRaw } from 'vue'
+import { GAME_SESSION_ERROR_CODES } from '../errors'
 
 export class GameSession {
   private resource: GameSessionResource
@@ -35,7 +36,6 @@ export class GameSession {
         break
     }
 
-    console.log('SET STATUS', status)
     this.resource.status = status
     return this.data
   }
@@ -43,11 +43,19 @@ export class GameSession {
   switchPlayerMove(playerUuid: CommonUuid): GameSessionResource | ErrorResponse {
     const player = this.resource.players.find((p) => p.uuid === playerUuid)
     if (!player) {
-      return { error: 'PLAYER_NOT_FOUND', message: 'Player not found', statusCode: 404 }
+      return { error: GAME_SESSION_ERROR_CODES.PLAYER_NOT_FOUND, message: 'Player not found.', statusCode: 404 }
     }
 
     if (player.status !== 'ready_to_move' && !this.shouldStartNewTurn()) {
-      return { error: 'ALREADY_MOVED', message: 'Player already made a move this turn', statusCode: 400 }
+      return { error: GAME_SESSION_ERROR_CODES.ALREADY_MOVED, message: 'Player already made a move this turn.', statusCode: 400 }
+    }
+
+    if (this.resource.status !== 'in_progress') {
+      return {
+        error: GAME_SESSION_ERROR_CODES.GAME_SESSION_NOT_IN_PROGRESS,
+        message: 'Cannot track player. Game session is not in progress.',
+        statusCode: 400,
+      }
     }
 
     this.endAllCurrentMoves()
