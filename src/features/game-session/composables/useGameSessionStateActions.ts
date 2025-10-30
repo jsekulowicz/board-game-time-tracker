@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { useGameSessionStore } from '../stores/useGameSessionStore'
 
-export const useGameSessionActions = () => {
+export const useGameSessionStateActions = () => {
   const gameSessionStore = useGameSessionStore()
 
   const canResume = computed(() => gameSessionStore.gameSession?.status === 'paused')

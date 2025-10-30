@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { EndPlayerMoveData, EndPlayerMoveErrors, EndPlayerMoveResponses, GetGameSessionByIdData, GetGameSessionByIdErrors, GetGameSessionByIdResponses, ListGameSessionsData, ListGameSessionsErrors, ListGameSessionsResponses, PatchGameSessionByIdData, PatchGameSessionByIdErrors, PatchGameSessionByIdResponses } from './types.gen';
+import type { GetGameSessionByIdData, GetGameSessionByIdErrors, GetGameSessionByIdResponses, ListGameSessionsData, ListGameSessionsErrors, ListGameSessionsResponses, PatchGameSessionByIdData, PatchGameSessionByIdErrors, PatchGameSessionByIdResponses, SwitchPlayerMoveData, SwitchPlayerMoveErrors, SwitchPlayerMoveResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -53,11 +53,11 @@ export const patchGameSessionById = <ThrowOnError extends boolean = false>(optio
 };
 
 /**
- * End the current move for a specific player in a game session
+ * Switch the current move to a specific player in a game session
  */
-export const endPlayerMove = <ThrowOnError extends boolean = false>(options: Options<EndPlayerMoveData, ThrowOnError>) => {
-    return (options.client ?? client).patch<EndPlayerMoveResponses, EndPlayerMoveErrors, ThrowOnError>({
-        url: '/game-sessions/{sessionUuid}/moves/end',
+export const switchPlayerMove = <ThrowOnError extends boolean = false>(options: Options<SwitchPlayerMoveData, ThrowOnError>) => {
+    return (options.client ?? client).patch<SwitchPlayerMoveResponses, SwitchPlayerMoveErrors, ThrowOnError>({
+        url: '/game-sessions/{sessionUuid}/moves/switch',
         ...options,
         headers: {
             'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import GameSessionCard from '@/features/game-session/components/GameSessionCard.vue'
 import BaseLayout from '@/layouts/BaseLayout.vue'
+import GameSessionCard from './components/GameSessionCard.vue'
 
 import { useGameSessionStore } from '@/features/game-session/stores/useGameSessionStore'
 
@@ -15,9 +15,6 @@ gameSessionStore.getGameSessionById(props.uuid)
 
 <template>
   <BaseLayout>
-    <GameSessionCard
-      v-if="gameSessionStore.gameSession"
-      :gameSession="gameSessionStore.gameSession"
-    />
+    <GameSessionCard />
   </BaseLayout>
 </template>

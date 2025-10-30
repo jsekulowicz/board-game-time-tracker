@@ -16,7 +16,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/session/:uuid',
     name: RouteName.GameSession,
-    component: () => import('@/views/GameSessionView.vue'),
+    component: () => import('@/features/game-session/GameSessionView.vue'),
     props: true,
   },
 ]

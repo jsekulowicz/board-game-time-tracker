@@ -5,19 +5,14 @@ import type { BaseButton, ButtonVariants } from '.'
 import { Primitive } from 'reka-ui'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '.'
-import {
-  BaseTooltip,
-  BaseTooltipProvider,
-  BaseTooltipTrigger,
-  BaseTooltipContent,
-} from '@/components/ui/base-tooltip'
+import { BaseTooltip, BaseTooltipProvider, BaseTooltipTrigger, BaseTooltipContent } from '@/components/ui/base-tooltip'
 
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
   class?: HTMLAttributes['class']
   disabled?: boolean
-  tooltip?: string
+  tooltip?: string | null
 }
 
 defineEmits<{

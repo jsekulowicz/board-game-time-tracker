@@ -9,9 +9,35 @@ export type CommonTimestamp = string;
 export type CommonUuid = string;
 
 export type ErrorResponse = {
+    /**
+     * A short machine-readable error code (e.g. INVALID_INPUT, NOT_FOUND).
+     */
     error: string;
+    /**
+     * A short, human-readable summary of the error (e.g. "Invalid input").
+     */
+    title: string;
+    /**
+     * A more detailed explanation of the error.
+     */
     message: string;
+    /**
+     * The HTTP status code corresponding to the error.
+     */
     statusCode: number;
+    /**
+     * Additional metadata for error handling.
+     */
+    meta?: {
+        /**
+         * Whether this error should trigger a toast notification on the frontend.
+         */
+        toast?: boolean;
+        /**
+         * Whether this error should be logged to a monitoring system.
+         */
+        log?: boolean;
+    };
 };
 
 export type GameSessionPlayer = PlayerResource & {
@@ -28,7 +54,7 @@ export type GameSessionPlayerMove = {
     turnIndex: number;
 };
 
-export type GameSessionPlayerStatus = 'playing' | 'waiting' | 'passed';
+export type GameSessionPlayerStatus = 'tracking' | 'ready_to_move' | 'turn_completed' | 'passed';
 
 export type GameSessionResource = {
     uuid: CommonUuid;
@@ -37,6 +63,7 @@ export type GameSessionResource = {
     status: GameSessionStatus;
     players: Array<GameSessionPlayer>;
     currentTurnIndex: number;
+    currentMoveIndex: number;
     createdAt: CommonTimestamp;
     updatedAt?: CommonTimestamp;
 };
@@ -57,7 +84,7 @@ export type GameSessionsDetailRoot = unknown;
 
 export type GameSessionsListRoot = unknown;
 
-export type GameSessionsMovesEndRoot = unknown;
+export type GameSessionsMovesSwitchRoot = unknown;
 
 export type ListGameSessionsData = {
     body?: never;
@@ -172,9 +199,9 @@ export type PatchGameSessionByIdResponses = {
 
 export type PatchGameSessionByIdResponse = PatchGameSessionByIdResponses[keyof PatchGameSessionByIdResponses];
 
-export type EndPlayerMoveData = {
+export type SwitchPlayerMoveData = {
     /**
-     * The player whose current move should be ended
+     * The player whose next move should be started
      */
     body: {
         playerUuid: CommonUuid;
@@ -183,10 +210,10 @@ export type EndPlayerMoveData = {
         sessionUuid: CommonUuid;
     };
     query?: never;
-    url: '/game-sessions/{sessionUuid}/moves/end';
+    url: '/game-sessions/{sessionUuid}/moves/switch';
 };
 
-export type EndPlayerMoveErrors = {
+export type SwitchPlayerMoveErrors = {
     /**
      * Not Found
      */
@@ -197,13 +224,13 @@ export type EndPlayerMoveErrors = {
     500: ErrorResponse;
 };
 
-export type EndPlayerMoveError = EndPlayerMoveErrors[keyof EndPlayerMoveErrors];
+export type SwitchPlayerMoveError = SwitchPlayerMoveErrors[keyof SwitchPlayerMoveErrors];
 
-export type EndPlayerMoveResponses = {
+export type SwitchPlayerMoveResponses = {
     /**
-     * The game session after ending the player's move
+     * The game session after switching the player's move
      */
     200: GameSessionResource;
 };
 
-export type EndPlayerMoveResponse = EndPlayerMoveResponses[keyof EndPlayerMoveResponses];
+export type SwitchPlayerMoveResponse = SwitchPlayerMoveResponses[keyof SwitchPlayerMoveResponses];

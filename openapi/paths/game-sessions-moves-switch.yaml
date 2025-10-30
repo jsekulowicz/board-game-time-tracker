@@ -1,6 +1,6 @@
 patch:
-  summary: End the current move for a specific player in a game session
-  operationId: endPlayerMove
+  summary: Switch the current move to a specific player in a game session
+  operationId: switchPlayerMove
   parameters:
     - name: sessionUuid
       in: path
@@ -9,7 +9,7 @@ patch:
         $ref: ../components/schemas/common.yaml#/schemas/Uuid
   requestBody:
     required: true
-    description: The player whose current move should be ended
+    description: The player whose next move should be started
     content:
       application/json:
         schema:
@@ -20,7 +20,7 @@ patch:
           required: [playerUuid]
   responses:
     '200':
-      description: The game session after ending the player's move
+      description: The game session after switching the player's move
       content:
         application/json:
           schema:

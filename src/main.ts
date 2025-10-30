@@ -6,14 +6,23 @@ import App from './App.vue'
 import router from './router'
 import './index.css'
 
-const app = createApp(App)
+import { client } from '@/api/generated/client.gen.ts'
+import { errorHandlerInterceptor } from '@/api/interceptors/errorHandler.ts'
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-app.use(pinia)
+async function initializeApp() {
+  client.interceptors.response.use(errorHandlerInterceptor)
 
-import('mocks/browser')
+  const app = createApp(App)
 
-app.use(router)
+  const pinia = createPinia()
+  pinia.use(piniaPluginPersistedstate)
+  app.use(pinia)
 
-app.mount('#app')
+  const { startWorker } = await import('mocks/browser')
+  await startWorker()
+
+  app.use(router)
+  app.mount('#app')
+}
+
+initializeApp()
