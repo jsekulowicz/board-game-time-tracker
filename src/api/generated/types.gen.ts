@@ -9,9 +9,35 @@ export type CommonTimestamp = string;
 export type CommonUuid = string;
 
 export type ErrorResponse = {
+    /**
+     * A short machine-readable error code (e.g. INVALID_INPUT, NOT_FOUND).
+     */
     error: string;
+    /**
+     * A short, human-readable summary of the error (e.g. "Invalid input").
+     */
+    title: string;
+    /**
+     * A more detailed explanation of the error.
+     */
     message: string;
+    /**
+     * The HTTP status code corresponding to the error.
+     */
     statusCode: number;
+    /**
+     * Additional metadata for error handling.
+     */
+    meta?: {
+        /**
+         * Whether this error should trigger a toast notification on the frontend.
+         */
+        toast?: boolean;
+        /**
+         * Whether this error should be logged to a monitoring system.
+         */
+        log?: boolean;
+    };
 };
 
 export type GameSessionPlayer = PlayerResource & {

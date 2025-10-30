@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
 import { GameSession } from '../models/GameSession'
 import type { ErrorResponse, GameSessionResource, GameSessionStatus } from '@/api/generated'
-import { GAME_SESSION_ERROR_CODES } from '../errors'
+import { GAME_SESSION_NOT_FOUND } from '../errors'
 
 type GameSessionMethodReturnType = GameSessionResource | ErrorResponse
 
@@ -18,30 +18,13 @@ export const useGameSessionMockStore = defineStore(
 
     const gameSessions = computed(() => gameSessionResources.value.map((res) => new GameSession(res)))
 
-    const NOT_FOUND_ERROR: ErrorResponse = {
-      error: GAME_SESSION_ERROR_CODES.GAME_SESSION_NOT_FOUND,
-      message: 'Could not find game session',
-      statusCode: 404,
-    }
-
     function getSession(uuid: string): GameSession | ErrorResponse {
       const resource = gameSessionResources.value.find((r) => r.uuid === uuid)
       if (!resource) {
-        return NOT_FOUND_ERROR
+        return GAME_SESSION_NOT_FOUND
       }
 
       return new GameSession(resource)
-    }
-
-    function updatePersistedResource(uuid: string, updated: GameSessionMethodReturnType) {
-      if ('error' in updated) {
-        return
-      }
-
-      const index = gameSessionResources.value.findIndex((r) => r.uuid === uuid)
-      if (index >= 0) {
-        gameSessionResources.value[index] = updated
-      }
     }
 
     function setGameSessionStatus(uuid: string, status: GameSessionStatus): GameSessionMethodReturnType {
@@ -80,10 +63,21 @@ export const useGameSessionMockStore = defineStore(
     function getGameSessionPersistedMock(uuid: string): GameSessionMethodReturnType {
       const resource = gameSessionResources.value.find((r) => r.uuid === uuid)
       if (!resource) {
-        return NOT_FOUND_ERROR
+        return GAME_SESSION_NOT_FOUND
       }
 
       return resource
+    }
+
+    function updatePersistedResource(uuid: string, updated: GameSessionMethodReturnType) {
+      if ('error' in updated) {
+        return
+      }
+
+      const index = gameSessionResources.value.findIndex((r) => r.uuid === uuid)
+      if (index >= 0) {
+        gameSessionResources.value[index] = updated
+      }
     }
 
     return {

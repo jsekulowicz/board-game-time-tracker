@@ -4,8 +4,24 @@ schemas:
     properties:
       error:
         type: string
+        description: A short machine-readable error code (e.g. INVALID_INPUT, NOT_FOUND).
+      title:
+        type: string
+        description: A short, human-readable summary of the error (e.g. "Invalid input").
       message:
         type: string
+        description: A more detailed explanation of the error.
       statusCode:
         type: integer
-    required: [error, message, statusCode]
+        description: The HTTP status code corresponding to the error.
+      meta:
+        type: object
+        description: Additional metadata for error handling.
+        properties:
+          toast:
+            type: boolean
+            description: Whether this error should trigger a toast notification on the frontend.
+          log:
+            type: boolean
+            description: Whether this error should be logged to a monitoring system.
+    required: [error, title, message, statusCode]
