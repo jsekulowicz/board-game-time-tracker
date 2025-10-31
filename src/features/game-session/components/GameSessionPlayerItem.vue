@@ -61,6 +61,7 @@ defineExpose({
           <div>{{ displayedTime }}</div>
 
           <BaseButton
+            v-if="gameSessionStatus !== 'completed'"
             class="min-w-26 min-h-10 px-3"
             variant="outline"
             :disabled="timeTrackingDisabled"

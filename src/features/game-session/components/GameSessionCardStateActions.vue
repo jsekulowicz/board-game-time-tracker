@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted } from 'vue'
 
 import { BaseButton } from '@/components/ui/base-button'
+import GameSessionAlertDialogEnd from '../components/GameSessionAlertDialogEnd.vue'
 import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
 import { useGameSessionStateActions } from '../composables/useGameSessionStateActions'
 
@@ -47,15 +48,19 @@ function handleKeydown(event: KeyboardEvent) {
       </BaseKbdGroup>
     </BaseButton>
 
-    <BaseButton class="flex-grow md:max-w-36 px-3" size="sm" variant="outline" @click="gameSessionStateActions.completeGameSession">
-      <BaseKbdGroup>
-        <div>End</div>
-        <template #kbd>
-          <BaseKbd>Ctrl</BaseKbd>
-          <span>+</span>
-          <BaseKbd>Esc</BaseKbd>
-        </template>
-      </BaseKbdGroup>
-    </BaseButton>
+    <GameSessionAlertDialogEnd @continue="gameSessionStateActions.completeGameSession">
+      <template #trigger>
+        <BaseButton class="flex-grow md:max-w-36 px-3" size="sm" variant="outline">
+          <BaseKbdGroup>
+            <div>End</div>
+            <template #kbd>
+              <BaseKbd>Ctrl</BaseKbd>
+              <span>+</span>
+              <BaseKbd>Esc</BaseKbd>
+            </template>
+          </BaseKbdGroup>
+        </BaseButton>
+      </template>
+    </GameSessionAlertDialogEnd>
   </section>
 </template>
