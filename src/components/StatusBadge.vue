@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BaseBadge } from '@/components/ui/base-badge'
 
-export type StatusBadgeVariant = 'active' | 'inactive' | 'completed'
+export type StatusBadgeVariant = 'active' | 'inactive' | 'ended'
 
 defineProps<{ variant: StatusBadgeVariant }>()
 </script>

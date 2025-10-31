@@ -1,20 +1,11 @@
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed } from 'vue'
 
 import { BaseButton } from '@/components/ui/base-button'
 import GameSessionAlertDialogEnd from '../components/GameSessionAlertDialogEnd.vue'
-import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
 import { useGameSessionStateActions } from '../composables/useGameSessionStateActions'
 
 const gameSessionStateActions = useGameSessionStateActions()
-
-onMounted(() => {
-  document.addEventListener('keydown', handleKeydown)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown)
-})
 
 const playPauseLabel = computed(() => {
   if (gameSessionStateActions.canPause.value) {
@@ -25,41 +16,17 @@ const playPauseLabel = computed(() => {
 
   return ''
 })
-
-function handleKeydown(event: KeyboardEvent) {
-  if (event.key === ' ') {
-    gameSessionStateActions.toggleGameSessionPlayPause()
-  }
-
-  if (event.ctrlKey && event.key === 'Escape') {
-    gameSessionStateActions.completeGameSession()
-  }
-}
 </script>
 
 <template>
   <section class="flex items-center w-full gap-4">
-    <BaseButton class="flex-grow md:max-w-36" size="sm" variant="outline" @click="gameSessionStateActions.toggleGameSessionPlayPause">
-      <BaseKbdGroup>
-        <div>{{ playPauseLabel }}</div>
-        <template #kbd>
-          <BaseKbd>Space</BaseKbd>
-        </template>
-      </BaseKbdGroup>
+    <BaseButton class="flex-grow md:max-w-20" size="sm" variant="outline" @click="gameSessionStateActions.toggleGameSessionPlayPause">
+      {{ playPauseLabel }}
     </BaseButton>
 
-    <GameSessionAlertDialogEnd @continue="gameSessionStateActions.completeGameSession">
+    <GameSessionAlertDialogEnd @continue="gameSessionStateActions.endGameSession">
       <template #trigger>
-        <BaseButton class="flex-grow md:max-w-36 px-3" size="sm" variant="outline">
-          <BaseKbdGroup>
-            <div>End</div>
-            <template #kbd>
-              <BaseKbd>Ctrl</BaseKbd>
-              <span>+</span>
-              <BaseKbd>Esc</BaseKbd>
-            </template>
-          </BaseKbdGroup>
-        </BaseButton>
+        <BaseButton class="flex-grow md:max-w-20 px-3" size="sm" variant="outline"> End </BaseButton>
       </template>
     </GameSessionAlertDialogEnd>
   </section>

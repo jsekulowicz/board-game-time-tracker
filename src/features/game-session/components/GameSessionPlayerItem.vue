@@ -51,7 +51,7 @@ defineExpose({
 <template>
   <li class="flex">
     <CardWithStatusTag class="w-full gap-4 py-4">
-      <template v-if="gameSessionStatus !== 'completed'" #status>
+      <template v-if="gameSessionStatus !== 'ended'" #status>
         <GameSessionPlayerStatusTag :player="gameSessionPlayer" :gameStatus="gameSessionStatus" />
       </template>
 
@@ -61,7 +61,7 @@ defineExpose({
           <div>{{ displayedTime }}</div>
 
           <BaseButton
-            v-if="gameSessionStatus !== 'completed'"
+            v-if="gameSessionStatus !== 'ended'"
             class="min-w-26 min-h-10 px-3"
             variant="outline"
             :disabled="timeTrackingDisabled"

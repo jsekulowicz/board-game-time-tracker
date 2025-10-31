@@ -49,7 +49,7 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
         </GridListContainer>
       </BaseCardContent>
 
-      <BaseCardFooter v-if="gameSession.status !== 'completed'">
+      <BaseCardFooter v-if="gameSession.status !== 'ended'">
         <GameSessionCardActions />
       </BaseCardFooter>
     </template>

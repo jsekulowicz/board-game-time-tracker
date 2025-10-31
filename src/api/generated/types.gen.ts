@@ -54,7 +54,7 @@ export type GameSessionPlayerMove = {
     turnIndex: number;
 };
 
-export type GameSessionPlayerStatus = 'tracking' | 'ready_to_move' | 'turn_completed' | 'passed';
+export type GameSessionPlayerStatus = 'tracking' | 'ready_to_move' | 'turn_ended' | 'passed';
 
 export type GameSessionResource = {
     uuid: CommonUuid;
@@ -68,7 +68,7 @@ export type GameSessionResource = {
     updatedAt?: CommonTimestamp;
 };
 
-export type GameSessionStatus = 'in_progress' | 'paused' | 'completed';
+export type GameSessionStatus = 'in_progress' | 'paused' | 'ended';
 
 export type GameResource = {
     uuid: CommonUuid;
