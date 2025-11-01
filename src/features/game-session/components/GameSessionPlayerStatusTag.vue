@@ -12,8 +12,8 @@ export interface GameSessionStatusTagProps {
 const props = defineProps<GameSessionStatusTagProps>()
 
 const gameSessionStatusTagVariant = computed<StatusTagVariant>(() => {
-  if (props.gameStatus === 'completed') {
-    return 'completed'
+  if (props.gameStatus === 'ended') {
+    return 'ended'
   }
 
   switch (props.player.status) {
@@ -22,9 +22,9 @@ const gameSessionStatusTagVariant = computed<StatusTagVariant>(() => {
     case 'ready_to_move':
       return 'default'
     case 'passed':
-    case 'turn_completed':
+    case 'turn_ended':
     default:
-      return 'completed'
+      return 'ended'
   }
 })
 
@@ -34,7 +34,7 @@ const gameSessionStatusText = computed(() => {
       return props.gameStatus === 'paused' ? 'Paused' : 'Tracking'
     case 'ready_to_move':
       return 'Ready'
-    case 'turn_completed':
+    case 'turn_ended':
       return 'Moved'
     case 'passed':
     default:

@@ -7,6 +7,8 @@ import {
   switchPlayerMove as apiSwitchPlayerMove,
 } from '@/api/generated/sdk.gen'
 
+import { toast } from 'vue-sonner'
+
 export const useGameSessionStore = defineStore('gameSession', () => {
   const gameSession = ref<GameSessionResource | undefined>()
   const loadingGameSession = ref(true)
@@ -31,6 +33,21 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     })
 
     gameSession.value = response.data
+
+    switch (gameSession.value?.status) {
+      case 'ended': {
+        toast('Game session ended', { description: 'Tracking stopped. You will not be able to resume this game session.' })
+        break
+      }
+      case 'in_progress': {
+        toast('Game resumed', { description: 'Tracking resumed. Use Pause button to pause again.' })
+        break
+      }
+      case 'paused': {
+        toast('Game paused', { description: 'Tracking stopped. Use Resume button to resume tracking.' })
+        break
+      }
+    }
   }
 
   async function switchPlayerMove(playerUuid: string): Promise<void> {

@@ -23,7 +23,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
     {
       uuid: 'a56de165-fbe5-421f-bea9-2fddebf08fa8',
       name: 'Anastasia de la Vega',
-      status: 'turn_completed',
+      status: 'turn_ended',
       moves: [
         (() => {
           return {

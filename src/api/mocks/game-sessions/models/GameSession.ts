@@ -31,7 +31,7 @@ export class GameSession {
         this.resumeTracking()
         break
       case 'paused':
-      case 'completed':
+      case 'ended':
         this.stopTracking()
         break
     }
@@ -94,7 +94,7 @@ export class GameSession {
   private endAllCurrentMoves() {
     for (const player of this.resource.players) {
       if (player.status === 'tracking') {
-        this.endLastMove(player, 'turn_completed')
+        this.endLastMove(player, 'turn_ended')
       }
     }
   }

@@ -16,9 +16,9 @@ const gameSessionStatusTagVariant = computed<StatusTagVariant>(() => {
       return 'active'
     case 'paused':
       return 'inactive'
-    case 'completed':
+    case 'ended':
     default:
-      return 'completed'
+      return 'ended'
   }
 })
 
@@ -28,9 +28,9 @@ const gameSessionStatusTagText = computed<string>(() => {
       return 'In progress'
     case 'paused':
       return 'Paused'
-    case 'completed':
+    case 'ended':
     default:
-      return 'Completed'
+      return 'Ended'
   }
 })
 </script>

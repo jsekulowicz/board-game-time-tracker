@@ -1,11 +1,11 @@
 schemas:
   Status:
     type: string
-    enum: [in_progress, paused, completed]
+    enum: [in_progress, paused, ended]
 
   PlayerStatus:
     type: string
-    enum: [tracking, ready_to_move, turn_completed, passed]
+    enum: [tracking, ready_to_move, turn_ended, passed]
 
   PlayerMove:
     type: object
