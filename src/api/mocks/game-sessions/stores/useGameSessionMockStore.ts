@@ -60,6 +60,10 @@ export const useGameSessionMockStore = defineStore(
       return updated
     }
 
+    function getGameSessionListPersistedMock(): GameSessionResource[] {
+      return gameSessionResources.value
+    }
+
     function getGameSessionPersistedMock(uuid: string): GameSessionMethodReturnType {
       const resource = gameSessionResources.value.find((r) => r.uuid === uuid)
       if (!resource) {
@@ -76,13 +80,14 @@ export const useGameSessionMockStore = defineStore(
 
       const index = gameSessionResources.value.findIndex((r) => r.uuid === uuid)
       if (index >= 0) {
-        gameSessionResources.value[index] = updated
+        gameSessionResources.value[index] = { ...updated, updatedAt: new Date().toISOString() }
       }
     }
 
     return {
       gameSessionResources,
       gameSessions,
+      getGameSessionListPersistedMock,
       getGameSessionPersistedMock,
       setGameSessionStatus,
       setGameSessionName,

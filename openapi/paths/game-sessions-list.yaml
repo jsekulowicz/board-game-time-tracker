@@ -9,7 +9,7 @@ get:
           schema:
             type: object
             properties:
-              data:
+              items:
                 type: array
                 items:
                   $ref: ../components/schemas/game-session.yaml#/schemas/Resource
@@ -21,7 +21,7 @@ get:
                   pageSize: { type: integer }
                   totalPages: { type: integer }
                 required: [total, page, pageSize, totalPages]
-            required: [data, meta]
+            required: [items, meta]
     '400':
       $ref: ../components/responses.yaml#/responses/Error400
     '404':

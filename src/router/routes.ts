@@ -1,23 +1,25 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { RouteName } from './consts'
-import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
-
-const { uuid: initialGameSessionUuid } = getGameSessionFixture()
+import GameSessionListView from '@/features/game-session-list/GameSessionListView.vue'
+import GameSessionView from '@/features/game-session/GameSessionView.vue'
 
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: RouteName.Home,
-    redirect: () => ({
-      name: RouteName.GameSession,
-      params: { uuid: initialGameSessionUuid },
-    }),
+    redirect: {
+      name: RouteName.GameSessionList,
+    },
   },
   {
-    path: '/session/:uuid',
+    path: '/game-sessions',
+    name: RouteName.GameSessionList,
+    component: GameSessionListView,
+  },
+  {
+    path: '/game-sessions/:uuid',
     name: RouteName.GameSession,
-    component: () => import('@/features/game-session/GameSessionView.vue'),
-    props: true,
+    component: GameSessionView,
   },
 ]
 

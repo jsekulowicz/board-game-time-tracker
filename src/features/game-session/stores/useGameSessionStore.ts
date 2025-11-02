@@ -6,7 +6,6 @@ import {
   patchGameSessionById as apiPatchGameSessionById,
   switchPlayerMove as apiSwitchPlayerMove,
 } from '@/api/generated/sdk.gen'
-
 import { toast } from 'vue-sonner'
 
 export const useGameSessionStore = defineStore('gameSession', () => {
