@@ -115,7 +115,7 @@ export type ListGameSessionsResponses = {
      * Paginated list of game sessions
      */
     200: {
-        data: Array<GameSessionResource>;
+        items: Array<GameSessionResource>;
         meta: {
             total: number;
             page: number;

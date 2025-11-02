@@ -114,7 +114,9 @@ export class GameSession {
       moveIndex: this.resource.currentMoveIndex + 1,
       turnIndex: this.resource.currentTurnIndex,
     })
+
     player.status = 'tracking'
+    this.resource.currentMoveIndex = this.resource.currentMoveIndex + 1
   }
 
   private shouldStartNewTurn(): boolean {

@@ -23,6 +23,20 @@ export const gameSessionHandlers = [
     }
   }),
 
+  http.get('/game-sessions', async () => {
+    try {
+      await simulateAPIDelay()
+
+      const result = await gameSessionMockStore.getGameSessionListPersistedMock()
+
+      return HttpResponse.json({
+        items: result,
+      })
+    } catch {
+      return getHttpErrorResponse()
+    }
+  }),
+
   http.patch('/game-sessions/:uuid', async ({ params, request }) => {
     try {
       await simulateAPIDelay()
