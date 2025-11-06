@@ -1,14 +1,11 @@
 import type { GameSessionPlayer, GameSessionResource } from '@/api/generated'
 
 export const getGameSessionFixture = (): GameSessionResource => ({
-  uuid: 'c3fe6db7-aae7-42e9-a552-6d341e899ac3',
-  name: 'Casual chess game 2025.10.11',
+  id: 'c3fe6db7-aae7-42e9-a552-6d341e899ac3',
+  name: 'Casual Catan game 2025.10.11',
   currentTurnIndex: 1,
   currentMoveIndex: 1,
-  game: {
-    name: 'Chess',
-    uuid: '0b65a7a6-da55-4186-bf6b-d7cc3a397a7c',
-  },
+  game: 'Catan',
   players: getGameSessionPlayersFixture(),
   createdAt: new Date().toISOString(),
   updatedAt: undefined,
@@ -21,7 +18,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
 
   return [
     {
-      uuid: 'a56de165-fbe5-421f-bea9-2fddebf08fa8',
+      id: '111e6db7-aae7-42e9-a552-6d341e899ac3',
       name: 'Anastasia de la Vega',
       status: 'turn_ended',
       moves: [
@@ -35,31 +32,31 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
         })(),
       ],
       previousTotalTimeMs: 5000,
-      turnOrderIndex: 0,
+      ordinalNumber: 1,
     },
     {
-      uuid: 'ef911ca6-c3ec-4e5c-911f-85c2549aebc1',
+      id: '222e6db7-aae7-42e9-a552-6d341e899ac3',
       name: 'Marcus',
       status: 'tracking',
       previousTotalTimeMs: 0,
       moves: [{ moveIndex: 1, turnIndex: 1, startTimestamp: now.toISOString(), endTimestamp: null }],
-      turnOrderIndex: 1,
+      ordinalNumber: 2,
     },
     {
-      uuid: 'ef911ca6-c344-4e5c-911f-85c2549aebc1',
+      id: '333e6db7-aae7-42e9-a552-6d341e899ac3',
       name: 'Tara',
       status: 'ready_to_move',
       previousTotalTimeMs: 0,
       moves: [],
-      turnOrderIndex: 2,
+      ordinalNumber: 3,
     },
     {
-      uuid: 'ef993ca6-c344-4e5c-911f-85c2549aebc1',
+      id: '444e6db7-aae7-42e9-a552-6d341e899ac3',
       name: 'Bartholomew Kosciuszko',
       status: 'ready_to_move',
       previousTotalTimeMs: 0,
       moves: [],
-      turnOrderIndex: 3,
+      ordinalNumber: 4,
     },
   ]
 }

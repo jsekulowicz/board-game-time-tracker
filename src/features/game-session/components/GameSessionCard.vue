@@ -42,7 +42,7 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
           <GameSessionPlayerItem
             v-for="gameSessionPlayer in gameSession.players"
             ref="gameSessionPlayerItemRefs"
-            :key="gameSessionPlayer.uuid"
+            :key="gameSessionPlayer.id"
             :gameSessionPlayer
             :gameSessionStatus="gameSession.status"
           />

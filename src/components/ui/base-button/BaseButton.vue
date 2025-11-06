@@ -13,15 +13,17 @@ interface Props extends PrimitiveProps {
   class?: HTMLAttributes['class']
   disabled?: boolean
   tooltip?: string | null
+  type?: string
 }
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
   (e: 'keydown', event: KeyboardEvent): void
 }>()
 
 const props = withDefaults(defineProps<Props>(), {
   as: 'button',
+  type: 'button',
 })
 
 const buttonRef = ref<InstanceType<typeof BaseButton> | null>(null)
@@ -30,10 +32,17 @@ const stateClasses = computed(() => {
   return props.disabled ? 'opacity-50 cursor-not-allowed' : ''
 })
 
-function ifEnabled(action: (...args: unknown[]) => unknown) {
-  if (!props.disabled) {
-    action()
+function onClick(event: MouseEvent) {
+  if (props.disabled) {
+    return
   }
+
+  if (props.type !== 'submit') {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
+  emit('click', event)
 }
 
 function focus() {
@@ -52,11 +61,12 @@ defineExpose({
         <Primitive
           ref="buttonRef"
           data-slot="button"
+          :class="cn(buttonVariants({ variant, size }), props.class, stateClasses)"
           :as="as"
           :as-child="asChild"
-          :class="cn(buttonVariants({ variant, size }), props.class, stateClasses)"
-          @click.stop.prevent="ifEnabled(() => $emit('click', $event))"
-          @keydown.enter.space.stop.prevent="ifEnabled(() => $emit('click', $event))"
+          :type
+          @click="onClick"
+          @keydown.enter.space="onClick"
         >
           <slot />
         </Primitive>

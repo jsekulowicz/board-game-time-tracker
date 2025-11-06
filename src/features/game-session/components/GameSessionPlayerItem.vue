@@ -24,12 +24,12 @@ const { switchPlayerMove, switchPlayerKeyLabel } = useSwitchPlayerMove(sessionPl
 const finishButtonRef = ref<InstanceType<typeof BaseButton> | null>(null)
 
 const finishButtonTooltip = computed<string | null>(() => {
-  if (props.gameSessionStatus !== 'in_progress') {
-    return 'Please resume the game session to track.'
+  if (props.gameSessionStatus === 'paused') {
+    return 'Resume the game session to track.'
   }
 
   if (timeTrackingDisabled.value) {
-    return 'Player already moved this turn. Please wait for the next turn to track.'
+    return 'Player already moved this turn. Wait for the next turn to track.'
   }
 
   return null

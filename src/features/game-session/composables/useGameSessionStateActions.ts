@@ -7,6 +7,7 @@ export const useGameSessionStateActions = () => {
   const canResume = computed(() => gameSessionStore.gameSession?.status === 'paused')
   const canPause = computed(() => gameSessionStore.gameSession?.status === 'in_progress')
   const canComplete = computed(() => gameSessionStore.gameSession?.status !== 'ended')
+  const needsToStartTracking = computed(() => gameSessionStore.gameSession?.status === 'ready_to_track')
 
   function toggleGameSessionPlayPause() {
     if (canPause.value) {
@@ -26,6 +27,7 @@ export const useGameSessionStateActions = () => {
     canResume,
     canPause,
     canComplete,
+    needsToStartTracking,
     toggleGameSessionPlayPause,
     endGameSession,
   }

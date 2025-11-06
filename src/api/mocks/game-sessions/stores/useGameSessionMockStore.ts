@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
 import { GameSession } from '../models/GameSession'
-import type { ErrorResponse, GameSessionResource, GameSessionStatus } from '@/api/generated'
+import type { ErrorResponse, GameSessionCreateBody, GameSessionPlayer, GameSessionResource, GameSessionStatus } from '@/api/generated'
 import { GAME_SESSION_NOT_FOUND } from '../errors'
 
 type GameSessionMethodReturnType = GameSessionResource | ErrorResponse
@@ -18,8 +18,8 @@ export const useGameSessionMockStore = defineStore(
 
     const gameSessions = computed(() => gameSessionResources.value.map((res) => new GameSession(res)))
 
-    function getSession(uuid: string): GameSession | ErrorResponse {
-      const resource = gameSessionResources.value.find((r) => r.uuid === uuid)
+    function getSession(id: string): GameSession | ErrorResponse {
+      const resource = gameSessionResources.value.find((r) => r.id === id)
       if (!resource) {
         return GAME_SESSION_NOT_FOUND
       }
@@ -27,36 +27,64 @@ export const useGameSessionMockStore = defineStore(
       return new GameSession(resource)
     }
 
-    function setGameSessionStatus(uuid: string, status: GameSessionStatus): GameSessionMethodReturnType {
-      const session = getSession(uuid)
+    function addGameSessionPersistedMock(body: GameSessionCreateBody): GameSessionMethodReturnType {
+      const { name, game, players } = body
+      const newGameSessionResource: GameSessionResource = {
+        id: crypto.randomUUID(),
+        status: 'ready_to_track',
+        currentTurnIndex: 0,
+        currentMoveIndex: 0,
+        createdAt: new Date().toISOString(),
+        name,
+        game,
+        players: players.map(
+          (playerName, index) =>
+            ({
+              id: crypto.randomUUID(),
+              name: playerName,
+              status: 'ready_to_move',
+              moves: [],
+              previousTotalTimeMs: 5000,
+              ordinalNumber: index + 1,
+            }) as GameSessionPlayer,
+        ),
+      }
+
+      gameSessionResources.value = [...gameSessionResources.value, newGameSessionResource]
+
+      return newGameSessionResource
+    }
+
+    function setGameSessionStatus(id: string, status: GameSessionStatus): GameSessionMethodReturnType {
+      const session = getSession(id)
       if ('error' in session) {
         return session
       }
 
       const updated = session.setStatus(status)
-      updatePersistedResource(uuid, updated)
+      updatePersistedResource(id, updated)
       return updated
     }
 
-    function switchPlayerMove(uuid: string, playerUuid: string): GameSessionMethodReturnType {
-      const session = getSession(uuid)
+    function switchPlayerMove(id: string, playerUuid: string): GameSessionMethodReturnType {
+      const session = getSession(id)
       if ('error' in session) {
         return session
       }
 
       const updated = session.switchPlayerMove(playerUuid)
-      updatePersistedResource(uuid, updated)
+      updatePersistedResource(id, updated)
       return updated
     }
 
-    function setGameSessionName(uuid: string, name: string): GameSessionMethodReturnType {
-      const session = getSession(uuid)
+    function setGameSessionName(id: string, name: string): GameSessionMethodReturnType {
+      const session = getSession(id)
       if ('error' in session) {
         return session
       }
 
       const updated = session.setName(name)
-      updatePersistedResource(uuid, updated)
+      updatePersistedResource(id, updated)
       return updated
     }
 
@@ -64,8 +92,8 @@ export const useGameSessionMockStore = defineStore(
       return gameSessionResources.value
     }
 
-    function getGameSessionPersistedMock(uuid: string): GameSessionMethodReturnType {
-      const resource = gameSessionResources.value.find((r) => r.uuid === uuid)
+    function getGameSessionPersistedMock(id: string): GameSessionMethodReturnType {
+      const resource = gameSessionResources.value.find((r) => r.id === id)
       if (!resource) {
         return GAME_SESSION_NOT_FOUND
       }
@@ -73,12 +101,12 @@ export const useGameSessionMockStore = defineStore(
       return resource
     }
 
-    function updatePersistedResource(uuid: string, updated: GameSessionMethodReturnType) {
+    function updatePersistedResource(id: string, updated: GameSessionMethodReturnType) {
       if ('error' in updated) {
         return
       }
 
-      const index = gameSessionResources.value.findIndex((r) => r.uuid === uuid)
+      const index = gameSessionResources.value.findIndex((r) => r.id === id)
       if (index >= 0) {
         gameSessionResources.value[index] = { ...updated, updatedAt: new Date().toISOString() }
       }
@@ -87,6 +115,7 @@ export const useGameSessionMockStore = defineStore(
     return {
       gameSessionResources,
       gameSessions,
+      addGameSessionPersistedMock,
       getGameSessionListPersistedMock,
       getGameSessionPersistedMock,
       setGameSessionStatus,

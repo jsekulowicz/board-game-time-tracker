@@ -13,10 +13,12 @@ export const useGameSessionStore = defineStore('gameSession', () => {
   const loadingGameSession = ref(true)
 
   const hasLastMoveInTurn = computed(() => gameSession.value?.players?.every((player) => player.status !== 'ready_to_move'))
-  const isInProgress = computed(() => gameSession.value?.status === 'in_progress')
+  const isTrackingPossible = computed(
+    () => gameSession.value?.status && ['ready_to_track', 'in_progress'].includes(gameSession.value.status),
+  )
 
-  async function getGameSessionById(uuid: string): Promise<void> {
-    const response = await apiGetGameSessionById({ path: { uuid } })
+  async function getGameSessionById(id: string): Promise<void> {
+    const response = await apiGetGameSessionById({ path: { id } })
     gameSession.value = response.data
     loadingGameSession.value = false
   }
@@ -27,7 +29,7 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     }
 
     const response = await apiPatchGameSessionById({
-      path: { uuid: gameSession.value.uuid },
+      path: { id: gameSession.value.id },
       body: { status },
     })
 
@@ -55,7 +57,7 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     }
 
     const response = await apiSwitchPlayerMove({
-      path: { sessionUuid: gameSession.value.uuid },
+      path: { sessionUuid: gameSession.value.id },
       body: { playerUuid },
     })
 
@@ -64,5 +66,13 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     }
   }
 
-  return { getGameSessionById, setGameSessionStatus, switchPlayerMove, hasLastMoveInTurn, isInProgress, gameSession, loadingGameSession }
+  return {
+    getGameSessionById,
+    setGameSessionStatus,
+    switchPlayerMove,
+    hasLastMoveInTurn,
+    isTrackingPossible,
+    gameSession,
+    loadingGameSession,
+  }
 })

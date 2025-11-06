@@ -9,13 +9,13 @@ const route = useRoute()
 const gameSessionStore = useGameSessionStore()
 
 async function loadSession() {
-  const uuid = route.params.uuid as string
-  if (uuid) {
-    await gameSessionStore.getGameSessionById(uuid)
+  const id = route.params.id as string
+  if (id) {
+    await gameSessionStore.getGameSessionById(id)
   }
 }
 
-watch(() => route.params.uuid, loadSession, { immediate: true })
+watch(() => route.params.id, loadSession, { immediate: true })
 </script>
 
 <template>

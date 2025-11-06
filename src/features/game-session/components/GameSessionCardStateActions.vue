@@ -7,8 +7,16 @@ import { useGameSessionStateActions } from '../composables/useGameSessionStateAc
 
 const gameSessionStateActions = useGameSessionStateActions()
 
+const playPauseTooltip = computed(() => {
+  if (gameSessionStateActions.needsToStartTracking.value) {
+    return 'Start tracking in order to be able to pause the session.'
+  }
+
+  return undefined
+})
+
 const playPauseLabel = computed(() => {
-  if (gameSessionStateActions.canPause.value) {
+  if (gameSessionStateActions.needsToStartTracking.value || gameSessionStateActions.canPause.value) {
     return 'Pause'
   } else if (gameSessionStateActions.canResume.value) {
     return 'Resume'
@@ -20,7 +28,14 @@ const playPauseLabel = computed(() => {
 
 <template>
   <section class="flex items-center w-full gap-4">
-    <BaseButton class="flex-grow md:max-w-20" size="sm" variant="outline" @click="gameSessionStateActions.toggleGameSessionPlayPause">
+    <BaseButton
+      class="flex-grow md:max-w-20"
+      size="sm"
+      variant="outline"
+      :tooltip="playPauseTooltip"
+      :disabled="gameSessionStateActions.needsToStartTracking.value"
+      @click="gameSessionStateActions.toggleGameSessionPlayPause"
+    >
       {{ playPauseLabel }}
     </BaseButton>
 

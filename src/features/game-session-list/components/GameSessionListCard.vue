@@ -13,8 +13,6 @@ gameSessionListStore.getGameSessionList()
 </script>
 
 <template>
-  <h2 class="font-semibold">Game session list</h2>
-
   <GameSessionListTableLoading v-if="gameSessionListStore.loadingGameSessions" />
 
   <BaseCard v-else class="py-0 overflow-hidden">
@@ -33,14 +31,14 @@ gameSessionListStore.getGameSessionList()
       </BaseTableHeader>
 
       <BaseTableBody>
-        <BaseTableRow v-for="session in gameSessionListStore.gameSessions" :key="session.uuid" class="hover:bg-muted/30 transition-colors">
+        <BaseTableRow v-for="session in gameSessionListStore.gameSessions" :key="session.id" class="hover:bg-muted/30 transition-colors">
           <BaseTableCell>
             <RouterLink
               class="inline-flex px-1 underline"
               :to="{
                 name: RouteName.GameSession,
                 params: {
-                  uuid: session.uuid,
+                  id: session.id,
                 },
               }"
             >
@@ -48,7 +46,7 @@ gameSessionListStore.getGameSessionList()
             </RouterLink>
           </BaseTableCell>
           <BaseTableCell>{{ session.status }}</BaseTableCell>
-          <BaseTableCell>{{ session.game.name }}</BaseTableCell>
+          <BaseTableCell>{{ session.game }}</BaseTableCell>
           <BaseTableCell class="text-right w-0">{{ session.players.length }}</BaseTableCell>
           <BaseTableCell class="text-right w-0">{{ session.currentMoveIndex + 1 }}</BaseTableCell>
           <BaseTableCell class="text-right w-0">{{ session.currentTurnIndex + 1 }}</BaseTableCell>
@@ -57,7 +55,7 @@ gameSessionListStore.getGameSessionList()
         </BaseTableRow>
 
         <BaseTableRow v-if="!gameSessionListStore.gameSessions.length">
-          <BaseTableCell colspan="4" class="text-center text-muted-foreground py-4"> No game sessions found </BaseTableCell>
+          <BaseTableCell colspan="4" class="text-center text-muted-foreground py-4">No game sessions found</BaseTableCell>
         </BaseTableRow>
       </BaseTableBody>
     </BaseTable>

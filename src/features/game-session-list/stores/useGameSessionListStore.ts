@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { GameSessionResource } from '@/api/generated'
-import { listGameSessions as apiListGameSessions } from '@/api/generated/sdk.gen'
+import type { GameSessionCreateBody, GameSessionResource } from '@/api/generated'
+import { listGameSessions as apiListGameSessions, createGameSession as apiCreateGameSession } from '@/api/generated/sdk.gen'
 
 export const useGameSessionListStore = defineStore('gameSessionList', () => {
   const gameSessions = ref<GameSessionResource[]>([])
@@ -14,5 +14,13 @@ export const useGameSessionListStore = defineStore('gameSessionList', () => {
     loadingGameSessions.value = false
   }
 
-  return { getGameSessionList, gameSessions, loadingGameSessions }
+  async function createGameSession(body: GameSessionCreateBody): Promise<GameSessionResource | undefined> {
+    const response = await apiCreateGameSession({ body })
+
+    if (response.data) {
+      return response.data
+    }
+  }
+
+  return { getGameSessionList, createGameSession, gameSessions, loadingGameSessions }
 })

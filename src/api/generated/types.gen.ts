@@ -40,11 +40,28 @@ export type ErrorResponse = {
     };
 };
 
+export type GameSessionCreateBody = {
+    /**
+     * Human-readable session name
+     */
+    name: string;
+    /**
+     * Name of the game being played
+     */
+    game: string;
+    /**
+     * List of player names participating in the session.
+     * The backend will create corresponding Player objects.
+     *
+     */
+    players: Array<string>;
+};
+
 export type GameSessionPlayer = PlayerResource & {
     moves: Array<GameSessionPlayerMove>;
     status: GameSessionPlayerStatus;
     previousTotalTimeMs: number;
-    turnOrderIndex: number;
+    ordinalNumber: number;
 };
 
 export type GameSessionPlayerMove = {
@@ -57,9 +74,9 @@ export type GameSessionPlayerMove = {
 export type GameSessionPlayerStatus = 'tracking' | 'ready_to_move' | 'turn_ended' | 'passed';
 
 export type GameSessionResource = {
-    uuid: CommonUuid;
+    id: CommonUuid;
     name: string;
-    game: GameResource;
+    game: string;
     status: GameSessionStatus;
     players: Array<GameSessionPlayer>;
     currentTurnIndex: number;
@@ -68,15 +85,10 @@ export type GameSessionResource = {
     updatedAt?: CommonTimestamp;
 };
 
-export type GameSessionStatus = 'in_progress' | 'paused' | 'ended';
-
-export type GameResource = {
-    uuid: CommonUuid;
-    name: string;
-};
+export type GameSessionStatus = 'ready_to_track' | 'in_progress' | 'paused' | 'ended';
 
 export type PlayerResource = {
-    uuid: CommonUuid;
+    id: CommonUuid;
     name: string;
 };
 
@@ -127,13 +139,40 @@ export type ListGameSessionsResponses = {
 
 export type ListGameSessionsResponse = ListGameSessionsResponses[keyof ListGameSessionsResponses];
 
+export type CreateGameSessionData = {
+    body: GameSessionCreateBody;
+    path?: never;
+    query?: never;
+    url: '/game-sessions';
+};
+
+export type CreateGameSessionErrors = {
+    /**
+     * Invalid request body
+     */
+    400: unknown;
+    /**
+     * Internal server error
+     */
+    500: unknown;
+};
+
+export type CreateGameSessionResponses = {
+    /**
+     * Game session successfully created
+     */
+    201: GameSessionResource;
+};
+
+export type CreateGameSessionResponse = CreateGameSessionResponses[keyof CreateGameSessionResponses];
+
 export type GetGameSessionByIdData = {
     body?: never;
     path: {
-        uuid: CommonUuid;
+        id: CommonUuid;
     };
     query?: never;
-    url: '/game-sessions/{uuid}';
+    url: '/game-sessions/{id}';
 };
 
 export type GetGameSessionByIdErrors = {
@@ -167,10 +206,10 @@ export type PatchGameSessionByIdData = {
         status?: GameSessionStatus;
     };
     path: {
-        uuid: CommonUuid;
+        id: CommonUuid;
     };
     query?: never;
-    url: '/game-sessions/{uuid}';
+    url: '/game-sessions/{id}';
 };
 
 export type PatchGameSessionByIdErrors = {

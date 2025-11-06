@@ -42,7 +42,7 @@ const gameSessionStatusText = computed(() => {
   }
 })
 
-const playerOrdinalNumber = computed(() => props.player.turnOrderIndex + 1)
+const playerOrdinalNumber = computed(() => props.player.ordinalNumber)
 const gameSessionStatusTagText = computed(() => `#${playerOrdinalNumber.value} ${gameSessionStatusText.value}`)
 </script>
 

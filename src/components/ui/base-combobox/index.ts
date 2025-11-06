@@ -1,0 +1,12 @@
+export { default as BaseCombobox } from './BaseCombobox.vue'
+export { default as BaseComboboxAnchor } from './BaseComboboxAnchor.vue'
+export { default as BaseComboboxEmpty } from './BaseComboboxEmpty.vue'
+export { default as BaseComboboxGroup } from './BaseComboboxGroup.vue'
+export { default as BaseComboboxInput } from './BaseComboboxInput.vue'
+export { default as BaseComboboxItem } from './BaseComboboxItem.vue'
+export { default as BaseComboboxItemIndicator } from './BaseComboboxItemIndicator.vue'
+export { default as BaseComboboxList } from './BaseComboboxList.vue'
+export { default as BaseComboboxSeparator } from './BaseComboboxSeparator.vue'
+export { default as BaseComboboxViewport } from './BaseComboboxViewport.vue'
+
+export { ComboboxCancel as BaseComboboxCancel, ComboboxTrigger as BaseComboboxTrigger } from 'reka-ui'

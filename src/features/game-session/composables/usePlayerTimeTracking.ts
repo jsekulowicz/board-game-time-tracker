@@ -22,7 +22,9 @@ export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSession
   })
 
   const timeTrackingDisabled = computed(() => {
-    return !gameSessionStore.isInProgress || (gameSessionPlayer.value.status !== 'ready_to_move' && !gameSessionStore.hasLastMoveInTurn)
+    return (
+      !gameSessionStore.isTrackingPossible || (gameSessionPlayer.value.status !== 'ready_to_move' && !gameSessionStore.hasLastMoveInTurn)
+    )
   })
 
   onUnmounted(stopTimer)

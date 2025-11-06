@@ -1,7 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { RouteName } from './consts'
-import GameSessionListView from '@/features/game-session-list/GameSessionListView.vue'
-import GameSessionView from '@/features/game-session/GameSessionView.vue'
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -14,12 +12,17 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/game-sessions',
     name: RouteName.GameSessionList,
-    component: GameSessionListView,
+    component: () => import('@/features/game-session-list/GameSessionListView.vue'),
   },
   {
-    path: '/game-sessions/:uuid',
+    path: '/game-sessions/add',
+    name: RouteName.GameSessionAdd,
+    component: () => import('@/features/game-session-add/GameSessionAddView.vue'),
+  },
+  {
+    path: '/game-sessions/:id',
     name: RouteName.GameSession,
-    component: GameSessionView,
+    component: () => import('@/features/game-session/GameSessionView.vue'),
   },
 ]
 

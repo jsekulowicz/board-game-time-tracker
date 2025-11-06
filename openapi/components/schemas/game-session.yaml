@@ -1,7 +1,7 @@
 schemas:
   Status:
     type: string
-    enum: [in_progress, paused, ended]
+    enum: [ready_to_track, in_progress, paused, ended]
 
   PlayerStatus:
     type: string
@@ -35,19 +35,19 @@ schemas:
             $ref: '#/schemas/PlayerStatus'
           previousTotalTimeMs:
             type: integer
-          turnOrderIndex:
+          ordinalNumber:
             type: integer
-        required: [status, turnOrderIndex, moves, previousTotalTimeMs]
+        required: [name, status, ordinalNumber, moves, previousTotalTimeMs]
 
   Resource:
     type: object
     properties:
-      uuid:
+      id:
         $ref: ./common.yaml#/schemas/Uuid
       name:
         type: string
       game:
-        $ref: './game.yaml#/schemas/Resource'
+        type: string
       status:
         $ref: '#/schemas/Status'
       players:
@@ -62,4 +62,4 @@ schemas:
         $ref: ./common.yaml#/schemas/Timestamp
       updatedAt:
         $ref: ./common.yaml#/schemas/Timestamp
-    required: [uuid, name, game, status, players, currentTurnIndex, currentMoveIndex, createdAt]
+    required: [id, name, game, status, players, currentTurnIndex, currentMoveIndex, createdAt]
