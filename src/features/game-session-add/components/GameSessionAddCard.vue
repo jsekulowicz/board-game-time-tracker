@@ -95,7 +95,7 @@ const onSubmit = handleSubmit(async (formValues) => {
 
 <template>
   <UiCard class="p-4 gap-6">
-    <h2 class="font-semibold">Add game session</h2>
+    <h3 class="font-semibold">Details</h3>
 
     <form class="flex flex-col gap-x-6 gap-y-4" @submit="onSubmit">
       <section class="grid md:grid-cols-2 space-y-6 gap-4">
