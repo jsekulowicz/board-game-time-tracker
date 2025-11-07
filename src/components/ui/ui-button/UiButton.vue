@@ -37,7 +37,7 @@ function onClick(event: MouseEvent) {
     return
   }
 
-  if (props.type !== 'submit') {
+  if (props.type !== 'submit' && !props.asChild) {
     event.preventDefault()
     event.stopPropagation()
   }
