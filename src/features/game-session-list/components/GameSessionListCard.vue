@@ -19,7 +19,7 @@ gameSessionListStore.getGameSessionList()
     <BaseTable class="w-full overflow-x-auto table-auto text-sm">
       <BaseTableHeader>
         <BaseTableRow>
-          <BaseTableHead class="whitespace-nowrap pl-3">Name</BaseTableHead>
+          <BaseTableHead class="whitespace-nowrap">Name</BaseTableHead>
           <BaseTableHead class="whitespace-nowrap">Status</BaseTableHead>
           <BaseTableHead class="whitespace-nowrap">Game</BaseTableHead>
           <BaseTableHead class="whitespace-nowrap">Player count</BaseTableHead>
@@ -34,7 +34,7 @@ gameSessionListStore.getGameSessionList()
         <BaseTableRow v-for="session in gameSessionListStore.gameSessions" :key="session.id" class="hover:bg-muted/30 transition-colors">
           <BaseTableCell>
             <RouterLink
-              class="inline-flex px-1 underline"
+              class="inline-flex underline"
               :to="{
                 name: RouteName.GameSession,
                 params: {

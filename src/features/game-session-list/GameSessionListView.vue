@@ -9,16 +9,14 @@ import { RouteName } from '@/router/consts'
 
 <template>
   <BaseLayout>
-    <header class="flex flex-wrap justify-between items-center gap-3">
-      <h2 class="font-semibold">Game session list</h2>
-
+    <template #header-actions>
       <BaseButton asChild>
         <RouterLink :to="{ name: RouteName.GameSessionAdd }">
           <Icon icon="radix-icons:plus" />
           <div>Add game session</div>
         </RouterLink>
       </BaseButton>
-    </header>
+    </template>
 
     <GameSessionListCard />
   </BaseLayout>
