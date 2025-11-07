@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import GameSessionListCard from './components/GameSessionListCard.vue'
-import BaseButton from '@/components/ui/base-button/BaseButton.vue'
+import UiButton from '@/components/ui/ui-button/UiButton.vue'
 
 import { Icon } from '@iconify/vue'
 import { RouteName } from '@/router/consts'
@@ -10,12 +10,12 @@ import { RouteName } from '@/router/consts'
 <template>
   <BaseLayout>
     <template #header-actions>
-      <BaseButton asChild>
+      <UiButton asChild>
         <RouterLink :to="{ name: RouteName.GameSessionAdd }">
           <Icon icon="radix-icons:plus" />
           <div>Add game session</div>
         </RouterLink>
-      </BaseButton>
+      </UiButton>
     </template>
 
     <GameSessionListCard />

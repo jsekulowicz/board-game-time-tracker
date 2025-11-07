@@ -2,12 +2,12 @@
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 import {
-  BaseBreadcrumb,
-  BaseBreadcrumbItem,
-  BaseBreadcrumbLink,
-  BaseBreadcrumbList,
-  BaseBreadcrumbSeparator,
-} from '@/components/ui/base-breadcrumb'
+  UiBreadcrumb,
+  UiBreadcrumbItem,
+  UiBreadcrumbLink,
+  UiBreadcrumbList,
+  UiBreadcrumbSeparator,
+} from '@/components/ui/ui-breadcrumb'
 import { Icon } from '@iconify/vue'
 
 const route = useRoute()
@@ -30,20 +30,20 @@ const breadcrumbs = computed(() => {
 </script>
 
 <template>
-  <BaseBreadcrumb v-if="breadcrumbs.length > 1">
-    <BaseBreadcrumbList>
+  <UiBreadcrumb v-if="breadcrumbs.length > 1">
+    <UiBreadcrumbList>
       <template v-for="(crumb, index) in breadcrumbs" :key="index">
-        <BaseBreadcrumbItem>
-          <BaseBreadcrumbLink v-if="crumb.to" asChild>
+        <UiBreadcrumbItem>
+          <UiBreadcrumbLink v-if="crumb.to" asChild>
             <RouterLink class="hover:underline" :to="crumb.to">{{ crumb.title }}</RouterLink>
-          </BaseBreadcrumbLink>
+          </UiBreadcrumbLink>
           <span v-else class="text-muted-foreground">{{ crumb.title }}</span>
-        </BaseBreadcrumbItem>
+        </UiBreadcrumbItem>
 
-        <BaseBreadcrumbSeparator v-if="index < breadcrumbs.length - 1">
+        <UiBreadcrumbSeparator v-if="index < breadcrumbs.length - 1">
           <Icon icon="radix-icons:chevron-right" />
-        </BaseBreadcrumbSeparator>
+        </UiBreadcrumbSeparator>
       </template>
-    </BaseBreadcrumbList>
-  </BaseBreadcrumb>
+    </UiBreadcrumbList>
+  </UiBreadcrumb>
 </template>

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { BaseEmpty, BaseEmptyHeader, BaseEmptyMedia, BaseEmptyTitle, BaseEmptyDescription } from '@/components/ui/base-empty'
+import { UiEmpty, UiEmptyHeader, UiEmptyMedia, UiEmptyTitle, UiEmptyDescription } from '@/components/ui/ui-empty'
 </script>
 
 <template>
-  <BaseEmpty>
-    <BaseEmptyHeader>
-      <BaseEmptyMedia variant="icon">404</BaseEmptyMedia>
-      <BaseEmptyTitle>This game session does not exist</BaseEmptyTitle>
-      <BaseEmptyDescription>We haven't found any game session for the id in the page address. Try a different one!</BaseEmptyDescription>
-    </BaseEmptyHeader>
-  </BaseEmpty>
+  <UiEmpty>
+    <UiEmptyHeader>
+      <UiEmptyMedia variant="icon">404</UiEmptyMedia>
+      <UiEmptyTitle>This game session does not exist</UiEmptyTitle>
+      <UiEmptyDescription>We haven't found any game session for the id in the page address. Try a different one!</UiEmptyDescription>
+    </UiEmptyHeader>
+  </UiEmpty>
 </template>

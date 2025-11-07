@@ -6,10 +6,10 @@ import * as zod from 'zod'
 import { Icon } from '@iconify/vue'
 import { useRouter } from 'vue-router'
 
-import { BaseFormControl, BaseFormField, BaseFormItem, BaseFormLabel, BaseFormMessage } from '@/components/ui/base-form'
-import { BaseCard } from '@/components/ui/base-card'
-import { BaseButton } from '@/components/ui/base-button'
-import { BaseInput } from '@/components/ui/base-input'
+import { UiFormControl, UiFormField, UiFormItem, UiFormLabel, UiFormMessage } from '@/components/ui/ui-form'
+import { UiCard } from '@/components/ui/ui-card'
+import { UiButton } from '@/components/ui/ui-button'
+import { UiInput } from '@/components/ui/ui-input'
 import { useGameSessionListStore } from '@/features/game-session-list/stores/useGameSessionListStore'
 import { RouteName } from '@/router/consts'
 import { toast } from 'vue-sonner'
@@ -94,47 +94,47 @@ const onSubmit = handleSubmit(async (formValues) => {
 </script>
 
 <template>
-  <BaseCard class="p-4 gap-6">
+  <UiCard class="p-4 gap-6">
     <h2 class="font-semibold">Add game session</h2>
 
     <form class="flex flex-col gap-x-6 gap-y-4" @submit="onSubmit">
       <section class="grid md:grid-cols-2 space-y-6 gap-4">
-        <BaseFormField v-slot="{ componentField }" name="name">
-          <BaseFormItem>
-            <BaseFormLabel>Session name</BaseFormLabel>
-            <BaseFormControl>
-              <BaseInput type="text" v-bind="componentField" />
-            </BaseFormControl>
-            <BaseFormMessage />
-          </BaseFormItem>
-        </BaseFormField>
+        <UiFormField v-slot="{ componentField }" name="name">
+          <UiFormItem>
+            <UiFormLabel>Session name</UiFormLabel>
+            <UiFormControl>
+              <UiInput type="text" v-bind="componentField" />
+            </UiFormControl>
+            <UiFormMessage />
+          </UiFormItem>
+        </UiFormField>
 
-        <BaseFormField v-slot="{ componentField }" name="game">
-          <BaseFormItem>
-            <BaseFormLabel>Game name</BaseFormLabel>
-            <BaseFormControl>
-              <BaseInput type="text" v-bind="componentField" />
-            </BaseFormControl>
-            <BaseFormMessage />
-          </BaseFormItem>
-        </BaseFormField>
+        <UiFormField v-slot="{ componentField }" name="game">
+          <UiFormItem>
+            <UiFormLabel>Game name</UiFormLabel>
+            <UiFormControl>
+              <UiInput type="text" v-bind="componentField" />
+            </UiFormControl>
+            <UiFormMessage />
+          </UiFormItem>
+        </UiFormField>
       </section>
 
       <header class="flex items-center justify-between gap-4">
         <h3 class="font-semibold">Players</h3>
-        <BaseButton size="sm" variant="outline" :disabled="hasMaxPlayers" :tooltip="playersAddTooltip" @click.prevent="addPlayer">
+        <UiButton size="sm" variant="outline" :disabled="hasMaxPlayers" :tooltip="playersAddTooltip" @click.prevent="addPlayer">
           Add player
-        </BaseButton>
+        </UiButton>
       </header>
 
       <section class="grid md:grid-cols-2 space-y-6 gap-4">
-        <BaseFormField v-for="(player, index) in playerFields" :key="player.key" v-slot="{ componentField }" :name="`players[${index}]`">
-          <BaseFormItem>
-            <BaseFormLabel>Player {{ index + 1 }} name</BaseFormLabel>
-            <BaseFormControl>
+        <UiFormField v-for="(player, index) in playerFields" :key="player.key" v-slot="{ componentField }" :name="`players[${index}]`">
+          <UiFormItem>
+            <UiFormLabel>Player {{ index + 1 }} name</UiFormLabel>
+            <UiFormControl>
               <div class="flex gap-1">
-                <BaseInput class="inline-flex" type="text" v-bind="componentField" />
-                <BaseButton
+                <UiInput class="inline-flex" type="text" v-bind="componentField" />
+                <UiButton
                   class="inline-flex"
                   size="icon"
                   variant="outline"
@@ -143,15 +143,15 @@ const onSubmit = handleSubmit(async (formValues) => {
                   @click.prevent="removePlayer(index)"
                 >
                   <Icon icon="radix-icons:cross-1" />
-                </BaseButton>
+                </UiButton>
               </div>
-            </BaseFormControl>
-            <BaseFormMessage />
-          </BaseFormItem>
-        </BaseFormField>
+            </UiFormControl>
+            <UiFormMessage />
+          </UiFormItem>
+        </UiFormField>
       </section>
 
-      <BaseButton class="md:w-1/4" type="submit">Submit</BaseButton>
+      <UiButton class="md:w-1/4" type="submit">Submit</UiButton>
     </form>
-  </BaseCard>
+  </UiCard>
 </template>

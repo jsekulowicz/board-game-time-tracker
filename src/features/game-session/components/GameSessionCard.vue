@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 
-import { BaseCardHeader, BaseCardTitle, BaseCardContent, BaseCardFooter } from '@/components/ui/base-card'
+import { UiCardHeader, UiCardTitle, UiCardContent, UiCardFooter } from '@/components/ui/ui-card'
 import GridListContainer from '@/components/GridListContainer.vue'
 import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
 
@@ -30,14 +30,14 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
     </template>
 
     <template v-if="gameSession">
-      <BaseCardHeader class="flex items-center justify-between">
-        <BaseCardTitle>
+      <UiCardHeader class="flex items-center justify-between">
+        <UiCardTitle>
           {{ gameSession.name }}, {{ gameSession.name }}, turn
           {{ gameSession.currentTurnIndex + 1 }}
-        </BaseCardTitle>
-      </BaseCardHeader>
+        </UiCardTitle>
+      </UiCardHeader>
 
-      <BaseCardContent>
+      <UiCardContent>
         <GridListContainer :maxCols="gameSession.players.length">
           <GameSessionPlayerItem
             v-for="gameSessionPlayer in gameSession.players"
@@ -47,11 +47,11 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
             :gameSessionStatus="gameSession.status"
           />
         </GridListContainer>
-      </BaseCardContent>
+      </UiCardContent>
 
-      <BaseCardFooter v-if="gameSession.status !== 'ended'">
+      <UiCardFooter v-if="gameSession.status !== 'ended'">
         <GameSessionCardActions />
-      </BaseCardFooter>
+      </UiCardFooter>
     </template>
 
     <GameSessionEmpty v-else />

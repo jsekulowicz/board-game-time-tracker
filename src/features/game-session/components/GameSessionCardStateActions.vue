@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { BaseButton } from '@/components/ui/base-button'
+import { UiButton } from '@/components/ui/ui-button'
 import GameSessionAlertDialogEnd from '../components/GameSessionAlertDialogEnd.vue'
 import { useGameSessionStateActions } from '../composables/useGameSessionStateActions'
 
@@ -28,7 +28,7 @@ const playPauseLabel = computed(() => {
 
 <template>
   <section class="flex items-center w-full gap-4">
-    <BaseButton
+    <UiButton
       class="flex-grow md:max-w-20"
       size="sm"
       variant="outline"
@@ -37,11 +37,11 @@ const playPauseLabel = computed(() => {
       @click="gameSessionStateActions.toggleGameSessionPlayPause"
     >
       {{ playPauseLabel }}
-    </BaseButton>
+    </UiButton>
 
     <GameSessionAlertDialogEnd @continue="gameSessionStateActions.endGameSession">
       <template #trigger>
-        <BaseButton class="flex-grow md:max-w-20 px-3" size="sm" variant="outline"> End </BaseButton>
+        <UiButton class="flex-grow md:max-w-20 px-3" size="sm" variant="outline"> End </UiButton>
       </template>
     </GameSessionAlertDialogEnd>
   </section>

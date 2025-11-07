@@ -1,0 +1,12 @@
+export { default as UiCombobox } from './UiCombobox.vue'
+export { default as UiComboboxAnchor } from './UiComboboxAnchor.vue'
+export { default as UiComboboxEmpty } from './UiComboboxEmpty.vue'
+export { default as UiComboboxGroup } from './UiComboboxGroup.vue'
+export { default as UiComboboxInput } from './UiComboboxInput.vue'
+export { default as UiComboboxItem } from './UiComboboxItem.vue'
+export { default as UiComboboxItemIndicator } from './UiComboboxItemIndicator.vue'
+export { default as UiComboboxList } from './UiComboboxList.vue'
+export { default as UiComboboxSeparator } from './UiComboboxSeparator.vue'
+export { default as UiComboboxViewport } from './UiComboboxViewport.vue'
+
+export { ComboboxCancel as UiComboboxCancel, ComboboxTrigger as UiComboboxTrigger } from 'reka-ui'

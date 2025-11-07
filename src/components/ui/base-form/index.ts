@@ -1,7 +1,0 @@
-export { default as BaseFormControl } from './BaseFormControl.vue'
-export { default as BaseFormDescription } from './BaseFormDescription.vue'
-export { default as BaseFormItem } from './BaseFormItem.vue'
-export { default as BaseFormLabel } from './BaseFormLabel.vue'
-export { default as BaseFormMessage } from './BaseFormMessage.vue'
-export { FORM_ITEM_INJECTION_KEY } from './injectionKeys'
-export { Form, Field as BaseFormField, FieldArray as FormFieldArray } from 'vee-validate'

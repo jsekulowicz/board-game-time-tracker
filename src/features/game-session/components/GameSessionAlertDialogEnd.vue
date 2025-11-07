@@ -1,33 +1,33 @@
 <script setup lang="ts">
 import {
-  BaseAlertDialog,
-  BaseAlertDialogAction,
-  BaseAlertDialogCancel,
-  BaseAlertDialogContent,
-  BaseAlertDialogDescription,
-  BaseAlertDialogFooter,
-  BaseAlertDialogHeader,
-  BaseAlertDialogTitle,
-  BaseAlertDialogTrigger,
-} from '@/components/ui/base-alert-dialog'
+  UiAlertDialog,
+  UiAlertDialogAction,
+  UiAlertDialogCancel,
+  UiAlertDialogContent,
+  UiAlertDialogDescription,
+  UiAlertDialogFooter,
+  UiAlertDialogHeader,
+  UiAlertDialogTitle,
+  UiAlertDialogTrigger,
+} from '@/components/ui/ui-alert-dialog'
 </script>
 
 <template>
-  <BaseAlertDialog>
-    <BaseAlertDialogTrigger as-child>
+  <UiAlertDialog>
+    <UiAlertDialogTrigger as-child>
       <slot name="trigger" />
-    </BaseAlertDialogTrigger>
-    <BaseAlertDialogContent>
-      <BaseAlertDialogHeader>
-        <BaseAlertDialogTitle>Are you sure you want to end the game session?</BaseAlertDialogTitle>
-        <BaseAlertDialogDescription>
+    </UiAlertDialogTrigger>
+    <UiAlertDialogContent>
+      <UiAlertDialogHeader>
+        <UiAlertDialogTitle>Are you sure you want to end the game session?</UiAlertDialogTitle>
+        <UiAlertDialogDescription>
           This action cannot be undone. You will not be able to track players within this session.
-        </BaseAlertDialogDescription>
-      </BaseAlertDialogHeader>
-      <BaseAlertDialogFooter>
-        <BaseAlertDialogCancel>Keep tracking</BaseAlertDialogCancel>
-        <BaseAlertDialogAction class="bg-destructive" @click="$emit('continue')">End game session</BaseAlertDialogAction>
-      </BaseAlertDialogFooter>
-    </BaseAlertDialogContent>
-  </BaseAlertDialog>
+        </UiAlertDialogDescription>
+      </UiAlertDialogHeader>
+      <UiAlertDialogFooter>
+        <UiAlertDialogCancel>Keep tracking</UiAlertDialogCancel>
+        <UiAlertDialogAction class="bg-destructive" @click="$emit('continue')">End game session</UiAlertDialogAction>
+      </UiAlertDialogFooter>
+    </UiAlertDialogContent>
+  </UiAlertDialog>
 </template>
