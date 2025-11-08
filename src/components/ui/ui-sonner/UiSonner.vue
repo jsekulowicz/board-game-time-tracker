@@ -16,3 +16,9 @@ const props = defineProps<ToasterProps>()
     }"
   />
 </template>
+
+<style>
+[data-sonner-toast][data-styled='true'] [data-description] {
+  color: var(--popover-secondary) !important;
+}
+</style>

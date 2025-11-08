@@ -12,9 +12,9 @@ const colorClasses = computed(() => {
     case 'inactive':
       return 'text-foreground bg-border'
     case 'ended':
-      return 'text-background bg-foreground'
+      return 'text-background bg-card-foreground'
     default:
-      return 'text-foreground bg-background'
+      return 'text-foreground bg-card'
   }
 })
 </script>
