@@ -3,23 +3,35 @@ import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import GameSessionCard from './components/GameSessionCard.vue'
+import GameSessionStatusTag from './components/GameSessionStatusTag.vue'
+import GameSessionLoading from './components/GameSessionLoading.vue'
 import { useGameSessionStore } from '@/features/game-session/stores/useGameSessionStore'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const gameSessionStore = useGameSessionStore()
+const { gameSession, loadingGameSession } = storeToRefs(gameSessionStore)
 
-async function loadSession() {
+async function fetchGameSession() {
   const id = route.params.id as string
   if (id) {
     await gameSessionStore.getGameSessionById(id)
   }
 }
 
-watch(() => route.params.id, loadSession, { immediate: true })
+watch(() => route.params.id, fetchGameSession, { immediate: true })
 </script>
 
 <template>
   <BaseLayout>
-    <GameSessionCard />
+    <template v-if="gameSession" #header-right>
+      <div class="flex gap-4 items-center flex-wrap">
+        <div>{{ gameSession.game }}, turn {{ gameSession.currentTurnIndex + 1 }}, move {{ gameSession.currentMoveIndex + 1 }}</div>
+        <GameSessionStatusTag class="rounded-sm" :status="gameSession.status" />
+      </div>
+    </template>
+
+    <GameSessionLoading v-if="loadingGameSession" />
+    <GameSessionCard v-else />
   </BaseLayout>
 </template>

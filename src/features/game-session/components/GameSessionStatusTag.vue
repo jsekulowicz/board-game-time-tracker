@@ -15,9 +15,8 @@ const gameSessionStatusTagVariant = computed<StatusTagVariant>(() => {
     case 'in_progress':
       return 'active'
     case 'paused':
-      return 'inactive'
     case 'ready_to_track':
-      return 'default'
+      return 'inactive'
     case 'ended':
     default:
       return 'ended'

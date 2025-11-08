@@ -9,7 +9,7 @@ import { RouteName } from '@/router/consts'
 
 <template>
   <BaseLayout>
-    <template #header-actions>
+    <template #header-right>
       <UiButton asChild>
         <RouterLink :to="{ name: RouteName.GameSessionAdd }">
           <Icon icon="radix-icons:plus" />

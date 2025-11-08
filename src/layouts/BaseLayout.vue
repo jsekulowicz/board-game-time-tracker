@@ -23,12 +23,15 @@ const pageTitle = usePageTitle(route.name as RouteName)
 
     <section class="grid lg:max-w-[1200px] gap-4 mx-auto mt-4 px-4">
       <header class="flex flex-wrap justify-between items-center gap-3 min-h-9">
-        <div class="flex flex-col">
+        <div class="flex flex-col w-full">
           <PageBreadcrumbs v-if="$route.meta.useBreadcrumbs" class="mb-4" />
-          <h2 class="font-semibold">{{ pageTitle }}</h2>
-        </div>
 
-        <slot name="header-actions" />
+          <section class="flex justify-between items-center flex-wrap w-full gap-4">
+            <h2 class="font-semibold">{{ pageTitle }}</h2>
+
+            <slot name="header-right" />
+          </section>
+        </div>
       </header>
 
       <slot></slot>
