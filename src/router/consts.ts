@@ -4,3 +4,5 @@ export const RouteName = {
   GameSession: 'game-session',
   GameSessionAdd: 'game-session-add',
 }
+
+export type RouteName = (typeof RouteName)[keyof typeof RouteName]

@@ -1,8 +1,15 @@
 <script lang="ts" setup>
 import DarkModeToggle from '@/components/DarkModeToggle.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import { Icon } from '@iconify/vue'
 import PageBreadcrumbs from '@/components/PageBreadcrumbs.vue'
+
+import { Icon } from '@iconify/vue'
+import { useRoute } from 'vue-router'
+import { usePageTitle } from '@/composables/usePageTitle'
+import type { RouteName } from '@/router/consts'
+
+const route = useRoute()
+const pageTitle = usePageTitle(route.name as RouteName)
 </script>
 
 <template>
@@ -18,7 +25,7 @@ import PageBreadcrumbs from '@/components/PageBreadcrumbs.vue'
       <header class="flex flex-wrap justify-between items-center gap-3 min-h-9">
         <div class="flex flex-col">
           <PageBreadcrumbs v-if="$route.meta.useBreadcrumbs" class="mb-4" />
-          <h2 class="font-semibold">{{ $route.meta.title }}</h2>
+          <h2 class="font-semibold">{{ pageTitle }}</h2>
         </div>
 
         <slot name="header-actions" />

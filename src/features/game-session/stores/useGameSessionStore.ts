@@ -18,6 +18,8 @@ export const useGameSessionStore = defineStore('gameSession', () => {
   )
 
   async function getGameSessionById(id: string): Promise<void> {
+    loadingGameSession.value = true
+
     const response = await apiGetGameSessionById({ path: { id } })
     gameSession.value = response.data
     loadingGameSession.value = false
