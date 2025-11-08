@@ -120,7 +120,7 @@ const onSubmit = handleSubmit(async (formValues) => {
         </UiFormField>
       </section>
 
-      <header class="flex items-center justify-between gap-4">
+      <header class="flex items-center gap-4">
         <h3 class="font-semibold">Players</h3>
         <UiButton size="sm" variant="outline" :disabled="hasMaxPlayers" :tooltip="playersAddTooltip" @click.prevent="addPlayer">
           Add player
