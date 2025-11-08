@@ -9,13 +9,17 @@ import { RouteName } from '@/router/consts'
 
 <template>
   <BaseLayout>
-    <template #header-right>
-      <UiButton asChild size="sm" variant="outline">
-        <RouterLink :to="{ name: RouteName.GameSessionAdd }">
-          <Icon icon="radix-icons:plus" />
-          <div>Add game session</div>
-        </RouterLink>
-      </UiButton>
+    <template #header="{ pageTitle }">
+      <div class="flex items-center gap-4">
+        <h2 class="font-semibold">{{ pageTitle }}</h2>
+
+        <UiButton size="sm" variant="outline" asChild>
+          <RouterLink :to="{ name: RouteName.GameSessionAdd }">
+            <Icon icon="radix-icons:plus" />
+            <div>Add game session</div>
+          </RouterLink>
+        </UiButton>
+      </div>
     </template>
 
     <GameSessionListCard />

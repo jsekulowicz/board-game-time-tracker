@@ -24,10 +24,13 @@ watch(() => route.params.id, fetchGameSession, { immediate: true })
 
 <template>
   <BaseLayout>
-    <template v-if="gameSession" #header-right>
-      <div class="flex gap-4 items-center flex-wrap ml-auto">
-        <div>{{ gameSession.game }}, turn {{ gameSession.currentTurnIndex + 1 }}, move {{ gameSession.currentMoveIndex + 1 }}</div>
-        <GameSessionStatusTag class="rounded-sm" :status="gameSession.status" />
+    <template v-if="gameSession" #header="{ pageTitle }">
+      <div class="flex gap-4 items-center justify-between flex-wrap">
+        <h2 class="font-semibold">{{ pageTitle }}</h2>
+        <div class="flex gap-4 flex-wrap">
+          <div>{{ gameSession.game }}, turn {{ gameSession.currentTurnIndex + 1 }}, move {{ gameSession.currentMoveIndex + 1 }}</div>
+          <GameSessionStatusTag class="rounded-sm" :status="gameSession.status" />
+        </div>
       </div>
     </template>
 

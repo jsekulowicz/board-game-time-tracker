@@ -26,11 +26,9 @@ const pageTitle = usePageTitle(route.name as RouteName)
         <div class="flex flex-col w-full">
           <PageBreadcrumbs v-if="$route.meta.useBreadcrumbs" class="mb-4" />
 
-          <section class="flex items-center flex-wrap w-full gap-4">
+          <slot name="header" :pageTitle>
             <h2 class="font-semibold">{{ pageTitle }}</h2>
-
-            <slot name="header-right" />
-          </section>
+          </slot>
         </div>
       </header>
 
