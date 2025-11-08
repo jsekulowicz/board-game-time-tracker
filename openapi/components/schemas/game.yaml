@@ -1,9 +1,0 @@
-schemas:
-  Resource:
-    type: object
-    properties:
-      uuid:
-        $ref: ./common.yaml#/schemas/Uuid
-      name:
-        type: string
-    required: [uuid, name]

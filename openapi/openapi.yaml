@@ -6,7 +6,7 @@ info:
 paths:
   /game-sessions:
     $ref: ./paths/game-sessions-list.yaml
-  /game-sessions/{uuid}:
+  /game-sessions/{id}:
     $ref: ./paths/game-sessions-detail.yaml
   /game-sessions/{sessionUuid}/moves/switch:
     $ref: ./paths/game-sessions-moves-switch.yaml

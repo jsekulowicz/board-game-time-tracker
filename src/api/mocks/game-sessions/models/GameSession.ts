@@ -41,7 +41,7 @@ export class GameSession {
   }
 
   switchPlayerMove(playerUuid: CommonUuid): GameSessionResource | ErrorResponse {
-    const player = this.resource.players.find((p) => p.uuid === playerUuid)
+    const player = this.resource.players.find((p) => p.id === playerUuid)
     if (!player) {
       return PLAYER_NOT_FOUND
     }
@@ -50,12 +50,17 @@ export class GameSession {
       return ALREADY_MOVED
     }
 
-    if (this.resource.status !== 'in_progress') {
+    if (!['in_progress', 'ready_to_track'].includes(this.resource.status)) {
       return GAME_SESSION_NOT_IN_PROGRESS
     }
 
     this.endAllCurrentMoves()
     this.startNewMoveFor(player)
+
+    if (this.resource.status === 'ready_to_track') {
+      this.resource.status = 'in_progress'
+    }
+
     return this.data
   }
 

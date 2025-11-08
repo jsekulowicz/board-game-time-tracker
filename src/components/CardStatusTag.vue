@@ -12,15 +12,15 @@ const colorClasses = computed(() => {
     case 'inactive':
       return 'text-foreground bg-border'
     case 'ended':
-      return 'text-background bg-foreground'
+      return 'text-background bg-card-foreground'
     default:
-      return 'text-foreground bg-background'
+      return 'text-foreground bg-card'
   }
 })
 </script>
 
 <template>
-  <div class="flex justify-center h-6 w-32 px-2" :class="colorClasses" variant="outline">
+  <div class="flex justify-center h-6 min-w-32 px-2" :class="colorClasses" variant="outline">
     <slot />
   </div>
 </template>

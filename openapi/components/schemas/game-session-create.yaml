@@ -1,0 +1,34 @@
+schemas:
+  Body:
+    type: object
+    properties:
+      name:
+        type: string
+        example: 'Friday night Catan'
+        minLength: 2
+        maxLength: 50
+        description: Human-readable session name
+      game:
+        type: string
+        example: 'Catan'
+        minLength: 2
+        maxLength: 50
+        description: Name of the game being played
+      players:
+        type: array
+        description: |
+          List of player names participating in the session.
+          The backend will create corresponding Player objects.
+        items:
+          type: string
+          example: 'Alice'
+        minItems: 2
+        maxItems: 4
+    required:
+      - name
+      - game
+      - players
+    example:
+      name: 'Friday night Catan'
+      game: 'Catan'
+      players: ['Alice', 'Bob', 'Charlie']

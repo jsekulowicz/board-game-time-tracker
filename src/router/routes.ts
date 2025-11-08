@@ -1,26 +1,65 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { RouteName } from './consts'
-import GameSessionListView from '@/features/game-session-list/GameSessionListView.vue'
-import GameSessionView from '@/features/game-session/GameSessionView.vue'
+import { useGameSessionStore } from '@/features/game-session/stores/useGameSessionStore'
 
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: RouteName.Home,
-    redirect: {
-      name: RouteName.GameSessionList,
-    },
+    redirect: { name: RouteName.GameSessionList },
   },
   {
     path: '/game-sessions',
-    name: RouteName.GameSessionList,
-    component: GameSessionListView,
-  },
-  {
-    path: '/game-sessions/:uuid',
-    name: RouteName.GameSession,
-    component: GameSessionView,
+    component: () => import('@/App.vue'),
+    meta: {
+      title: 'Game sessions',
+      useBreadcrumbs: true,
+    },
+    children: [
+      {
+        path: '',
+        name: RouteName.GameSessionList,
+        component: () => import('@/features/game-session-list/GameSessionListView.vue'),
+        meta: { title: 'Game sessions', useBreadcrumbs: false },
+      },
+      {
+        path: 'add',
+        name: RouteName.GameSessionAdd,
+        component: () => import('@/features/game-session-add/GameSessionAddView.vue'),
+        meta: { title: 'Add game session', useBreadcrumbs: true },
+      },
+      {
+        path: ':id',
+        name: RouteName.GameSession,
+        component: () => import('@/features/game-session/GameSessionView.vue'),
+        meta: {
+          title: 'Game session',
+          useBreadcrumbs: true,
+          getDynamicTitle: () => {
+            const store = useGameSessionStore()
+            if (store.loadingGameSession) {
+              return 'Loading game session...'
+            }
+
+            return store.gameSession?.name ?? ''
+          },
+        },
+      },
+    ],
   },
 ]
 
-export default routes
+export function findRouteByName(routeList: RouteRecordRaw[] = routes, name: RouteName): RouteRecordRaw | undefined {
+  for (const route of routeList) {
+    if (route.name === name) {
+      return route
+    }
+
+    if (route.children) {
+      const found = findRouteByName(route.children, name)
+      if (found) {
+        return found
+      }
+    }
+  }
+}

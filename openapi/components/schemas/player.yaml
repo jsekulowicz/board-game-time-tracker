@@ -2,8 +2,8 @@ schemas:
   Resource:
     type: object
     properties:
-      uuid:
+      id:
         $ref: ./common.yaml#/schemas/Uuid
       name:
         type: string
-    required: [uuid, name]
+    required: [id, name]

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { BaseTable, BaseTableHeader, BaseTableHead, BaseTableBody, BaseTableRow, BaseTableCell } from '@/components/ui/base-table'
-import { BaseCard } from '@/components/ui/base-card'
+import { UiTable, UiTableHeader, UiTableHead, UiTableBody, UiTableRow, UiTableCell } from '@/components/ui/ui-table'
+import { UiCard } from '@/components/ui/ui-card'
 import OverflowLabel from '@/components/OverflowLabel.vue'
 import GameSessionListTableLoading from './GameSessionListTableLoading.vue'
 import { useGameSessionListStore } from '../stores/useGameSessionListStore'
@@ -13,53 +13,51 @@ gameSessionListStore.getGameSessionList()
 </script>
 
 <template>
-  <h2 class="font-semibold">Game session list</h2>
-
   <GameSessionListTableLoading v-if="gameSessionListStore.loadingGameSessions" />
 
-  <BaseCard v-else class="py-0 overflow-hidden">
-    <BaseTable class="w-full overflow-x-auto table-auto text-sm">
-      <BaseTableHeader>
-        <BaseTableRow>
-          <BaseTableHead class="whitespace-nowrap pl-3">Name</BaseTableHead>
-          <BaseTableHead class="whitespace-nowrap">Status</BaseTableHead>
-          <BaseTableHead class="whitespace-nowrap">Game</BaseTableHead>
-          <BaseTableHead class="whitespace-nowrap">Player count</BaseTableHead>
-          <BaseTableHead class="whitespace-nowrap">Move count</BaseTableHead>
-          <BaseTableHead class="whitespace-nowrap">Turn count</BaseTableHead>
-          <BaseTableHead class="whitespace-nowrap">Created</BaseTableHead>
-          <BaseTableHead class="whitespace-nowrap">Updated</BaseTableHead>
-        </BaseTableRow>
-      </BaseTableHeader>
+  <UiCard v-else class="py-0 overflow-hidden">
+    <UiTable class="w-full overflow-x-auto table-auto text-sm">
+      <UiTableHeader>
+        <UiTableRow>
+          <UiTableHead class="whitespace-nowrap">Name</UiTableHead>
+          <UiTableHead class="whitespace-nowrap">Status</UiTableHead>
+          <UiTableHead class="whitespace-nowrap">Game</UiTableHead>
+          <UiTableHead class="whitespace-nowrap">Player count</UiTableHead>
+          <UiTableHead class="whitespace-nowrap">Move count</UiTableHead>
+          <UiTableHead class="whitespace-nowrap">Turn count</UiTableHead>
+          <UiTableHead class="whitespace-nowrap">Created</UiTableHead>
+          <UiTableHead class="whitespace-nowrap">Updated</UiTableHead>
+        </UiTableRow>
+      </UiTableHeader>
 
-      <BaseTableBody>
-        <BaseTableRow v-for="session in gameSessionListStore.gameSessions" :key="session.uuid" class="hover:bg-muted/30 transition-colors">
-          <BaseTableCell>
+      <UiTableBody>
+        <UiTableRow v-for="session in gameSessionListStore.gameSessions" :key="session.id" class="hover:bg-muted/30 transition-colors">
+          <UiTableCell>
             <RouterLink
-              class="inline-flex px-1 underline"
+              class="inline-flex underline"
               :to="{
                 name: RouteName.GameSession,
                 params: {
-                  uuid: session.uuid,
+                  id: session.id,
                 },
               }"
             >
               <OverflowLabel class="max-w-[250px] lg:max-w-none" :text="session.name" />
             </RouterLink>
-          </BaseTableCell>
-          <BaseTableCell>{{ session.status }}</BaseTableCell>
-          <BaseTableCell>{{ session.game.name }}</BaseTableCell>
-          <BaseTableCell class="text-right w-0">{{ session.players.length }}</BaseTableCell>
-          <BaseTableCell class="text-right w-0">{{ session.currentMoveIndex + 1 }}</BaseTableCell>
-          <BaseTableCell class="text-right w-0">{{ session.currentTurnIndex + 1 }}</BaseTableCell>
-          <BaseTableCell class="whitespace-nowrap w-0">{{ useTimeAgo(session.createdAt) }}</BaseTableCell>
-          <BaseTableCell class="whitespace-nowrap w-0">{{ useTimeAgo(session.updatedAt || '') }}</BaseTableCell>
-        </BaseTableRow>
+          </UiTableCell>
+          <UiTableCell>{{ session.status }}</UiTableCell>
+          <UiTableCell>{{ session.game }}</UiTableCell>
+          <UiTableCell class="text-right w-0">{{ session.players.length }}</UiTableCell>
+          <UiTableCell class="text-right w-0">{{ session.currentMoveIndex + 1 }}</UiTableCell>
+          <UiTableCell class="text-right w-0">{{ session.currentTurnIndex + 1 }}</UiTableCell>
+          <UiTableCell class="whitespace-nowrap w-0">{{ useTimeAgo(session.createdAt) }}</UiTableCell>
+          <UiTableCell class="whitespace-nowrap w-0">{{ useTimeAgo(session.updatedAt || '') }}</UiTableCell>
+        </UiTableRow>
 
-        <BaseTableRow v-if="!gameSessionListStore.gameSessions.length">
-          <BaseTableCell colspan="4" class="text-center text-muted-foreground py-4"> No game sessions found </BaseTableCell>
-        </BaseTableRow>
-      </BaseTableBody>
-    </BaseTable>
-  </BaseCard>
+        <UiTableRow v-if="!gameSessionListStore.gameSessions.length">
+          <UiTableCell colspan="4" class="text-center text-muted-foreground py-4">No game sessions found</UiTableCell>
+        </UiTableRow>
+      </UiTableBody>
+    </UiTable>
+  </UiCard>
 </template>

@@ -2,7 +2,7 @@ get:
   summary: Get a single game session by UUID
   operationId: getGameSessionById
   parameters:
-    - name: uuid
+    - name: id
       in: path
       required: true
       schema:
@@ -23,7 +23,7 @@ patch:
   summary: Update a game session's name or status
   operationId: patchGameSessionById
   parameters:
-    - name: uuid
+    - name: id
       in: path
       required: true
       schema:

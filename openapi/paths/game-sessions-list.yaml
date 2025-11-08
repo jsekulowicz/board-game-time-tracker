@@ -28,3 +28,25 @@ get:
       $ref: ../components/responses.yaml#/responses/Error404
     '500':
       $ref: ../components/responses.yaml#/responses/Error500
+post:
+  summary: Create a new game session
+  operationId: createGameSession
+  tags:
+    - GameSessions
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/game-session-create.yaml#/schemas/Body
+  responses:
+    '201':
+      description: Game session successfully created
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/game-session.yaml#/schemas/Resource
+    '400':
+      description: Invalid request body
+    '500':
+      description: Internal server error

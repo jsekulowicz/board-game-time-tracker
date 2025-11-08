@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GetGameSessionByIdData, GetGameSessionByIdErrors, GetGameSessionByIdResponses, ListGameSessionsData, ListGameSessionsErrors, ListGameSessionsResponses, PatchGameSessionByIdData, PatchGameSessionByIdErrors, PatchGameSessionByIdResponses, SwitchPlayerMoveData, SwitchPlayerMoveErrors, SwitchPlayerMoveResponses } from './types.gen';
+import type { CreateGameSessionData, CreateGameSessionErrors, CreateGameSessionResponses, GetGameSessionByIdData, GetGameSessionByIdErrors, GetGameSessionByIdResponses, ListGameSessionsData, ListGameSessionsErrors, ListGameSessionsResponses, PatchGameSessionByIdData, PatchGameSessionByIdErrors, PatchGameSessionByIdResponses, SwitchPlayerMoveData, SwitchPlayerMoveErrors, SwitchPlayerMoveResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -29,11 +29,25 @@ export const listGameSessions = <ThrowOnError extends boolean = false>(options?:
 };
 
 /**
+ * Create a new game session
+ */
+export const createGameSession = <ThrowOnError extends boolean = false>(options: Options<CreateGameSessionData, ThrowOnError>) => {
+    return (options.client ?? client).post<CreateGameSessionResponses, CreateGameSessionErrors, ThrowOnError>({
+        url: '/game-sessions',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
+    });
+};
+
+/**
  * Get a single game session by UUID
  */
 export const getGameSessionById = <ThrowOnError extends boolean = false>(options: Options<GetGameSessionByIdData, ThrowOnError>) => {
     return (options.client ?? client).get<GetGameSessionByIdResponses, GetGameSessionByIdErrors, ThrowOnError>({
-        url: '/game-sessions/{uuid}',
+        url: '/game-sessions/{id}',
         ...options
     });
 };
@@ -43,7 +57,7 @@ export const getGameSessionById = <ThrowOnError extends boolean = false>(options
  */
 export const patchGameSessionById = <ThrowOnError extends boolean = false>(options: Options<PatchGameSessionByIdData, ThrowOnError>) => {
     return (options.client ?? client).patch<PatchGameSessionByIdResponses, PatchGameSessionByIdErrors, ThrowOnError>({
-        url: '/game-sessions/{uuid}',
+        url: '/game-sessions/{id}',
         ...options,
         headers: {
             'Content-Type': 'application/json',

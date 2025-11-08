@@ -3,9 +3,9 @@ import { computed, ref } from 'vue'
 import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
 
 import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
-import { BaseKbd, BaseKbdGroup } from '@/components/ui/base-kbd'
-import { BaseCardHeader, BaseCardTitle } from '@/components/ui/base-card'
-import { BaseButton } from '@/components/ui/base-button'
+import { UiKbd, UiKbdGroup } from '@/components/ui/ui-kbd'
+import { UiCardHeader, UiCardTitle } from '@/components/ui/ui-card'
+import { UiButton } from '@/components/ui/ui-button'
 
 import GameSessionPlayerStatusTag from './GameSessionPlayerStatusTag.vue'
 import { usePlayerTimeTracking } from '../composables/usePlayerTimeTracking'
@@ -21,15 +21,15 @@ const sessionPlayer = computed(() => props.gameSessionPlayer)
 const { displayedTime, timeTrackingDisabled } = usePlayerTimeTracking(sessionPlayer)
 const { switchPlayerMove, switchPlayerKeyLabel } = useSwitchPlayerMove(sessionPlayer)
 
-const finishButtonRef = ref<InstanceType<typeof BaseButton> | null>(null)
+const finishButtonRef = ref<InstanceType<typeof UiButton> | null>(null)
 
 const finishButtonTooltip = computed<string | null>(() => {
-  if (props.gameSessionStatus !== 'in_progress') {
-    return 'Please resume the game session to track.'
+  if (props.gameSessionStatus === 'paused') {
+    return 'Resume the game session to track.'
   }
 
   if (timeTrackingDisabled.value) {
-    return 'Player already moved this turn. Please wait for the next turn to track.'
+    return 'Player already moved this turn. Wait for the next turn to track.'
   }
 
   return null
@@ -55,12 +55,12 @@ defineExpose({
         <GameSessionPlayerStatusTag :player="gameSessionPlayer" :gameStatus="gameSessionStatus" />
       </template>
 
-      <BaseCardHeader class="flex flex-wrap justify-center items-start h-full gap-2">
-        <BaseCardTitle class="w-full text-base/normal text-center wrap-break-word" lang="en">{{ gameSessionPlayer.name }}</BaseCardTitle>
+      <UiCardHeader class="flex flex-wrap justify-center items-start h-full gap-2">
+        <UiCardTitle class="w-full text-base/normal text-center wrap-break-word" lang="en">{{ gameSessionPlayer.name }}</UiCardTitle>
         <div class="flex flex-col items-center justify-between gap-2 pl-0 mt-auto">
           <div>{{ displayedTime }}</div>
 
-          <BaseButton
+          <UiButton
             v-if="gameSessionStatus !== 'ended'"
             class="min-w-26 min-h-10 px-3"
             variant="outline"
@@ -68,16 +68,16 @@ defineExpose({
             :tooltip="finishButtonTooltip"
             @click="switchPlayerMove"
           >
-            <BaseKbdGroup>
+            <UiKbdGroup>
               <div>Track</div>
 
               <template #kbd>
-                <BaseKbd>{{ switchPlayerKeyLabel }}</BaseKbd>
+                <UiKbd>{{ switchPlayerKeyLabel }}</UiKbd>
               </template>
-            </BaseKbdGroup>
-          </BaseButton>
+            </UiKbdGroup>
+          </UiButton>
         </div>
-      </BaseCardHeader>
+      </UiCardHeader>
     </CardWithStatusTag>
   </li>
 </template>
