@@ -8,7 +8,7 @@ interface GridListContainerProps {
 const props = defineProps<GridListContainerProps>()
 
 const colCountClasses = computed(() => {
-  return [getColCountClass(2), getColCountClass(4, 'md:')].join(' ')
+  return [getColCountClass(1), getColCountClass(2, 'xs:'), getColCountClass(4, 'md:')].join(' ')
 })
 
 function getColCountClass(count: number, breakpointPrefix = '') {
