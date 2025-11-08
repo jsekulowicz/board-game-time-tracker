@@ -61,7 +61,6 @@ const { handleSubmit } = useForm({
 const { fields: playerFields, push: addPlayerField, remove: removePlayerField } = useFieldArray('players')
 
 const hasMinPlayers = computed(() => playerFields.value.length === MIN_PLAYERS_COUNT)
-const playersRemoveTooltip = computed(() => (hasMinPlayers.value ? 'Cannot have fewer than 2 players.' : undefined))
 const hasMaxPlayers = computed(() => playerFields.value.length === MAX_PLAYERS_COUNT)
 const playersAddTooltip = computed(() => (hasMaxPlayers.value ? 'Cannot have more than 4 players.' : undefined))
 
@@ -131,20 +130,23 @@ const onSubmit = handleSubmit(async (formValues) => {
         <UiFormField v-for="(player, index) in playerFields" :key="player.key" v-slot="{ componentField }" :name="`players[${index}]`">
           <UiFormItem>
             <UiFormLabel>Player {{ index + 1 }} name</UiFormLabel>
-            <UiFormControl>
-              <div class="flex gap-1">
-                <UiInput class="inline-flex" type="text" v-bind="componentField" />
-                <UiButton
-                  class="inline-flex"
-                  size="icon"
-                  variant="outline"
-                  :disabled="hasMinPlayers"
-                  :tooltip="playersRemoveTooltip"
-                  @click.prevent="removePlayer(index)"
-                >
-                  <Icon icon="radix-icons:cross-1" />
-                </UiButton>
-              </div>
+            <UiFormControl class="relative">
+              <UiInput
+                class="inline-flex"
+                :class="{ 'pr-10': playerFields.length > MIN_PLAYERS_COUNT }"
+                type="text"
+                v-bind="componentField"
+              />
+              <UiButton
+                v-if="playerFields.length > MIN_PLAYERS_COUNT"
+                class="absolute right-2 top-7"
+                size="icon-xs"
+                variant="ghost"
+                :disabled="hasMinPlayers"
+                @click.prevent="removePlayer(index)"
+              >
+                <Icon icon="radix-icons:cross-1" />
+              </UiButton>
             </UiFormControl>
             <UiFormMessage />
           </UiFormItem>
