@@ -2,7 +2,14 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
 import { GameSession } from '../models/GameSession'
-import type { ErrorResponse, GameSessionCreateBody, GameSessionPlayer, GameSessionResource, GameSessionStatus } from '@/api/generated'
+import type {
+  ErrorResponse,
+  GameSessionCreateBody,
+  GameSessionPlayer,
+  GameSessionResource,
+  GameSessionStatus,
+  GameSessionTimeDisplayMode,
+} from '@/api/generated'
 import { GAME_SESSION_NOT_FOUND } from '../errors'
 
 type GameSessionMethodReturnType = GameSessionResource | ErrorResponse
@@ -37,6 +44,7 @@ export const useGameSessionMockStore = defineStore(
         createdAt: new Date().toISOString(),
         name,
         game,
+        timeDisplayMode: 'visible',
         players: players.map(
           (playerName, index) =>
             ({
@@ -53,6 +61,17 @@ export const useGameSessionMockStore = defineStore(
       gameSessionResources.value = [...gameSessionResources.value, newGameSessionResource]
 
       return newGameSessionResource
+    }
+
+    function setGameSessionTimeDisplayMode(id: string, timeDisplayMode: GameSessionTimeDisplayMode): GameSessionMethodReturnType {
+      const session = getSession(id)
+      if ('error' in session) {
+        return session
+      }
+
+      const updated = session.setTimeDisplayMode(timeDisplayMode)
+      updatePersistedResource(id, updated)
+      return updated
     }
 
     function setGameSessionStatus(id: string, status: GameSessionStatus): GameSessionMethodReturnType {
@@ -118,6 +137,7 @@ export const useGameSessionMockStore = defineStore(
       addGameSessionPersistedMock,
       getGameSessionListPersistedMock,
       getGameSessionPersistedMock,
+      setGameSessionTimeDisplayMode,
       setGameSessionStatus,
       setGameSessionName,
       switchPlayerMove,

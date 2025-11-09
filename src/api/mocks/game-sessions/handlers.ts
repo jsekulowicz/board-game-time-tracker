@@ -3,7 +3,11 @@ import { useGameSessionMockStore } from './stores/useGameSessionMockStore'
 import type { GameSessionCreateBody, PatchGameSessionByIdData, SwitchPlayerMoveData } from '@/api/generated'
 import { simulateAPIDelay } from '../utils'
 import { getHttpErrorResponse, getOneOfParametersRequiredErrorResponse } from './errors'
-import { validateNonEmptyStringArrayElementCountValid, validateParametersMissingErrorResponse } from '../validation'
+import {
+  validateAtLeastOneOfParametersPresent,
+  validateNonEmptyStringArrayElementCount,
+  validateParametersMissingErrorResponse,
+} from '../validation'
 import { MAX_PLAYER_COUNT, MIN_PLAYER_COUNT } from './validation'
 
 const gameSessionMockStore = useGameSessionMockStore()
@@ -29,12 +33,12 @@ export const gameSessionHandlers = [
 
       const body = (await request.json()) as GameSessionCreateBody
 
-      const missingKeysError = validateParametersMissingErrorResponse<GameSessionCreateBody>(body, ['name', 'game', 'players'])
+      const missingKeysError = validateParametersMissingErrorResponse(body, ['name', 'game', 'players'])
       if (missingKeysError) {
         return missingKeysError
       }
 
-      const missingPlayersError = validateNonEmptyStringArrayElementCountValid(body.players, 'players', MIN_PLAYER_COUNT, MAX_PLAYER_COUNT)
+      const missingPlayersError = validateNonEmptyStringArrayElementCount(body.players, 'players', MIN_PLAYER_COUNT, MAX_PLAYER_COUNT)
       if (missingPlayersError) {
         return missingPlayersError
       }
@@ -70,13 +74,22 @@ export const gameSessionHandlers = [
       const { id } = params
       const body = (await request.json()) as PatchGameSessionByIdData['body']
 
-      if (!body.status && !body.name) {
-        return HttpResponse.json(getOneOfParametersRequiredErrorResponse(['name', 'status']))
+      const missingAtLeastOneParameterError = validateAtLeastOneOfParametersPresent(body, ['name', 'status', 'timeDisplayMode'])
+      if (missingAtLeastOneParameterError) {
+        return missingAtLeastOneParameterError
       }
 
       let result = await gameSessionMockStore.getGameSessionPersistedMock(id as string)
       if ('error' in result) {
         return getHttpErrorResponse(result)
+      }
+
+      if (body.timeDisplayMode) {
+        result = await gameSessionMockStore.setGameSessionTimeDisplayMode(id as string, body.timeDisplayMode)
+
+        if ('error' in result) {
+          return getHttpErrorResponse(result)
+        }
       }
 
       if (body.status) {

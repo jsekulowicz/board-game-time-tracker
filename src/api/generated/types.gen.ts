@@ -78,6 +78,7 @@ export type GameSessionResource = {
     name: string;
     game: string;
     status: GameSessionStatus;
+    timeDisplayMode: GameSessionTimeDisplayMode;
     players: Array<GameSessionPlayer>;
     currentTurnIndex: number;
     currentMoveIndex: number;
@@ -86,6 +87,8 @@ export type GameSessionResource = {
 };
 
 export type GameSessionStatus = 'ready_to_track' | 'in_progress' | 'paused' | 'ended';
+
+export type GameSessionTimeDisplayMode = 'visible' | 'hidden';
 
 export type PlayerResource = {
     id: CommonUuid;
@@ -204,6 +207,7 @@ export type PatchGameSessionByIdData = {
          */
         name?: string;
         status?: GameSessionStatus;
+        timeDisplayMode?: GameSessionTimeDisplayMode;
     };
     path: {
         id: CommonUuid;

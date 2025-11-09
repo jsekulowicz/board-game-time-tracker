@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { GameSessionResource, GameSessionStatus } from '@/api/generated'
+import type { GameSessionResource, GameSessionStatus, GameSessionTimeDisplayMode } from '@/api/generated'
 import {
   getGameSessionById as apiGetGameSessionById,
   patchGameSessionById as apiPatchGameSessionById,
@@ -25,6 +25,34 @@ export const useGameSessionStore = defineStore('gameSession', () => {
     loadingGameSession.value = false
   }
 
+  async function setGameSessionTimeDisplayMode(timeDisplayMode: GameSessionTimeDisplayMode): Promise<void> {
+    if (!gameSession.value) {
+      return
+    }
+
+    const response = await apiPatchGameSessionById({
+      path: { id: gameSession.value.id },
+      body: { timeDisplayMode },
+    })
+
+    if (response.error) {
+      return
+    }
+
+    gameSession.value = response.data
+
+    switch (gameSession.value?.timeDisplayMode) {
+      case 'visible': {
+        toast('Tracked time visible', { description: 'As long as the game has not ended, you can hide it anytime you want.' })
+        break
+      }
+      case 'hidden': {
+        toast('Tracked time hidden', { description: 'As long as the game has not ended, you can show it anytime you want.' })
+        break
+      }
+    }
+  }
+
   async function setGameSessionStatus(status: GameSessionStatus): Promise<void> {
     if (!gameSession.value) {
       return
@@ -34,6 +62,10 @@ export const useGameSessionStore = defineStore('gameSession', () => {
       path: { id: gameSession.value.id },
       body: { status },
     })
+
+    if (response.error) {
+      return
+    }
 
     gameSession.value = response.data
 
@@ -70,6 +102,7 @@ export const useGameSessionStore = defineStore('gameSession', () => {
 
   return {
     getGameSessionById,
+    setGameSessionTimeDisplayMode,
     setGameSessionStatus,
     switchPlayerMove,
     hasLastMoveInTurn,

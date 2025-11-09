@@ -24,12 +24,24 @@ const playPauseLabel = computed(() => {
 
   return ''
 })
+
+const toggleTimeVisibilityLabel = computed(() => {
+  if (gameSessionStateActions.isTrackedTimeVisible.value) {
+    return 'Hide tracked time'
+  } else {
+    return 'Show tracked time'
+  }
+})
 </script>
 
 <template>
-  <section class="flex items-center w-full gap-4">
+  <section class="flex flex-wrap items-center w-full gap-4">
+    <UiButton class="flex-grow w-full md:max-w-50" size="sm" variant="outline" @click="gameSessionStateActions.toggleTimeVisibility">
+      {{ toggleTimeVisibilityLabel }}
+    </UiButton>
+
     <UiButton
-      class="flex-grow md:max-w-20"
+      class="flex-grow md:max-w-24"
       size="sm"
       variant="outline"
       :tooltip="playPauseTooltip"
@@ -41,7 +53,7 @@ const playPauseLabel = computed(() => {
 
     <GameSessionAlertDialogEnd @continue="gameSessionStateActions.endGameSession">
       <template #trigger>
-        <UiButton class="flex-grow md:max-w-20 px-3" size="sm" variant="outline"> End </UiButton>
+        <UiButton class="flex-grow md:max-w-24 px-3" size="sm" variant="outline"> End </UiButton>
       </template>
     </GameSessionAlertDialogEnd>
   </section>

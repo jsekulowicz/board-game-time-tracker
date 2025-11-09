@@ -6,6 +6,7 @@ export const getGameSessionFixture = (): GameSessionResource => ({
   currentTurnIndex: 1,
   currentMoveIndex: 1,
   game: 'Catan',
+  timeDisplayMode: 'visible',
   players: getGameSessionPlayersFixture(),
   createdAt: new Date().toISOString(),
   updatedAt: undefined,

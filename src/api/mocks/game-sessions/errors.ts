@@ -62,6 +62,20 @@ export function getOneOfParametersRequiredErrorResponse(parameters: string[]) {
     return getHttpErrorResponse(INTERNAL_SERVER_ERROR)
   }
 
+  console.log(
+    'grp',
+    getHttpErrorResponse({
+      error: 'ONE_OF_PARAMETERS_REQUIRED',
+      title: 'Incorrect request',
+      message: `At least one of the following parameters must be provided: ${parameters.join(', ')}.`,
+      statusCode: 400,
+      meta: {
+        toast: true,
+        log: true,
+      },
+    }),
+  )
+
   return getHttpErrorResponse({
     error: 'ONE_OF_PARAMETERS_REQUIRED',
     title: 'Incorrect request',

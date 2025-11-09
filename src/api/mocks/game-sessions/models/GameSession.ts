@@ -5,6 +5,7 @@ import type {
   GameSessionPlayerStatus,
   GameSessionResource,
   GameSessionStatus,
+  GameSessionTimeDisplayMode,
 } from '@/api/generated'
 import { toRaw } from 'vue'
 import { ALREADY_MOVED, PLAYER_NOT_FOUND, GAME_SESSION_NOT_IN_PROGRESS } from '../errors'
@@ -25,14 +26,22 @@ export class GameSession {
     return this.data
   }
 
+  setTimeDisplayMode(timeDisplayMode: GameSessionTimeDisplayMode): GameSessionResource | ErrorResponse {
+    this.resource.timeDisplayMode = timeDisplayMode
+    return this.data
+  }
+
   setStatus(status: GameSessionStatus): GameSessionResource | ErrorResponse {
     switch (status) {
       case 'in_progress':
         this.resumeTracking()
         break
       case 'paused':
+        this.stopTracking()
+        break
       case 'ended':
         this.stopTracking()
+        this.resource.timeDisplayMode = 'visible'
         break
     }
 
