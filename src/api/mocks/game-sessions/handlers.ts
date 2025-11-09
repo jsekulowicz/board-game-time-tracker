@@ -2,7 +2,9 @@ import { http, HttpResponse } from 'msw'
 import { useGameSessionMockStore } from './stores/useGameSessionMockStore'
 import type { GameSessionCreateBody, PatchGameSessionByIdData, SwitchPlayerMoveData } from '@/api/generated'
 import { simulateAPIDelay } from '../utils'
-import { INCORRECT_PARAMS, getHttpErrorResponse } from './errors'
+import { getHttpErrorResponse, getOneOfParametersRequiredErrorResponse } from './errors'
+import { validateNonEmptyStringArrayElementCountValid, validateParametersMissingErrorResponse } from '../validation'
+import { MAX_PLAYER_COUNT, MIN_PLAYER_COUNT } from './validation'
 
 const gameSessionMockStore = useGameSessionMockStore()
 
@@ -26,6 +28,17 @@ export const gameSessionHandlers = [
       await simulateAPIDelay()
 
       const body = (await request.json()) as GameSessionCreateBody
+
+      const missingKeysError = validateParametersMissingErrorResponse<GameSessionCreateBody>(body, ['name', 'game', 'players'])
+      if (missingKeysError) {
+        return missingKeysError
+      }
+
+      const missingPlayersError = validateNonEmptyStringArrayElementCountValid(body.players, 'players', MIN_PLAYER_COUNT, MAX_PLAYER_COUNT)
+      if (missingPlayersError) {
+        return missingPlayersError
+      }
+
       const result = await gameSessionMockStore.addGameSessionPersistedMock(body)
 
       return HttpResponse.json(result)
@@ -58,10 +71,7 @@ export const gameSessionHandlers = [
       const body = (await request.json()) as PatchGameSessionByIdData['body']
 
       if (!body.status && !body.name) {
-        return HttpResponse.json(
-          { error: INCORRECT_PARAMS, message: 'At least one of "status" or "name" must be provided' },
-          { status: 400 },
-        )
+        return HttpResponse.json(getOneOfParametersRequiredErrorResponse(['name', 'status']))
       }
 
       let result = await gameSessionMockStore.getGameSessionPersistedMock(id as string)
