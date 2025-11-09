@@ -57,12 +57,12 @@ defineExpose({
 
       <UiCardHeader class="flex flex-wrap justify-center items-start h-full gap-2">
         <UiCardTitle class="w-full text-base/normal text-center wrap-break-word" lang="en">{{ gameSessionPlayer.name }}</UiCardTitle>
-        <div class="flex flex-col items-center justify-between gap-2 pl-0 mt-auto">
+        <div class="w-full flex flex-col items-center justify-between gap-2 pl-0 mt-auto">
           <div>{{ displayedTime }}</div>
 
           <UiButton
             v-if="gameSessionStatus !== 'ended'"
-            class="min-w-26 min-h-10 px-3"
+            class="w-full max-w-32 min-h-10 px-3"
             variant="outline"
             :disabled="timeTrackingDisabled"
             :tooltip="finishButtonTooltip"
