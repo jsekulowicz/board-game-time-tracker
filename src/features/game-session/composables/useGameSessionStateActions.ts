@@ -8,6 +8,15 @@ export const useGameSessionStateActions = () => {
   const canPause = computed(() => gameSessionStore.gameSession?.status === 'in_progress')
   const canComplete = computed(() => gameSessionStore.gameSession?.status !== 'ended')
   const needsToStartTracking = computed(() => gameSessionStore.gameSession?.status === 'ready_to_track')
+  const isTrackedTimeVisible = computed(() => gameSessionStore.gameSession?.timeDisplayMode === 'visible')
+
+  function toggleTimeVisibility() {
+    if (isTrackedTimeVisible.value) {
+      gameSessionStore.setGameSessionTimeDisplayMode('hidden')
+    } else {
+      gameSessionStore.setGameSessionTimeDisplayMode('visible')
+    }
+  }
 
   function toggleGameSessionPlayPause() {
     if (canPause.value) {
@@ -28,6 +37,8 @@ export const useGameSessionStateActions = () => {
     canPause,
     canComplete,
     needsToStartTracking,
+    isTrackedTimeVisible,
+    toggleTimeVisibility,
     toggleGameSessionPlayPause,
     endGameSession,
   }

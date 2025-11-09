@@ -40,6 +40,8 @@ patch:
               description: New name of the game session
             status:
               $ref: ../components/schemas/game-session.yaml#/schemas/Status
+            timeDisplayMode:
+              $ref: ../components/schemas/game-session.yaml#/schemas/TimeDisplayMode
           minProperties: 1
           additionalProperties: false
   responses:

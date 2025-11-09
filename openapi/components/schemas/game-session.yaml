@@ -7,6 +7,10 @@ schemas:
     type: string
     enum: [tracking, ready_to_move, turn_ended, passed]
 
+  TimeDisplayMode:
+    type: string
+    enum: [visible, hidden]
+
   PlayerMove:
     type: object
     properties:
@@ -50,6 +54,8 @@ schemas:
         type: string
       status:
         $ref: '#/schemas/Status'
+      timeDisplayMode:
+        $ref: '#/schemas/TimeDisplayMode'
       players:
         type: array
         items:
@@ -62,4 +68,4 @@ schemas:
         $ref: ./common.yaml#/schemas/Timestamp
       updatedAt:
         $ref: ./common.yaml#/schemas/Timestamp
-    required: [id, name, game, status, players, currentTurnIndex, currentMoveIndex, createdAt]
+    required: [id, name, game, status, timeDisplayMode, players, currentTurnIndex, currentMoveIndex, createdAt]

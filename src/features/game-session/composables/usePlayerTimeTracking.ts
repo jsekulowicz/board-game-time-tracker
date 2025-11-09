@@ -1,4 +1,4 @@
-import { ref, computed, onUnmounted, watch, type ComputedRef } from 'vue'
+import { ref, computed, onUnmounted, watchEffect, type ComputedRef } from 'vue'
 import type { GameSessionPlayer } from '@/api/generated'
 import { useGameSessionStore } from '../stores/useGameSessionStore'
 import { formatTime } from '@/helpers/time'
@@ -8,11 +8,16 @@ export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSession
 
   const timer = ref(Date.now())
   const moves = computed(() => gameSessionPlayer.value.moves)
+  const hiddenTimeBlink = ref(true)
 
   let intervalId: ReturnType<typeof setInterval> | null = null
 
   const displayedTime = computed(() => {
     updateTimer()
+
+    if (gameSessionStore.gameSession?.timeDisplayMode === 'hidden') {
+      return hiddenTimeBlink.value ? '##:##:##' : '## ## ##'
+    }
 
     const currentMove = moves.value[moves.value.length - 1]
     const currentMoveTimeMs = currentMove?.endTimestamp === null ? timer.value - new Date(currentMove.startTimestamp).getTime() : 0
@@ -29,25 +34,26 @@ export const usePlayerTimeTracking = (gameSessionPlayer: ComputedRef<GameSession
 
   onUnmounted(stopTimer)
 
-  watch(
-    () => gameSessionPlayer.value.status,
-    (newValue) => {
-      if (newValue === 'tracking') {
-        startTimer()
-      } else {
-        stopTimer()
-      }
-    },
-    { immediate: true },
-  )
+  watchEffect(() => {
+    if (gameSessionStore.gameSession?.status === 'in_progress' && gameSessionPlayer.value.status === 'tracking') {
+      startTimer()
+    } else {
+      stopTimer()
+    }
+  })
 
   function startTimer() {
-    intervalId = setInterval(updateTimer, 1000)
+    stopTimer()
+    intervalId = setInterval(() => {
+      updateTimer()
+      hiddenTimeBlink.value = !hiddenTimeBlink.value
+    }, 1000)
   }
 
   function stopTimer() {
     if (intervalId) {
       clearInterval(intervalId)
+      intervalId = null
     }
   }
 
