@@ -46,17 +46,6 @@ export const ALREADY_MOVED = deepFreeze({
   },
 })
 
-export const INCORRECT_PARAMS = deepFreeze({
-  error: 'INCORRECT_PARAMS',
-  title: 'Incorrect request',
-  message: 'At least one of "status" or "name" must be provided.',
-  statusCode: 400,
-  meta: {
-    toast: true,
-    log: true,
-  },
-})
-
 export const INTERNAL_SERVER_ERROR = deepFreeze({
   error: 'INTERNAL_SERVER_ERROR',
   title: 'Internal server error',
@@ -67,6 +56,64 @@ export const INTERNAL_SERVER_ERROR = deepFreeze({
     log: true,
   },
 })
+
+export function getOneOfParametersRequiredErrorResponse(parameters: string[]) {
+  if (!parameters.length) {
+    return getHttpErrorResponse(INTERNAL_SERVER_ERROR)
+  }
+
+  return getHttpErrorResponse({
+    error: 'ONE_OF_PARAMETERS_REQUIRED',
+    title: 'Incorrect request',
+    message: `At least one of the following parameters must be provided: ${parameters.join(', ')}.`,
+    statusCode: 400,
+    meta: {
+      toast: true,
+      log: true,
+    },
+  })
+}
+
+export function getParametersMissingErrorResponse(parameters: string[]) {
+  if (!parameters.length) {
+    return getHttpErrorResponse(INTERNAL_SERVER_ERROR)
+  }
+
+  return getHttpErrorResponse({
+    error: 'MISSING_REQUIRED_PARAMETERS',
+    title: 'Incorrect request',
+    message: `The following required parameters are missing: ${parameters.join(', ')}.`,
+    statusCode: 400,
+    meta: {
+      toast: true,
+      log: true,
+    },
+  })
+}
+
+export function getIncorrectStringArrayElementCountErrorResponse(
+  actualCount: number,
+  arrayName: string,
+  minCount: number,
+  maxCount: number,
+) {
+  return getIncorrectRequestErrorResponse(
+    `Number of received ${arrayName}: ${actualCount}. Expected minimum: ${minCount}. Expected maximum: ${maxCount}.`,
+  )
+}
+
+export function getIncorrectRequestErrorResponse(message: string) {
+  return getHttpErrorResponse({
+    error: 'INCORRECT_REQUEST',
+    title: 'Incorrect request',
+    message,
+    statusCode: 400,
+    meta: {
+      toast: true,
+      log: true,
+    },
+  })
+}
 
 export function getHttpErrorResponse(error?: ErrorResponse | undefined) {
   if (error === undefined) {

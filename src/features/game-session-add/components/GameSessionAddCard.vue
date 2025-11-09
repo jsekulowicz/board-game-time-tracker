@@ -19,23 +19,14 @@ const gameSessionListStore = useGameSessionListStore()
 const MIN_PLAYERS_COUNT = 2
 const MAX_PLAYERS_COUNT = 4
 
-const MIN_STRING_CHAR_COUNT = 2
 const MAX_STRING_CHAR_COUNT = 50
 
 const PLAYER_NAME_MAX_STRING_CHAR_COUNT = 30
 
 const formSchema = toTypedSchema(
   zod.object({
-    name: zod
-      .string()
-      .trim()
-      .min(MIN_STRING_CHAR_COUNT, `Must have at least ${MIN_STRING_CHAR_COUNT} characters`)
-      .max(MAX_STRING_CHAR_COUNT, `Cannot exceed ${MAX_STRING_CHAR_COUNT} characters`),
-    game: zod
-      .string()
-      .trim()
-      .min(MIN_STRING_CHAR_COUNT, `Must have at least ${MIN_STRING_CHAR_COUNT} characters`)
-      .max(MAX_STRING_CHAR_COUNT, `Cannot exceed ${MAX_STRING_CHAR_COUNT} characters`),
+    name: zod.string().trim().min(1, 'Required').max(MAX_STRING_CHAR_COUNT, `Cannot exceed ${MAX_STRING_CHAR_COUNT} characters`),
+    game: zod.string().trim().min(1, 'Required').max(MAX_STRING_CHAR_COUNT, `Cannot exceed ${MAX_STRING_CHAR_COUNT} characters`),
     players: zod
       .array(
         zod
