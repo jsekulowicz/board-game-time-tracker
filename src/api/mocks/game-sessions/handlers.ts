@@ -21,6 +21,12 @@ export const gameSessionHandlers = [
 
       return HttpResponse.json({
         items: result,
+        meta: {
+          total: result.length,
+          page: 1,
+          pageSize: result.length,
+          totalPages: 1,
+        },
       })
     } catch {
       return getHttpErrorResponse()
