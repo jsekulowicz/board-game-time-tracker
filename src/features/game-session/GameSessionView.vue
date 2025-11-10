@@ -3,6 +3,7 @@ import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import GameSessionCard from './components/GameSessionCard.vue'
+import GameSessionEmpty from './components/GameSessionEmpty.vue'
 import GameSessionStatusTag from './components/GameSessionStatusTag.vue'
 import GameSessionLoading from './components/GameSessionLoading.vue'
 import { useGameSessionStore } from '@/features/game-session/stores/useGameSessionStore'
@@ -35,6 +36,7 @@ watch(() => route.params.id, fetchGameSession, { immediate: true })
     </template>
 
     <GameSessionLoading v-if="loadingGameSession" />
-    <GameSessionCard v-else />
+    <GameSessionCard v-else-if="gameSession" />
+    <GameSessionEmpty v-else />
   </BaseLayout>
 </template>
