@@ -34,6 +34,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
       ],
       previousTotalTimeMs: 5000,
       ordinalNumber: 1,
+      color: '#FF0303',
     },
     {
       id: '222e6db7-aae7-42e9-a552-6d341e899ac3',
@@ -42,6 +43,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
       previousTotalTimeMs: 0,
       moves: [{ moveIndex: 1, turnIndex: 1, startTimestamp: now.toISOString(), endTimestamp: null }],
       ordinalNumber: 2,
+      color: '#0042FF',
     },
     {
       id: '333e6db7-aae7-42e9-a552-6d341e899ac3',
@@ -50,6 +52,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
       previousTotalTimeMs: 0,
       moves: [],
       ordinalNumber: 3,
+      color: '#1CE6B9',
     },
     {
       id: '444e6db7-aae7-42e9-a552-6d341e899ac3',
@@ -58,6 +61,7 @@ export function getGameSessionPlayersFixture(): GameSessionPlayer[] {
       previousTotalTimeMs: 0,
       moves: [],
       ordinalNumber: 4,
+      color: '#540081',
     },
   ]
 }

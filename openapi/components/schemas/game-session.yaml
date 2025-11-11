@@ -41,7 +41,13 @@ schemas:
             type: integer
           ordinalNumber:
             type: integer
-        required: [name, status, ordinalNumber, moves, previousTotalTimeMs]
+          color:
+            type: string
+            example: '#ffcc00'
+            pattern: '^#(?:[0-9a-fA-F]{3}){1,2}$'
+            description: |
+              Hex color associated with the player (e.g. '#ffcc00').
+        required: [name, status, ordinalNumber, color, moves, previousTotalTimeMs]
 
   Resource:
     type: object

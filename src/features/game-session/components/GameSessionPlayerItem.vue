@@ -56,7 +56,10 @@ defineExpose({
       </template>
 
       <UiCardHeader class="flex flex-wrap justify-center items-start h-full gap-2">
-        <UiCardTitle class="w-full text-base/normal text-center wrap-break-word" lang="en">{{ gameSessionPlayer.name }}</UiCardTitle>
+        <UiCardTitle class="w-full flex gap-2 justify-center text-base/normal text-center wrap-break-word" lang="en">
+          <div class="size-[23px] rounded-sm" :style="{ backgroundColor: gameSessionPlayer.color }" />
+          <div>{{ gameSessionPlayer.name }}</div>
+        </UiCardTitle>
         <div class="w-full flex flex-col items-center justify-between gap-2 pl-0 mt-auto">
           <div>{{ displayedTime }}</div>
 

@@ -46,10 +46,11 @@ export const useGameSessionMockStore = defineStore(
         game,
         timeDisplayMode: 'visible',
         players: players.map(
-          (playerName, index) =>
+          (player, index) =>
             ({
               id: crypto.randomUUID(),
-              name: playerName,
+              name: player.name,
+              color: player.color,
               status: 'ready_to_move',
               moves: [],
               previousTotalTimeMs: 5000,

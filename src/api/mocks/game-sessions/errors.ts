@@ -88,7 +88,7 @@ export function getOneOfParametersRequiredErrorResponse(parameters: string[]) {
   })
 }
 
-export function getParametersMissingErrorResponse(parameters: string[]) {
+export function getParametersMissingErrorResponse(parameters: string[], missingFor?: string) {
   if (!parameters.length) {
     return getHttpErrorResponse(INTERNAL_SERVER_ERROR)
   }
@@ -96,7 +96,7 @@ export function getParametersMissingErrorResponse(parameters: string[]) {
   return getHttpErrorResponse({
     error: 'MISSING_REQUIRED_PARAMETERS',
     title: 'Incorrect request',
-    message: `The following required parameters are missing: ${parameters.join(', ')}.`,
+    message: `${missingFor ? `[${missingFor}] ` : ''}The following required parameters are missing: ${parameters.join(', ')}.`,
     statusCode: 400,
     meta: {
       toast: true,
@@ -112,7 +112,7 @@ export function getIncorrectStringArrayElementCountErrorResponse(
   maxCount: number,
 ) {
   return getIncorrectRequestErrorResponse(
-    `Number of received ${arrayName}: ${actualCount}. Expected minimum: ${minCount}. Expected maximum: ${maxCount}.`,
+    `Number of received valid ${arrayName}: ${actualCount}. Expected minimum: ${minCount}. Expected maximum: ${maxCount}.`,
   )
 }
 

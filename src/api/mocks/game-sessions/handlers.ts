@@ -2,10 +2,11 @@ import { http, HttpResponse } from 'msw'
 import { useGameSessionMockStore } from './stores/useGameSessionMockStore'
 import type { GameSessionCreateBody, PatchGameSessionByIdData, SwitchPlayerMoveData } from '@/api/generated'
 import { simulateAPIDelay } from '../utils'
-import { getHttpErrorResponse, getOneOfParametersRequiredErrorResponse } from './errors'
+import { getHttpErrorResponse } from './errors'
 import {
   validateAtLeastOneOfParametersPresent,
-  validateNonEmptyStringArrayElementCount,
+  validateNoEmptyPropertiesInArrayOfObjects,
+  validateNonEmptyArrayOfObjectsCount,
   validateParametersMissingErrorResponse,
 } from '../validation'
 import { MAX_PLAYER_COUNT, MIN_PLAYER_COUNT } from './validation'
@@ -44,7 +45,12 @@ export const gameSessionHandlers = [
         return missingKeysError
       }
 
-      const missingPlayersError = validateNonEmptyStringArrayElementCount(body.players, 'players', MIN_PLAYER_COUNT, MAX_PLAYER_COUNT)
+      const emptyPropertiesForPlayerError = validateNoEmptyPropertiesInArrayOfObjects(body.players, ['name', 'color'], 'Player')
+      if (emptyPropertiesForPlayerError) {
+        return emptyPropertiesForPlayerError
+      }
+
+      const missingPlayersError = validateNonEmptyArrayOfObjectsCount(body.players, 'players', MIN_PLAYER_COUNT, MAX_PLAYER_COUNT)
       if (missingPlayersError) {
         return missingPlayersError
       }
