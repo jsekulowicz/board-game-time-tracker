@@ -24,6 +24,7 @@ const MAX_STRING_CHAR_COUNT = 50
 const PLAYER_NAME_MAX_STRING_CHAR_COUNT = 30
 
 const PLAYER_COLORS: string[] = ['#FF0303', '#0042FF', '#1CE6B9', '#540081', '#FFFC00', '#FE8A0E']
+const PLAYER_PLACEHOLDERS: string[] = ['Bob', 'Alice', 'Charlie', 'Frank', 'Diana', 'Eve']
 
 const formSchema = toTypedSchema(
   zod.object({
@@ -120,7 +121,7 @@ const onSubmit = handleSubmit(async (formValues) => {
           <UiFormItem>
             <UiFormLabel>Session name</UiFormLabel>
             <UiFormControl>
-              <UiInput type="text" v-bind="componentField" />
+              <UiInput v-bind="componentField" type="text" placeholder="e.g. Friday night session" />
             </UiFormControl>
             <UiFormMessage />
           </UiFormItem>
@@ -130,7 +131,7 @@ const onSubmit = handleSubmit(async (formValues) => {
           <UiFormItem>
             <UiFormLabel>Game name</UiFormLabel>
             <UiFormControl>
-              <UiInput type="text" v-bind="componentField" />
+              <UiInput v-bind="componentField" type="text" placeholder="e.g. Catan" />
             </UiFormControl>
             <UiFormMessage />
           </UiFormItem>
@@ -153,6 +154,7 @@ const onSubmit = handleSubmit(async (formValues) => {
                 class="inline-flex flex-1 pl-10"
                 :class="{ 'pr-10': playerFields.length > MIN_PLAYERS_COUNT }"
                 type="text"
+                :placeholder="`e.g. ${PLAYER_PLACEHOLDERS[index]}`"
                 v-bind="componentField"
               />
               <div class="absolute left-2 top-[29px] size-[23px] rounded-sm" :style="{ backgroundColor: player.value.color }" />
