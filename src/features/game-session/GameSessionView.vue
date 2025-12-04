@@ -28,7 +28,7 @@ watch(() => route.params.id, fetchGameSession, { immediate: true })
     <template v-if="gameSession" #header="{ pageTitle }">
       <div class="flex gap-x-6 gap-y-2 items-center justify-between flex-wrap">
         <h2 class="font-semibold">{{ pageTitle }}</h2>
-        <div class="flex gap-x-4 gap-y-2 flex-wrap">
+        <div class="flex gap-x-4 gap-y-2 flex-wrap justify-between">
           <div>{{ gameSession.game }}, turn {{ gameSession.currentTurnIndex + 1 }}, move {{ gameSession.currentMoveIndex + 1 }}</div>
           <GameSessionStatusTag class="rounded-sm" :status="gameSession.status" />
         </div>

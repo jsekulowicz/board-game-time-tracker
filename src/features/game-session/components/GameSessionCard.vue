@@ -8,6 +8,7 @@ import GridListContainer from '@/components/GridListContainer.vue'
 import GameSessionPlayerItem from './GameSessionPlayerItem.vue'
 import GameSessionCardActions from './GameSessionCardStateActions.vue'
 import GameSessionStatusTag from './GameSessionStatusTag.vue'
+import GameSessionMoveDurationChartCard from '@/features/game-session-statistics/components/GameSessionMoveDurationChartCard.vue'
 
 import { useGameSessionStore } from '../stores/useGameSessionStore'
 
@@ -23,7 +24,7 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
       <GameSessionStatusTag :status="gameSession.status" />
     </template>
 
-    <UiCardContent>
+    <UiCardContent class="flex flex-col gap-4">
       <GridListContainer :maxCols="gameSession.players.length">
         <GameSessionPlayerItem
           v-for="gameSessionPlayer in gameSession.players"
@@ -33,6 +34,8 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
           :gameSessionStatus="gameSession.status"
         />
       </GridListContainer>
+
+      <GameSessionMoveDurationChartCard v-if="gameSession.status === 'ended'" />
     </UiCardContent>
 
     <UiCardFooter v-if="gameSession.status !== 'ended'">

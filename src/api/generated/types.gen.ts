@@ -83,6 +83,7 @@ export type GameSessionPlayer = PlayerResource & {
 export type GameSessionPlayerMove = {
     startTimestamp: CommonTimestamp;
     endTimestamp?: CommonTimestamp | null;
+    duration?: number;
     moveIndex: number;
     turnIndex: number;
 };

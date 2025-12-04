@@ -20,6 +20,8 @@ schemas:
         oneOf:
           - $ref: ./common.yaml#/schemas/Timestamp
           - type: 'null'
+      duration:
+        type: integer
       moveIndex:
         type: integer
       turnIndex:
