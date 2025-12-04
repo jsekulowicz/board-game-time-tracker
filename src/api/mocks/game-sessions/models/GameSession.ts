@@ -41,6 +41,7 @@ export class GameSession {
         break
       case 'ended':
         this.stopTracking()
+        this.endAllCurrentMoves()
         this.resource.timeDisplayMode = 'visible'
         break
     }
@@ -97,8 +98,8 @@ export class GameSession {
     const lastMove = player.moves.at(-1)
     if (lastMove && !lastMove.endTimestamp) {
       lastMove.endTimestamp = new Date().toISOString()
-      const duration = new Date(lastMove.endTimestamp).getTime() - new Date(lastMove.startTimestamp).getTime()
-      player.previousTotalTimeMs += duration
+      lastMove.duration = new Date(lastMove.endTimestamp).getTime() - new Date(lastMove.startTimestamp).getTime()
+      player.previousTotalTimeMs += lastMove.duration
     }
     if (newStatus) {
       player.status = newStatus

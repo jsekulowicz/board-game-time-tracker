@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { getGameSessionFixture } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
+import { getGameSessionFixture, getGameSessionFixtureWithManyTurns } from 'mocks/game-sessions/fixtures/gameSessionFixtures'
 import { GameSession } from '../models/GameSession'
 import type {
   ErrorResponse,
@@ -20,7 +20,7 @@ export const useGameSessionMockStore = defineStore(
     const gameSessionResources = ref<GameSessionResource[]>([])
 
     if (gameSessionResources.value.length === 0) {
-      gameSessionResources.value = [getGameSessionFixture()]
+      gameSessionResources.value = [getGameSessionFixture(), getGameSessionFixtureWithManyTurns()]
     }
 
     const gameSessions = computed(() => gameSessionResources.value.map((res) => new GameSession(res)))
@@ -46,13 +46,14 @@ export const useGameSessionMockStore = defineStore(
         game,
         timeDisplayMode: 'visible',
         players: players.map(
-          (playerName, index) =>
+          (player, index) =>
             ({
               id: crypto.randomUUID(),
-              name: playerName,
+              name: player.name,
+              color: player.color,
               status: 'ready_to_move',
               moves: [],
-              previousTotalTimeMs: 5000,
+              previousTotalTimeMs: 0,
               ordinalNumber: index + 1,
             }) as GameSessionPlayer,
         ),

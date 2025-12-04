@@ -8,7 +8,7 @@ import GridListContainer from '@/components/GridListContainer.vue'
 import GameSessionPlayerItem from './GameSessionPlayerItem.vue'
 import GameSessionCardActions from './GameSessionCardStateActions.vue'
 import GameSessionStatusTag from './GameSessionStatusTag.vue'
-import GameSessionEmpty from './GameSessionEmpty.vue'
+import GameSessionMoveDurationChartCard from '@/features/game-session-statistics/components/GameSessionMoveDurationChartCard.vue'
 
 import { useGameSessionStore } from '../stores/useGameSessionStore'
 
@@ -19,29 +19,27 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
 </script>
 
 <template>
-  <UiCard class="gap-6">
-    <template v-if="gameSession" #status>
+  <UiCard v-if="gameSession" class="gap-6">
+    <template #status>
       <GameSessionStatusTag :status="gameSession.status" />
     </template>
 
-    <template v-if="gameSession">
-      <UiCardContent>
-        <GridListContainer :maxCols="gameSession.players.length">
-          <GameSessionPlayerItem
-            v-for="gameSessionPlayer in gameSession.players"
-            ref="gameSessionPlayerItemRefs"
-            :key="gameSessionPlayer.id"
-            :gameSessionPlayer
-            :gameSessionStatus="gameSession.status"
-          />
-        </GridListContainer>
-      </UiCardContent>
+    <UiCardContent class="flex flex-col gap-4">
+      <GridListContainer :maxCols="gameSession.players.length">
+        <GameSessionPlayerItem
+          v-for="gameSessionPlayer in gameSession.players"
+          ref="gameSessionPlayerItemRefs"
+          :key="gameSessionPlayer.id"
+          :gameSessionPlayer
+          :gameSessionStatus="gameSession.status"
+        />
+      </GridListContainer>
 
-      <UiCardFooter v-if="gameSession.status !== 'ended'">
-        <GameSessionCardActions />
-      </UiCardFooter>
-    </template>
+      <GameSessionMoveDurationChartCard v-if="gameSession.status === 'ended'" />
+    </UiCardContent>
 
-    <GameSessionEmpty v-else />
+    <UiCardFooter v-if="gameSession.status !== 'ended'">
+      <GameSessionCardActions />
+    </UiCardFooter>
   </UiCard>
 </template>

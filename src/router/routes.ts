@@ -41,7 +41,7 @@ export const routes: RouteRecordRaw[] = [
               return 'Loading game session...'
             }
 
-            return store.gameSession?.name ?? ''
+            return store.gameSession?.name ?? 'Not found'
           },
         },
       },

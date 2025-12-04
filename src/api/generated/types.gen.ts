@@ -50,11 +50,22 @@ export type GameSessionCreateBody = {
      */
     game: string;
     /**
-     * List of player names participating in the session.
+     * List of players participating in the session.
+     * Each player includes their name and color in hex format.
      * The backend will create corresponding Player objects.
      *
      */
-    players: Array<string>;
+    players: Array<{
+        /**
+         * Player's display name
+         */
+        name: string;
+        /**
+         * Hex color associated with the player (e.g. '#ffcc00').
+         *
+         */
+        color: string;
+    }>;
 };
 
 export type GameSessionPlayer = PlayerResource & {
@@ -62,11 +73,17 @@ export type GameSessionPlayer = PlayerResource & {
     status: GameSessionPlayerStatus;
     previousTotalTimeMs: number;
     ordinalNumber: number;
+    /**
+     * Hex color associated with the player (e.g. '#ffcc00').
+     *
+     */
+    color: string;
 };
 
 export type GameSessionPlayerMove = {
     startTimestamp: CommonTimestamp;
     endTimestamp?: CommonTimestamp | null;
+    duration?: number;
     moveIndex: number;
     turnIndex: number;
 };

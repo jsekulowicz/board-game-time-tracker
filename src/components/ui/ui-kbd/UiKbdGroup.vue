@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <kbd data-slot="kbd-group" :class="cn('inline-flex items-center gap-1 justify-center md:justify-between w-full', props.class)">
+  <kbd data-slot="kbd-group" :class="cn('inline-flex items-center gap-2 justify-center w-full', props.class)">
     <slot />
     <div v-if="$slots.kbd" class="hidden md:flex gap-1">
       <slot name="kbd" />
