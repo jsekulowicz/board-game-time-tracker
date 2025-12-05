@@ -1,114 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useForm, useFieldArray } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as zod from 'zod'
 import { Icon } from '@iconify/vue'
-import { useRouter } from 'vue-router'
 
 import { UiFormControl, UiFormField, UiFormItem, UiFormLabel, UiFormMessage } from '@/components/ui/ui-form'
+import { UiPopover, UiPopoverTrigger, UiPopoverContent } from '@/components/ui/ui-popover'
 import { UiCard } from '@/components/ui/ui-card'
 import { UiButton } from '@/components/ui/ui-button'
 import { UiInput } from '@/components/ui/ui-input'
-import { useGameSessionListStore } from '@/features/game-session-list/stores/useGameSessionListStore'
-import { RouteName } from '@/router/consts'
-import { toast } from 'vue-sonner'
-import type { GameSessionCreateBody } from '@/api/generated'
+import { CompactPicker } from 'vue-color'
 
-const gameSessionListStore = useGameSessionListStore()
+import { useGameSessionAdd } from '../composables/useGameSessionAdd'
+import { getReadableTextClassForBackground } from '../helpers/colors'
 
-const MIN_PLAYERS_COUNT = 2
-const MAX_PLAYERS_COUNT = 6
+const { MAX_PLAYERS_COUNT, PLAYER_PLACEHOLDERS, hasMinPlayers, hasMaxPlayers, playerFields, addPlayer, removePlayer, onSubmit } =
+  useGameSessionAdd()
 
-const MAX_STRING_CHAR_COUNT = 50
-const PLAYER_NAME_MAX_STRING_CHAR_COUNT = 30
-
-const PLAYER_COLORS: string[] = ['#FF0303', '#0042FF', '#1CE6B9', '#540081', '#FFFC00', '#FE8A0E']
-const PLAYER_PLACEHOLDERS: string[] = ['Bob', 'Alice', 'Charlie', 'Frank', 'Diana', 'Eve']
-
-const formSchema = toTypedSchema(
-  zod.object({
-    name: zod
-      .string()
-      .trim()
-      .min(1, 'Session name is required')
-      .max(MAX_STRING_CHAR_COUNT, `Cannot exceed ${MAX_STRING_CHAR_COUNT} characters`),
-    game: zod
-      .string()
-      .trim()
-      .min(1, 'Game name is required')
-      .max(MAX_STRING_CHAR_COUNT, `Cannot exceed ${MAX_STRING_CHAR_COUNT} characters`),
-    players: zod
-      .array(
-        zod.object({
-          name: zod
-            .string()
-            .trim()
-            .min(1, 'Player name is required')
-            .max(PLAYER_NAME_MAX_STRING_CHAR_COUNT, `Cannot exceed ${PLAYER_NAME_MAX_STRING_CHAR_COUNT} characters`),
-          color: zod.string().regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/, 'Must be a valid hex color'),
-        }),
-      )
-      .min(MIN_PLAYERS_COUNT, `Must have at least ${MIN_PLAYERS_COUNT} players`)
-      .max(MAX_PLAYERS_COUNT, `Cannot exceed ${MAX_PLAYERS_COUNT} players`),
-  }),
-)
-
-const { handleSubmit } = useForm({
-  validationSchema: formSchema,
-  initialValues: {
-    name: '',
-    game: '',
-    players: [
-      { name: '', color: PLAYER_COLORS[0] as string },
-      { name: '', color: PLAYER_COLORS[1] as string },
-    ],
-  },
-})
-
-const {
-  fields: playerFields,
-  push: addPlayerField,
-  remove: removePlayerField,
-} = useFieldArray<GameSessionCreateBody['players'][number]>('players')
-
-const hasMinPlayers = computed(() => playerFields.value.length === MIN_PLAYERS_COUNT)
-const hasMaxPlayers = computed(() => playerFields.value.length === MAX_PLAYERS_COUNT)
 const playersAddTooltip = computed(() => (hasMaxPlayers.value ? `Cannot have more than ${MAX_PLAYERS_COUNT} players.` : undefined))
-
-const router = useRouter()
-
-function addPlayer() {
-  if (playerFields.value.length < MAX_PLAYERS_COUNT) {
-    const nextColor = PLAYER_COLORS.find((color) => !playerFields.value.find((p) => p.value.color === color)) || '#CCCCCC'
-    addPlayerField({ name: '', color: nextColor })
-  }
-}
-
-function removePlayer(index: number) {
-  if (playerFields.value.length > MIN_PLAYERS_COUNT) {
-    removePlayerField(index)
-
-    playerFields.value.forEach((player, index) => {
-      player.value.color = PLAYER_COLORS[index] as string
-    })
-  }
-}
-
-const onSubmit = handleSubmit(async (formValues) => {
-  try {
-    const resource = await gameSessionListStore.createGameSession(formValues)
-
-    if (resource) {
-      router.push({ name: RouteName.GameSession, params: { id: resource.id } })
-      toast(`Successfully created ${resource.name}.`, {
-        description: 'Use Track buttons to start tracking.',
-      })
-    }
-  } catch (error) {
-    console.error(error)
-  }
-})
 </script>
 
 <template>
@@ -152,15 +59,34 @@ const onSubmit = handleSubmit(async (formValues) => {
             <UiFormControl class="relative">
               <UiInput
                 class="inline-flex flex-1 pl-10"
-                :class="{ 'pr-10': playerFields.length > MIN_PLAYERS_COUNT }"
+                :class="{ 'pr-10': !hasMinPlayers }"
                 type="text"
                 :placeholder="`e.g. ${PLAYER_PLACEHOLDERS[index]}`"
                 v-bind="componentField"
               />
-              <div class="absolute left-2 top-[29px] size-[23px] rounded-sm" :style="{ backgroundColor: player.value.color }" />
+
+              <UiFormField v-slot="{ componentField }" :name="`players[${index}].color`">
+                <UiFormControl class="relative">
+                  <UiPopover>
+                    <UiPopoverTrigger as-child>
+                      <UiButton
+                        class="absolute flex justify-center items-center left-1.5 top-[27px] size-[26px] rounded-sm"
+                        tooltip="Update player's color"
+                        :style="{ backgroundColor: `${player.value.color}` }"
+                      >
+                        <Icon :class="getReadableTextClassForBackground(player.value.color)" icon="radix-icons:gear" />
+                      </UiButton>
+                    </UiPopoverTrigger>
+
+                    <UiPopoverContent class="p-0 overflow-hidden">
+                      <CompactPicker class="w-full! shadow-none!" tabindex="-1" v-bind="componentField" />
+                    </UiPopoverContent>
+                  </UiPopover>
+                </UiFormControl>
+              </UiFormField>
 
               <UiButton
-                v-if="playerFields.length > MIN_PLAYERS_COUNT"
+                v-if="!hasMinPlayers"
                 class="absolute right-2 top-7"
                 size="icon-xs"
                 variant="ghost"
@@ -179,3 +105,11 @@ const onSubmit = handleSubmit(async (formValues) => {
     </form>
   </UiCard>
 </template>
+
+<style scoped>
+:deep(.color-item) {
+  width: 23px;
+  height: 23px;
+  border-radius: var(--radius-sm);
+}
+</style>

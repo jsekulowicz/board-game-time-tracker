@@ -11,6 +11,7 @@ interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
   class?: HTMLAttributes['class']
+  style?: HTMLAttributes['style']
   disabled?: boolean
   tooltip?: string | null
   type?: string
@@ -64,6 +65,7 @@ defineExpose({
           :class="cn(buttonVariants({ variant, size }), props.class, stateClasses)"
           :as="as"
           :as-child="asChild"
+          :style
           :type
           @click="onClick"
           @keydown.enter.space="onClick"

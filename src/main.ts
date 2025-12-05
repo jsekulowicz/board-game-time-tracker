@@ -4,6 +4,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import './index.css'
+import 'vue-color/style.css'
 
 import { client } from '@/api/generated/client.gen.ts'
 import { errorHandlerInterceptor } from '@/api/interceptors/errorHandler.ts'
