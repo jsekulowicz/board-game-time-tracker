@@ -1,4 +1,4 @@
-import type { ChartConfig } from '.'
+import type { UiChartConfig } from '.'
 import { isClient } from '@vueuse/core'
 import { h, render, useId } from 'vue'
 
@@ -19,7 +19,7 @@ interface Constructor<P = any> {
   }
 }
 
-export function componentToString<P>(config: ChartConfig, component: Constructor<P>, props?: P) {
+export function componentToString<P>(config: UiChartConfig, component: Constructor<P>, props?: P) {
   if (!isClient) return
 
   // This function will be called once during mount lifecycle

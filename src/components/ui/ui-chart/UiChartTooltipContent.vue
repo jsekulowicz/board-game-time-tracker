@@ -77,6 +77,7 @@ const tooltipLabel = computed(() => {
         >
           <component :is="itemConfig.icon" v-if="itemConfig?.icon" />
           <template v-else-if="!hideIndicator">
+            <!-- @vue-ignore -->
             <div
               :class="
                 cn('shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)', {
