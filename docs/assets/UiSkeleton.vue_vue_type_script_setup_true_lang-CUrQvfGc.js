@@ -1,0 +1,1 @@
+import{c as a}from"./UiCard.vue_vue_type_script_setup_true_lang-DYtcAPAc.js";import{h as n,i as o,n as r,u as t,o as c}from"./index-DGCIFPkO.js";const u=n({__name:"UiSkeleton",props:{class:{}},setup(s){const e=s;return(l,m)=>(c(),o("div",{"data-slot":"skeleton",class:r(t(a)("animate-pulse rounded-md bg-primary/10",e.class))},null,2))}});export{u as _};
