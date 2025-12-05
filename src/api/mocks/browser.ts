@@ -6,7 +6,7 @@ export const worker = setupWorker(...gameSessionHandlers)
 export async function startWorker() {
   await worker.start({
     serviceWorker: {
-      url: './mockServiceWorker.js',
+      url: '/board-game-time-tracker/mockServiceWorker.js',
     },
     onUnhandledRequest(request, print) {
       const url = new URL(request.url)
