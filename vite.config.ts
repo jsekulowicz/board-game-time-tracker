@@ -7,6 +7,7 @@ import tailwindPlugin from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/board-game-time-tracker/',
   plugins: [
     vue(),
     vueDevTools(),
