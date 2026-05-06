@@ -4,8 +4,7 @@ import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
 
 import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
 import { UiKbd, UiKbdGroup } from '@/components/ui/ui-kbd'
-import { UiCardHeader, UiCardTitle } from '@/components/ui/ui-card'
-import { UiButton } from '@/components/ui/ui-button'
+import DsButton from '@/components/ds/DsButton.vue'
 
 import GameSessionPlayerStatusTag from './GameSessionPlayerStatusTag.vue'
 import { usePlayerTimeTracking } from '../composables/usePlayerTimeTracking'
@@ -21,7 +20,7 @@ const sessionPlayer = computed(() => props.gameSessionPlayer)
 const { displayedTime, timeTrackingDisabled } = usePlayerTimeTracking(sessionPlayer)
 const { switchPlayerMove, switchPlayerKeyLabel } = useSwitchPlayerMove(sessionPlayer)
 
-const finishButtonRef = ref<InstanceType<typeof UiButton> | null>(null)
+const finishButtonRef = ref<InstanceType<typeof DsButton> | null>(null)
 
 const finishButtonTooltip = computed<string | null>(() => {
   if (props.gameSessionStatus === 'paused') {
@@ -55,18 +54,20 @@ defineExpose({
         <GameSessionPlayerStatusTag :player="gameSessionPlayer" :gameStatus="gameSessionStatus" />
       </template>
 
-      <UiCardHeader class="flex flex-wrap justify-center items-start h-full gap-2">
-        <UiCardTitle class="w-full flex gap-2 justify-center text-base/normal text-center wrap-break-word" lang="en">
+      <div class="flex flex-wrap justify-center items-start h-full gap-2">
+        <h3 class="w-full flex gap-2 justify-center text-base/normal text-center wrap-break-word font-semibold" lang="en">
           <div class="size-[23px] rounded-sm" :style="{ backgroundColor: gameSessionPlayer.color }" />
           <div>{{ gameSessionPlayer.name }}</div>
-        </UiCardTitle>
+        </h3>
         <div class="w-full flex flex-col items-center justify-between gap-2 pl-0 mt-auto">
           <div>{{ displayedTime }}</div>
 
-          <UiButton
+          <DsButton
             v-if="gameSessionStatus !== 'ended'"
+            ref="finishButtonRef"
             class="w-full max-w-32 min-h-10 px-3"
-            variant="outline"
+            variant="secondary"
+            full-width
             :disabled="timeTrackingDisabled"
             :tooltip="finishButtonTooltip"
             @click="switchPlayerMove"
@@ -78,9 +79,9 @@ defineExpose({
                 <UiKbd>{{ switchPlayerKeyLabel }}</UiKbd>
               </template>
             </UiKbdGroup>
-          </UiButton>
+          </DsButton>
         </div>
-      </UiCardHeader>
+      </div>
     </CardWithStatusTag>
   </li>
 </template>

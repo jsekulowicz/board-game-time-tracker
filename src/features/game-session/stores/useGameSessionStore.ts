@@ -6,7 +6,8 @@ import {
   patchGameSessionById as apiPatchGameSessionById,
   switchPlayerMove as apiSwitchPlayerMove,
 } from '@/api/generated/sdk.gen'
-import { toast } from 'vue-sonner'
+import '@jsekulowicz/ds-components/toast/define'
+import { toast } from '@jsekulowicz/ds-components/toast'
 
 export const useGameSessionStore = defineStore('gameSession', () => {
   const gameSession = ref<GameSessionResource | undefined>()
@@ -43,11 +44,11 @@ export const useGameSessionStore = defineStore('gameSession', () => {
 
     switch (gameSession.value?.timeDisplayMode) {
       case 'visible': {
-        toast('Tracked time visible', { description: 'As long as the game has not ended, you can hide it anytime you want.' })
+        toast.info('Tracked time visible', { body: 'As long as the game has not ended, you can hide it anytime you want.' })
         break
       }
       case 'hidden': {
-        toast('Tracked time hidden', { description: 'As long as the game has not ended, you can show it anytime you want.' })
+        toast.info('Tracked time hidden', { body: 'As long as the game has not ended, you can show it anytime you want.' })
         break
       }
     }
@@ -71,15 +72,15 @@ export const useGameSessionStore = defineStore('gameSession', () => {
 
     switch (gameSession.value?.status) {
       case 'ended': {
-        toast('Game session ended', { description: 'Tracking stopped. You will not be able to resume this game session.' })
+        toast.warning('Game session ended', { body: 'Tracking stopped. You will not be able to resume this game session.' })
         break
       }
       case 'in_progress': {
-        toast('Game resumed', { description: 'Tracking resumed. Use Pause button to pause again.' })
+        toast.success('Game resumed', { body: 'Tracking resumed. Use Pause button to pause again.' })
         break
       }
       case 'paused': {
-        toast('Game paused', { description: 'Tracking stopped. Use Resume button to resume tracking.' })
+        toast.info('Game paused', { body: 'Tracking stopped. Use Resume button to resume tracking.' })
         break
       }
     }

@@ -149,3 +149,37 @@
     outline-offset: 4px;
   }
 }
+
+@layer components {
+  ds-button.ds-button-fill::part(button) {
+    width: 100%;
+  }
+
+  ds-button.ds-button-icon-xs::part(button) {
+    width: 1.5rem;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+  }
+
+  ds-button.ds-button-icon-sm::part(button) {
+    width: 2rem;
+    min-width: 2rem;
+    padding: 0;
+  }
+
+  ds-card.ds-card-table::part(card) {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  ds-card.ds-card-full::part(card) {
+    height: 100%;
+  }
+
+  ds-badge.card-status-tag::part(badge) {
+    justify-content: center;
+    min-width: 8rem;
+    min-height: 1.5rem;
+  }
+}

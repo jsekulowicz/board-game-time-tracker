@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
-import { UiBreadcrumb, UiBreadcrumbItem, UiBreadcrumbLink, UiBreadcrumbList, UiBreadcrumbSeparator } from '@/components/ui/ui-breadcrumb'
-import { Icon } from '@iconify/vue'
+import '@jsekulowicz/ds-components/breadcrumb/define'
 import { usePageTitle } from '@/composables/usePageTitle'
 import type { RouteName } from '@/router/consts'
 
@@ -23,25 +22,21 @@ const breadcrumbs = computed(() => {
     }
   })
 })
+
+function navigate(to: string | null, event: Event) {
+  if (!to) {
+    return
+  }
+
+  event.preventDefault()
+  router.push(to)
+}
 </script>
 
 <template>
-  <UiBreadcrumb v-if="breadcrumbs.length > 1">
-    <UiBreadcrumbList>
-      <template v-for="(crumb, index) in breadcrumbs" :key="index">
-        <UiBreadcrumbItem>
-          <UiBreadcrumbLink v-if="crumb.to" asChild>
-            <RouterLink class="hover:underline" :to="crumb.to">
-              {{ crumb.title }}
-            </RouterLink>
-          </UiBreadcrumbLink>
-          <span v-else class="text-muted-foreground">{{ crumb.title }}</span>
-        </UiBreadcrumbItem>
-
-        <UiBreadcrumbSeparator v-if="index < breadcrumbs.length - 1">
-          <Icon icon="radix-icons:chevron-right" />
-        </UiBreadcrumbSeparator>
-      </template>
-    </UiBreadcrumbList>
-  </UiBreadcrumb>
+  <ds-breadcrumb v-if="breadcrumbs.length > 1">
+    <ds-breadcrumb-item v-for="(crumb, index) in breadcrumbs" :key="index" :href="crumb.to || undefined" @click="navigate(crumb.to, $event)">
+      {{ crumb.title }}
+    </ds-breadcrumb-item>
+  </ds-breadcrumb>
 </template>

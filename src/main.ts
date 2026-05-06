@@ -3,8 +3,8 @@ import { createPinia, setActivePinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
+import '@jsekulowicz/ds-tokens/theme-default.css'
 import './index.css'
-import 'vue-color/style.css'
 
 import { client } from '@/api/generated/client.gen.ts'
 import { errorHandlerInterceptor } from '@/api/interceptors/errorHandler.ts'
@@ -13,6 +13,8 @@ async function initializeApp() {
   client.interceptors.response.use(errorHandlerInterceptor)
 
   const app = createApp(App)
+  app.config.compilerOptions.isCustomElement = (tag) => tag.startsWith('ds-')
+
   const pinia = createPinia()
   setActivePinia(pinia)
   pinia.use(piniaPluginPersistedstate)

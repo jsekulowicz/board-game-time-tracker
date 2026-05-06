@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch, nextTick, type HTMLAttributes } from 'vue'
-import { UiTooltipProvider, UiTooltip, UiTooltipTrigger, UiTooltipContent } from '@/components/ui/ui-tooltip'
+import '@jsekulowicz/ds-components/tooltip/define'
 import { cn } from '@/lib/utils'
 
 const props = defineProps<{
@@ -60,17 +60,14 @@ function checkOverflow() {
 </script>
 
 <template>
-  <UiTooltipProvider>
-    <UiTooltip>
-      <UiTooltipTrigger as-child>
-        <span ref="labelRef" :class="cn(props.class, 'block whitespace-nowrap overflow-hidden truncate overflow-ellipsis')">
-          {{ text }}
-        </span>
-      </UiTooltipTrigger>
+  <ds-tooltip v-if="isOverflowing">
+    <span ref="labelRef" :class="cn(props.class, 'block whitespace-nowrap overflow-hidden truncate overflow-ellipsis')">
+      {{ text }}
+    </span>
+    <span slot="tip">{{ text }}</span>
+  </ds-tooltip>
 
-      <UiTooltipContent v-if="isOverflowing">
-        <span>{{ text }}</span>
-      </UiTooltipContent>
-    </UiTooltip>
-  </UiTooltipProvider>
+  <span v-else ref="labelRef" :class="cn(props.class, 'block whitespace-nowrap overflow-hidden truncate overflow-ellipsis')">
+    {{ text }}
+  </span>
 </template>

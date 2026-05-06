@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import GameSessionListCard from './components/GameSessionListCard.vue'
-import UiButton from '@/components/ui/ui-button/UiButton.vue'
+import DsButton from '@/components/ds/DsButton.vue'
 
 import { Icon } from '@iconify/vue'
 import { RouteName } from '@/router/consts'
@@ -13,12 +13,12 @@ import { RouteName } from '@/router/consts'
       <div class="flex items-center gap-4">
         <h2 class="font-semibold">{{ pageTitle }}</h2>
 
-        <UiButton size="sm" variant="outline" asChild>
-          <RouterLink :to="{ name: RouteName.GameSessionAdd }">
+        <RouterLink :to="{ name: RouteName.GameSessionAdd }" custom v-slot="{ navigate }">
+          <DsButton size="sm" variant="secondary" @click="() => navigate()">
             <Icon icon="radix-icons:plus" />
             <div>Add game session</div>
-          </RouterLink>
-        </UiButton>
+          </DsButton>
+        </RouterLink>
       </div>
     </template>
 

@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Icon } from '@iconify/vue'
+import '@jsekulowicz/ds-components/icon/define'
+import '@jsekulowicz/ds-components/icon/x-mark'
 
 import { UiFormControl, UiFormField, UiFormItem, UiFormLabel, UiFormMessage } from '@/components/ui/ui-form'
-import { UiPopover, UiPopoverTrigger, UiPopoverContent } from '@/components/ui/ui-popover'
-import { UiCard } from '@/components/ui/ui-card'
-import { UiButton } from '@/components/ui/ui-button'
-import { UiInput } from '@/components/ui/ui-input'
-import { CompactPicker } from 'vue-color'
+import DsCard from '@/components/ds/DsCard.vue'
+import DsButton from '@/components/ds/DsButton.vue'
+import DsTextField from '@/components/ds/DsTextField.vue'
+import DsColorPicker from '@/components/ds/DsColorPicker.vue'
 
 import { useGameSessionAdd } from '../composables/useGameSessionAdd'
-import { getReadableTextClassForBackground } from '../helpers/colors'
 
-const { MAX_PLAYERS_COUNT, PLAYER_PLACEHOLDERS, hasMinPlayers, hasMaxPlayers, playerFields, addPlayer, removePlayer, onSubmit } =
+const { MAX_PLAYERS_COUNT, PLAYER_PLACEHOLDERS, PLAYER_COLORS, hasMinPlayers, hasMaxPlayers, playerFields, addPlayer, removePlayer, onSubmit } =
   useGameSessionAdd()
 
 const playersAddTooltip = computed(() => (hasMaxPlayers.value ? `Cannot have more than ${MAX_PLAYERS_COUNT} players.` : undefined))
+const playerColorOptions = computed(() => PLAYER_COLORS.map((color) => ({ value: color })))
 </script>
 
 <template>
-  <UiCard class="p-4 gap-6">
-    <h3 class="font-semibold">Details</h3>
+  <DsCard>
+    <h3 slot="title">Details</h3>
 
     <form class="flex flex-col gap-x-6 gap-y-4" @submit="onSubmit">
       <section class="grid md:grid-cols-2 space-y-6 gap-4">
@@ -28,7 +28,7 @@ const playersAddTooltip = computed(() => (hasMaxPlayers.value ? `Cannot have mor
           <UiFormItem>
             <UiFormLabel>Session name</UiFormLabel>
             <UiFormControl>
-              <UiInput v-bind="componentField" type="text" placeholder="e.g. Friday night session" />
+              <DsTextField v-bind="componentField" type="text" input-label="Session name" placeholder="e.g. Friday night session" />
             </UiFormControl>
             <UiFormMessage />
           </UiFormItem>
@@ -38,7 +38,7 @@ const playersAddTooltip = computed(() => (hasMaxPlayers.value ? `Cannot have mor
           <UiFormItem>
             <UiFormLabel>Game name</UiFormLabel>
             <UiFormControl>
-              <UiInput v-bind="componentField" type="text" placeholder="e.g. Catan" />
+              <DsTextField v-bind="componentField" type="text" input-label="Game name" placeholder="e.g. Catan" />
             </UiFormControl>
             <UiFormMessage />
           </UiFormItem>
@@ -47,69 +47,57 @@ const playersAddTooltip = computed(() => (hasMaxPlayers.value ? `Cannot have mor
 
       <header class="flex items-center gap-4">
         <h3 class="font-semibold">Players</h3>
-        <UiButton size="sm" variant="outline" :disabled="hasMaxPlayers" :tooltip="playersAddTooltip" @click.prevent="addPlayer">
+        <DsButton size="sm" variant="secondary" :disabled="hasMaxPlayers" :tooltip="playersAddTooltip" @click.prevent="addPlayer">
           Add player
-        </UiButton>
+        </DsButton>
       </header>
 
       <section class="grid md:grid-cols-2 space-y-6 gap-4">
         <UiFormField v-for="(player, index) in playerFields" :key="player.key" v-slot="{ componentField }" :name="`players[${index}].name`">
           <UiFormItem>
             <UiFormLabel>Player {{ index + 1 }}</UiFormLabel>
-            <UiFormControl class="relative">
-              <UiInput
-                class="inline-flex flex-1 pl-10"
-                :class="{ 'pr-10': !hasMinPlayers }"
+            <UiFormControl>
+              <DsTextField
+                class="w-full"
                 type="text"
+                :input-label="`Player ${index + 1}`"
                 :placeholder="`e.g. ${PLAYER_PLACEHOLDERS[index]}`"
                 v-bind="componentField"
-              />
-
-              <UiFormField v-slot="{ componentField }" :name="`players[${index}].color`">
-                <UiFormControl class="relative">
-                  <UiPopover>
-                    <UiPopoverTrigger as-child>
-                      <UiButton
-                        class="absolute flex justify-center items-center left-1.5 top-[27px] size-[26px] rounded-sm"
-                        tooltip="Update player's color"
-                        :style="{ backgroundColor: `${player.value.color}` }"
-                      >
-                        <Icon :class="getReadableTextClassForBackground(player.value.color)" icon="radix-icons:gear" />
-                      </UiButton>
-                    </UiPopoverTrigger>
-
-                    <UiPopoverContent class="p-0 overflow-hidden">
-                      <CompactPicker class="w-full! shadow-none!" tabindex="-1" v-bind="componentField" />
-                    </UiPopoverContent>
-                  </UiPopover>
-                </UiFormControl>
-              </UiFormField>
-
-              <UiButton
-                v-if="!hasMinPlayers"
-                class="absolute right-2 top-7"
-                size="icon-xs"
-                variant="ghost"
-                :disabled="hasMinPlayers"
-                @click.prevent="removePlayer(index)"
               >
-                <Icon icon="radix-icons:cross-1" />
-              </UiButton>
+                <template #leading>
+                  <UiFormField v-slot="{ componentField: colorField }" :name="`players[${index}].color`">
+                    <UiFormControl>
+                      <DsColorPicker
+                        compact
+                        :colors="playerColorOptions"
+                        :label="`Player ${index + 1} color`"
+                        placeholder="Player color"
+                        v-bind="colorField"
+                      />
+                    </UiFormControl>
+                  </UiFormField>
+                </template>
+
+                <template v-if="!hasMinPlayers" #trailing>
+                  <DsButton
+                    class="ds-button-icon-xs"
+                    size="sm"
+                    variant="ghost"
+                    label="Remove player"
+                    :disabled="hasMinPlayers"
+                    @click.prevent="removePlayer(index)"
+                  >
+                    <ds-icon name="x-mark" size="sm" />
+                  </DsButton>
+                </template>
+              </DsTextField>
             </UiFormControl>
             <UiFormMessage />
           </UiFormItem>
         </UiFormField>
       </section>
 
-      <UiButton class="md:w-1/4" type="submit">Submit</UiButton>
+      <DsButton class="md:w-1/4" type="submit" full-width>Submit</DsButton>
     </form>
-  </UiCard>
+  </DsCard>
 </template>
-
-<style scoped>
-:deep(.color-item) {
-  width: 23px;
-  height: 23px;
-  border-radius: var(--radius-sm);
-}
-</style>

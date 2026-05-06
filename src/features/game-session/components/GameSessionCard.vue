@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import { UiCardContent, UiCardFooter, UiCard } from '@/components/ui/ui-card'
+import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
 import GridListContainer from '@/components/GridListContainer.vue'
 
 import GameSessionPlayerItem from './GameSessionPlayerItem.vue'
@@ -19,12 +19,12 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
 </script>
 
 <template>
-  <UiCard v-if="gameSession" class="gap-6">
+  <CardWithStatusTag v-if="gameSession" class="gap-6">
     <template #status>
       <GameSessionStatusTag :status="gameSession.status" />
     </template>
 
-    <UiCardContent class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4">
       <GridListContainer :maxCols="gameSession.players.length">
         <GameSessionPlayerItem
           v-for="gameSessionPlayer in gameSession.players"
@@ -36,10 +36,10 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
       </GridListContainer>
 
       <GameSessionMoveDurationChartCard v-if="gameSession.status === 'ended'" />
-    </UiCardContent>
+    </div>
 
-    <UiCardFooter v-if="gameSession.status !== 'ended'">
+    <footer v-if="gameSession.status !== 'ended'" class="flex items-center">
       <GameSessionCardActions />
-    </UiCardFooter>
-  </UiCard>
+    </footer>
+  </CardWithStatusTag>
 </template>

@@ -6,7 +6,8 @@ import { useRouter } from 'vue-router'
 
 import { useGameSessionListStore } from '@/features/game-session-list/stores/useGameSessionListStore'
 import { RouteName } from '@/router/consts'
-import { toast } from 'vue-sonner'
+import '@jsekulowicz/ds-components/toast/define'
+import { toast } from '@jsekulowicz/ds-components/toast'
 import type { GameSessionCreateBody } from '@/api/generated'
 
 export const useGameSessionAdd = () => {
@@ -95,8 +96,8 @@ export const useGameSessionAdd = () => {
 
       if (resource) {
         router.push({ name: RouteName.GameSession, params: { id: resource.id } })
-        toast(`Successfully created ${resource.name}.`, {
-          description: 'Use Track buttons to start tracking.',
+        toast.success(`Successfully created ${resource.name}.`, {
+          body: 'Use Track buttons to start tracking.',
         })
       }
     } catch (error) {
@@ -106,6 +107,7 @@ export const useGameSessionAdd = () => {
 
   return {
     PLAYER_PLACEHOLDERS,
+    PLAYER_COLORS,
     MAX_PLAYERS_COUNT,
     formSchema,
     playerFields,

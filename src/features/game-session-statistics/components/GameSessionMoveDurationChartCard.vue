@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { VisAxis, VisStackedBar, VisGroupedBar, VisXYContainer } from '@unovis/vue'
 
-import { UiCard, UiCardContent, UiCardHeader, UiCardTitle } from '@/components/ui/ui-card'
+import DsCard from '@/components/ds/DsCard.vue'
 import {
   UiChartContainer,
   UiChartCrosshair,
@@ -77,52 +77,46 @@ function formatTooltipValue(durationSeconds: number) {
 </script>
 
 <template>
-  <UiCard v-if="chartConfig && gameSessionStatisticsStore.moveDurationChartData.length" class="move-duration-chart-card">
-    <UiCardHeader>
-      <UiCardTitle>Move duration</UiCardTitle>
-    </UiCardHeader>
-    <UiCardContent>
-      <UiChartContainer class="h-[220px]" :config="chartConfig">
-        <VisXYContainer :data="gameSessionStatisticsStore.moveDurationChartData" width="100%">
-          <component
-            :is="chartComponent"
-            :x="(durationEntry: MoveStatisticsEntry) => durationEntry.turnOrdinalNumber"
-            :y="
-              Object.keys(chartConfig).map(
-                (playerName: keyof MoveStatisticsEntry) => (durationEntry: MoveStatisticsEntry) => durationEntry[playerName],
-              )
-            "
-            :color="Object.values(chartConfig).map((player) => player.color)"
-            :rounded-corners="4"
-            :bar-padding="barPadding"
-            group-padding="0"
-          />
-          <VisAxis
-            type="x"
-            :x="(durationEntry: MoveStatisticsEntry) => durationEntry.turnOrdinalNumber"
-            :tick-line="false"
-            :domain-line="false"
-            :grid-line="false"
-            :num-ticks="gameSessionStatisticsStore.moveDurationChartData.length"
-            :tick-values="gameSessionStatisticsStore.moveDurationChartData.map((durationEntry) => durationEntry.turnOrdinalNumber)"
-            :tick-format="formatTurnLabel"
-            label="Turn"
-          />
-          <VisAxis type="y" label="duration (seconds)" :num-ticks="3" :tick-line="false" :domain-line="false" />
-          <UiChartTooltip />
-          <UiChartCrosshair
-            :template="
-              componentToString(chartConfig, UiChartTooltipContent, {
-                labelFormatter: formatTooltipTurnLabel,
-                valueFormatter: formatTooltipValue,
-              })
-            "
-            color="transparent"
-          />
-        </VisXYContainer>
-      </UiChartContainer>
-    </UiCardContent>
-  </UiCard>
+  <DsCard v-if="chartConfig && gameSessionStatisticsStore.moveDurationChartData.length" class="move-duration-chart-card">
+    <h3 slot="title">Move duration</h3>
+    <UiChartContainer class="h-[220px]" :config="chartConfig">
+      <VisXYContainer :data="gameSessionStatisticsStore.moveDurationChartData" width="100%">
+        <component
+          :is="chartComponent"
+          :x="(durationEntry: MoveStatisticsEntry) => durationEntry.turnOrdinalNumber"
+          :y="
+            Object.keys(chartConfig).map((playerName: keyof MoveStatisticsEntry) => (durationEntry: MoveStatisticsEntry) => durationEntry[playerName])
+          "
+          :color="Object.values(chartConfig).map((player) => player.color)"
+          :rounded-corners="4"
+          :bar-padding="barPadding"
+          group-padding="0"
+        />
+        <VisAxis
+          type="x"
+          :x="(durationEntry: MoveStatisticsEntry) => durationEntry.turnOrdinalNumber"
+          :tick-line="false"
+          :domain-line="false"
+          :grid-line="false"
+          :num-ticks="gameSessionStatisticsStore.moveDurationChartData.length"
+          :tick-values="gameSessionStatisticsStore.moveDurationChartData.map((durationEntry) => durationEntry.turnOrdinalNumber)"
+          :tick-format="formatTurnLabel"
+          label="Turn"
+        />
+        <VisAxis type="y" label="duration (seconds)" :num-ticks="3" :tick-line="false" :domain-line="false" />
+        <UiChartTooltip />
+        <UiChartCrosshair
+          :template="
+            componentToString(chartConfig, UiChartTooltipContent, {
+              labelFormatter: formatTooltipTurnLabel,
+              valueFormatter: formatTooltipValue,
+            })
+          "
+          color="transparent"
+        />
+      </VisXYContainer>
+    </UiChartContainer>
+  </DsCard>
 </template>
 
 <style scoped>

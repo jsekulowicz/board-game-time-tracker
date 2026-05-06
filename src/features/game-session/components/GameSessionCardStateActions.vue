@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { UiButton } from '@/components/ui/ui-button'
+import DsButton from '@/components/ds/DsButton.vue'
 import GameSessionAlertDialogEnd from '../components/GameSessionAlertDialogEnd.vue'
 import { useGameSessionStateActions } from '../composables/useGameSessionStateActions'
 
@@ -36,24 +36,30 @@ const toggleTimeVisibilityLabel = computed(() => {
 
 <template>
   <section class="flex flex-wrap items-center w-full gap-4">
-    <UiButton class="flex-grow w-full md:max-w-50" size="sm" variant="outline" @click="gameSessionStateActions.toggleTimeVisibility">
+    <DsButton
+      class="flex-grow w-full md:max-w-50 ds-button-fill"
+      size="sm"
+      variant="secondary"
+      full-width
+      @click="gameSessionStateActions.toggleTimeVisibility"
+    >
       {{ toggleTimeVisibilityLabel }}
-    </UiButton>
+    </DsButton>
 
-    <UiButton
+    <DsButton
       class="flex-grow md:max-w-24"
       size="sm"
-      variant="outline"
+      variant="secondary"
       :tooltip="playPauseTooltip"
       :disabled="gameSessionStateActions.needsToStartTracking.value"
       @click="gameSessionStateActions.toggleGameSessionPlayPause"
     >
       {{ playPauseLabel }}
-    </UiButton>
+    </DsButton>
 
     <GameSessionAlertDialogEnd @continue="gameSessionStateActions.endGameSession">
       <template #trigger>
-        <UiButton class="flex-grow md:max-w-24 px-3" size="sm" variant="outline"> End </UiButton>
+        <DsButton class="flex-grow md:max-w-24 px-3" size="sm" variant="secondary"> End </DsButton>
       </template>
     </GameSessionAlertDialogEnd>
   </section>

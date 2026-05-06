@@ -9,7 +9,13 @@ import tailwindPlugin from '@tailwindcss/vite'
 export default defineConfig({
   base: '/board-game-time-tracker/',
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('ds-'),
+        },
+      },
+    }),
     vueDevTools(),
     // Enable Tailwind processing (handles @apply, @layer, etc.)
     tailwindPlugin(),

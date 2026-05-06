@@ -1,4 +1,5 @@
-import { toast } from 'vue-sonner'
+import '@jsekulowicz/ds-components/toast/define'
+import { toast } from '@jsekulowicz/ds-components/toast'
 import type { ErrorResponse } from '@/api/generated'
 
 export async function errorHandlerInterceptor(response: Response): Promise<Response> {
@@ -19,7 +20,7 @@ export async function errorHandlerInterceptor(response: Response): Promise<Respo
   if (!response.ok || (isErrorResponse(data) && data.error)) {
     if (isErrorResponse(data)) {
       if (data.meta?.toast) {
-        toast(data.title ?? data.error, { description: data.message })
+        toast.danger(data.title ?? data.error, { body: data.message })
       }
 
       if (data.meta?.log) {
