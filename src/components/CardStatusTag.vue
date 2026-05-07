@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import '@jsekulowicz/ds-components/badge/define'
 
-export type StatusTagVariant = 'active' | 'inactive' | 'ended' | 'default'
+export type StatusTagVariant = 'active' | 'inactive' | 'paused' | 'ended' | 'default'
 
 const props = defineProps<{ variant: StatusTagVariant }>()
 
@@ -12,8 +12,10 @@ const tone = computed(() => {
       return 'success'
     case 'inactive':
       return 'neutral'
+    case 'paused':
+      return 'warning'
     case 'ended':
-      return 'danger'
+      return 'accent'
     default:
       return 'accent'
   }
@@ -21,7 +23,7 @@ const tone = computed(() => {
 </script>
 
 <template>
-  <ds-badge class="card-status-tag" :tone="tone">
+  <ds-badge :tone="tone">
     <slot />
   </ds-badge>
 </template>

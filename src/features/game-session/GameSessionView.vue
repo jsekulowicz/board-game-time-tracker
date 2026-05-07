@@ -25,12 +25,18 @@ watch(() => route.params.id, fetchGameSession, { immediate: true })
 
 <template>
   <BaseLayout>
-    <template v-if="gameSession" #header="{ pageTitle }">
-      <div class="flex gap-x-6 gap-y-2 items-center justify-between flex-wrap">
-        <h2 class="font-semibold">{{ pageTitle }}</h2>
-        <div class="flex gap-x-4 gap-y-2 flex-wrap justify-between">
-          <div>{{ gameSession.game }}, turn {{ gameSession.currentTurnIndex + 1 }}, move {{ gameSession.currentMoveIndex + 1 }}</div>
-          <GameSessionStatusTag class="rounded-sm" :status="gameSession.status" />
+    <template v-if="gameSession" #header>
+      <div class="session-header">
+        <h1 class="session-header__title">{{ gameSession.game }}</h1>
+        <div class="session-header__meta">
+          <GameSessionStatusTag :status="gameSession.status" />
+          <span class="session-header__sub">
+            <span>Turn {{ gameSession.currentTurnIndex + 1 }}</span>
+            <span class="session-header__dot"></span>
+            <span>Move {{ gameSession.currentMoveIndex + 1 }}</span>
+            <span class="session-header__dot"></span>
+            <span>{{ gameSession.players.length }} players</span>
+          </span>
         </div>
       </div>
     </template>
@@ -40,3 +46,48 @@ watch(() => route.params.id, fetchGameSession, { immediate: true })
     <GameSessionEmpty v-else />
   </BaseLayout>
 </template>
+
+<style scoped>
+.session-header {
+  margin-bottom: var(--ds-space-5);
+}
+
+.session-header__title {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-font-size-2xl);
+  letter-spacing: var(--ds-letter-spacing-display);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.session-header__meta {
+  margin-top: var(--ds-space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  flex-wrap: wrap;
+  color: var(--ds-color-fg-muted);
+  font-size: var(--ds-font-size-sm);
+}
+
+.session-header__sub {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  flex-wrap: wrap;
+}
+
+.session-header__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: currentColor;
+  display: inline-block;
+}
+
+@media (max-width: 480px) {
+  .session-header__title {
+    font-size: var(--ds-font-size-xl);
+  }
+}
+</style>

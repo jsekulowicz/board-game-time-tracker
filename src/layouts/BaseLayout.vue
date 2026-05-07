@@ -1,38 +1,63 @@
 <script lang="ts" setup>
 import DarkModeToggle from '@/components/DarkModeToggle.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import PageBreadcrumbs from '@/components/PageBreadcrumbs.vue'
 
-import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
 import { usePageTitle } from '@/composables/usePageTitle'
 import type { RouteName } from '@/router/consts'
+
+import '@jsekulowicz/ds-components/page-shell/define'
+import '@jsekulowicz/ds-components/icon/define'
+import '@jsekulowicz/ds-components/icon/clock'
 
 const route = useRoute()
 const pageTitle = usePageTitle(route.name as RouteName)
 </script>
 
 <template>
-  <main>
-    <PageHeader>
-      <Icon icon="radix-icons:clock" class="shrink-0 h-[1.5rem] w-[1.5rem]" />
-      <h1 class="font-semibold">Board game time tracker</h1>
+  <ds-page-shell>
+    <span slot="brand" class="brand">
+      <ds-icon name="clock" size="md" />
+      <span>Board game time tracker</span>
+    </span>
+    <span slot="header-actions">
+      <DarkModeToggle />
+    </span>
 
-      <DarkModeToggle class="ml-auto" />
-    </PageHeader>
+    <PageBreadcrumbs v-if="$route.meta.useBreadcrumbs" class="page-breadcrumbs" />
 
-    <section class="grid lg:max-w-[1200px] gap-4 mx-auto mt-4 px-4">
-      <header class="flex flex-wrap justify-between items-center gap-3 min-h-9">
-        <div class="flex flex-col w-full">
-          <PageBreadcrumbs v-if="$route.meta.useBreadcrumbs" class="mb-4" />
+    <slot name="header" :pageTitle>
+      <h2 class="page-title">{{ pageTitle }}</h2>
+    </slot>
 
-          <slot name="header" :pageTitle>
-            <h2 class="font-semibold">{{ pageTitle }}</h2>
-          </slot>
-        </div>
-      </header>
-
-      <slot></slot>
-    </section>
-  </main>
+    <slot></slot>
+  </ds-page-shell>
 </template>
+
+<style scoped>
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-font-size-md);
+  letter-spacing: var(--ds-letter-spacing-display);
+}
+
+.brand ds-icon {
+  color: var(--ds-color-accent);
+  flex-shrink: 0;
+}
+
+.page-breadcrumbs {
+  margin-bottom: var(--ds-space-3);
+}
+
+.page-title {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-font-size-2xl);
+  letter-spacing: var(--ds-letter-spacing-display);
+  margin: 0 0 var(--ds-space-5);
+  line-height: 1.1;
+}
+</style>

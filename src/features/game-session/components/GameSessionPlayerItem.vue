@@ -2,8 +2,6 @@
 import { computed, ref } from 'vue'
 import type { GameSessionPlayer, GameSessionStatus } from '@/api/generated'
 
-import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
-import { UiKbd, UiKbdGroup } from '@/components/ui/ui-kbd'
 import DsButton from '@/components/ds/DsButton.vue'
 
 import GameSessionPlayerStatusTag from './GameSessionPlayerStatusTag.vue'
@@ -18,7 +16,7 @@ const props = defineProps<GameSessionPlayerItemProps>()
 
 const sessionPlayer = computed(() => props.gameSessionPlayer)
 const { displayedTime, timeTrackingDisabled } = usePlayerTimeTracking(sessionPlayer)
-const { switchPlayerMove, switchPlayerKeyLabel } = useSwitchPlayerMove(sessionPlayer)
+const { switchPlayerMove } = useSwitchPlayerMove(sessionPlayer)
 
 const finishButtonRef = ref<InstanceType<typeof DsButton> | null>(null)
 
@@ -34,6 +32,11 @@ const finishButtonTooltip = computed<string | null>(() => {
   return null
 })
 
+const isTracking = computed(() => props.gameSessionPlayer.status === 'tracking')
+const isReady = computed(() => props.gameSessionPlayer.status === 'ready_to_move' && props.gameSessionStatus === 'in_progress')
+const buttonLabel = computed(() => (isTracking.value ? 'Stop' : 'Track'))
+const buttonVariant = computed(() => (isTracking.value ? 'primary' : 'secondary'))
+
 function focusFinishButton() {
   finishButtonRef.value?.focus()
 }
@@ -48,40 +51,122 @@ defineExpose({
 </script>
 
 <template>
-  <li class="flex">
-    <CardWithStatusTag class="w-full gap-4 py-4">
-      <template v-if="gameSessionStatus !== 'ended'" #status>
-        <GameSessionPlayerStatusTag :player="gameSessionPlayer" :gameStatus="gameSessionStatus" />
-      </template>
+  <li
+    class="player"
+    :class="{
+      'player--tracking': isTracking,
+      'player--ready': isReady,
+    }"
+  >
+    <div class="player__head">
+      <span class="player__color" :style="{ background: gameSessionPlayer.color }" />
+      <span class="player__name">{{ gameSessionPlayer.name }}</span>
+      <GameSessionPlayerStatusTag
+        v-if="gameSessionStatus !== 'ended'"
+        :player="gameSessionPlayer"
+        :gameStatus="gameSessionStatus"
+      />
+    </div>
 
-      <div class="flex flex-wrap justify-center items-start h-full gap-2">
-        <h3 class="w-full flex gap-2 justify-center text-base/normal text-center wrap-break-word font-semibold" lang="en">
-          <div class="size-[23px] rounded-sm" :style="{ backgroundColor: gameSessionPlayer.color }" />
-          <div>{{ gameSessionPlayer.name }}</div>
-        </h3>
-        <div class="w-full flex flex-col items-center justify-between gap-2 pl-0 mt-auto">
-          <div>{{ displayedTime }}</div>
+    <p
+      class="player__time"
+      :class="{
+        'player__time--running': isTracking,
+      }"
+    >{{ displayedTime }}</p>
 
-          <DsButton
-            v-if="gameSessionStatus !== 'ended'"
-            ref="finishButtonRef"
-            class="w-full max-w-32 min-h-10 px-3"
-            variant="secondary"
-            full-width
-            :disabled="timeTrackingDisabled"
-            :tooltip="finishButtonTooltip"
-            @click="switchPlayerMove"
-          >
-            <UiKbdGroup>
-              <div>Track</div>
+    <p class="player__sub">
+      {{ gameSessionPlayer.moves.length }}
+      {{ gameSessionPlayer.moves.length === 1 ? 'move' : 'moves' }}
+    </p>
 
-              <template #kbd>
-                <UiKbd>{{ switchPlayerKeyLabel }}</UiKbd>
-              </template>
-            </UiKbdGroup>
-          </DsButton>
-        </div>
-      </div>
-    </CardWithStatusTag>
+    <DsButton
+      v-if="gameSessionStatus !== 'ended'"
+      ref="finishButtonRef"
+      class="player__cta ds-button-fill"
+      :variant="buttonVariant"
+      size="md"
+      full-width
+      :disabled="timeTrackingDisabled"
+      :tooltip="finishButtonTooltip"
+      @click="switchPlayerMove"
+    >
+      {{ buttonLabel }}
+    </DsButton>
   </li>
 </template>
+
+<style scoped>
+.player {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-4);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-bg);
+  list-style: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.player--tracking {
+  border-color: var(--ds-color-success);
+  box-shadow: 0 0 0 2px var(--ds-color-success-subtle);
+}
+
+.player--ready {
+  border-color: var(--ds-color-accent);
+  box-shadow: 0 0 0 2px var(--ds-color-accent-subtle);
+}
+
+.player__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+
+.player__color {
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--ds-radius-sm);
+  flex-shrink: 0;
+  outline: 1px solid var(--ds-color-border);
+  outline-offset: 1px;
+}
+
+.player__name {
+  font-family: var(--ds-font-display);
+  letter-spacing: var(--ds-letter-spacing-display);
+  font-size: var(--ds-font-size-lg);
+  flex: 1;
+}
+
+.player__time {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-font-size-2xl);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  margin: 0;
+  line-height: 1;
+}
+
+.player__time--running {
+  color: var(--ds-color-success);
+}
+
+.player__sub {
+  margin: 0;
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-color-fg-muted);
+}
+
+.player__cta {
+  margin-top: auto;
+}
+
+@media (max-width: 480px) {
+  .player__time {
+    font-size: var(--ds-font-size-xl);
+  }
+}
+</style>

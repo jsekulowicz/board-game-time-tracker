@@ -176,10 +176,4 @@
   ds-card.ds-card-full::part(card) {
     height: 100%;
   }
-
-  ds-badge.card-status-tag::part(badge) {
-    justify-content: center;
-    min-width: 8rem;
-    min-height: 1.5rem;
-  }
 }

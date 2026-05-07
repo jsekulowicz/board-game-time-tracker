@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Board Game Time Tracker — Design mockups</title>
+    <link rel="stylesheet" href="./src/shared/gallery.css" />
+  </head>
+  <body>
+    <div class="gallery-page">
+      <header>
+        <h1>Board Game Time Tracker — Design mockups</h1>
+        <p>
+          High-fidelity mockups of every screen at three breakpoints. Each frame is an iframe at
+          its target width — CSS media queries inside respond to the iframe viewport, so mobile
+          layouts here are exactly what users see at 360px on a real phone.
+        </p>
+      </header>
+
+      <section class="gallery-screen">
+        <h2>Sessions list</h2>
+        <p class="meta">/game-sessions — list of past and active sessions</p>
+        <div class="frames">
+          <div class="frame frame-360">
+            <div class="frame-label"><span>Mobile</span><span>360 × 720</span></div>
+            <iframe src="./sessions-list.html" title="Sessions list mobile"></iframe>
+          </div>
+          <div class="frame frame-768">
+            <div class="frame-label"><span>Mid (tablet / phone landscape)</span><span>768 × 720</span></div>
+            <iframe src="./sessions-list.html" title="Sessions list tablet"></iframe>
+          </div>
+          <div class="frame frame-1280">
+            <div class="frame-label"><span>Desktop</span><span>1280 × 720</span></div>
+            <iframe src="./sessions-list.html" title="Sessions list desktop"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-screen">
+        <h2>Add session</h2>
+        <p class="meta">/game-sessions/add — name, game and dynamic player roster</p>
+        <div class="frames">
+          <div class="frame frame-360">
+            <div class="frame-label"><span>Mobile</span><span>360 × 720</span></div>
+            <iframe src="./session-add.html" title="Add session mobile"></iframe>
+          </div>
+          <div class="frame frame-768">
+            <div class="frame-label"><span>Mid</span><span>768 × 720</span></div>
+            <iframe src="./session-add.html" title="Add session tablet"></iframe>
+          </div>
+          <div class="frame frame-1280">
+            <div class="frame-label"><span>Desktop</span><span>1280 × 720</span></div>
+            <iframe src="./session-add.html" title="Add session desktop"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-screen">
+        <h2>Active session</h2>
+        <p class="meta">/game-sessions/:id — in_progress with one player tracking</p>
+        <div class="frames">
+          <div class="frame frame-360">
+            <div class="frame-label"><span>Mobile</span><span>360 × 720</span></div>
+            <iframe src="./session-active.html" title="Active session mobile"></iframe>
+          </div>
+          <div class="frame frame-768">
+            <div class="frame-label"><span>Mid</span><span>768 × 720</span></div>
+            <iframe src="./session-active.html" title="Active session tablet"></iframe>
+          </div>
+          <div class="frame frame-1280">
+            <div class="frame-label"><span>Desktop</span><span>1280 × 720</span></div>
+            <iframe src="./session-active.html" title="Active session desktop"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-screen">
+        <h2>Ended session — statistics</h2>
+        <p class="meta">/game-sessions/:id once ended — duration chart + per-player summary</p>
+        <div class="frames">
+          <div class="frame frame-360">
+            <div class="frame-label"><span>Mobile</span><span>360 × 720</span></div>
+            <iframe src="./session-ended.html" title="Ended session mobile"></iframe>
+          </div>
+          <div class="frame frame-768">
+            <div class="frame-label"><span>Mid</span><span>768 × 720</span></div>
+            <iframe src="./session-ended.html" title="Ended session tablet"></iframe>
+          </div>
+          <div class="frame frame-1280">
+            <div class="frame-label"><span>Desktop</span><span>1280 × 720</span></div>
+            <iframe src="./session-ended.html" title="Ended session desktop"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        Built from <code>@jsekulowicz/ds-components</code> &amp; <code>@jsekulowicz/ds-tokens</code>.
+        Each iframe loads the same HTML — only the viewport width changes.
+      </footer>
+    </div>
+  </body>
+</html>

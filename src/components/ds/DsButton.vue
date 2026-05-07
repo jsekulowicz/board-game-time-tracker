@@ -72,9 +72,9 @@ defineExpose({
       :size="size"
       :type="type"
       :label="label"
-      :disabled="disabled"
-      :loading="loading"
-      :full-width="fullWidth"
+      :disabled="disabled || null"
+      :loading="loading || null"
+      :full-width="fullWidth || null"
       @ds-click="onClick"
     >
       <slot />
@@ -90,9 +90,9 @@ defineExpose({
     :size="size"
     :type="type"
     :label="label"
-    :disabled="disabled"
-    :loading="loading"
-    :full-width="fullWidth"
+    :disabled="disabled || null"
+    :loading="loading || null"
+    :full-width="fullWidth || null"
     @ds-click="onClick"
   >
     <slot />

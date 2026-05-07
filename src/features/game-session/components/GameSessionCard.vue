@@ -2,12 +2,8 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import CardWithStatusTag from '@/components/CardWithStatusTag.vue'
-import GridListContainer from '@/components/GridListContainer.vue'
-
 import GameSessionPlayerItem from './GameSessionPlayerItem.vue'
 import GameSessionCardActions from './GameSessionCardStateActions.vue'
-import GameSessionStatusTag from './GameSessionStatusTag.vue'
 import GameSessionMoveDurationChartCard from '@/features/game-session-statistics/components/GameSessionMoveDurationChartCard.vue'
 
 import { useGameSessionStore } from '../stores/useGameSessionStore'
@@ -19,27 +15,65 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
 </script>
 
 <template>
-  <CardWithStatusTag v-if="gameSession" class="gap-6">
-    <template #status>
-      <GameSessionStatusTag :status="gameSession.status" />
-    </template>
+  <div v-if="gameSession" class="game-session">
+    <ul class="player-grid">
+      <GameSessionPlayerItem
+        v-for="gameSessionPlayer in gameSession.players"
+        ref="gameSessionPlayerItemRefs"
+        :key="gameSessionPlayer.id"
+        :gameSessionPlayer
+        :gameSessionStatus="gameSession.status"
+      />
+    </ul>
 
-    <div class="flex flex-col gap-4">
-      <GridListContainer :maxCols="gameSession.players.length">
-        <GameSessionPlayerItem
-          v-for="gameSessionPlayer in gameSession.players"
-          ref="gameSessionPlayerItemRefs"
-          :key="gameSessionPlayer.id"
-          :gameSessionPlayer
-          :gameSessionStatus="gameSession.status"
-        />
-      </GridListContainer>
+    <GameSessionMoveDurationChartCard v-if="gameSession.status === 'ended'" class="chart-card" />
 
-      <GameSessionMoveDurationChartCard v-if="gameSession.status === 'ended'" />
-    </div>
-
-    <footer v-if="gameSession.status !== 'ended'" class="flex items-center">
-      <GameSessionCardActions />
-    </footer>
-  </CardWithStatusTag>
+    <GameSessionCardActions v-if="gameSession.status !== 'ended'" />
+  </div>
 </template>
+
+<style scoped>
+.game-session {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-4);
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 600px) {
+  .game-session {
+    padding-bottom: var(--ds-space-6);
+  }
+}
+
+.player-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--ds-space-3);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  .player-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .player-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1400px) {
+  .player-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.chart-card {
+  margin-top: var(--ds-space-2);
+}
+</style>

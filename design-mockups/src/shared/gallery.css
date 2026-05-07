@@ -1,0 +1,121 @@
+@import '@jsekulowicz/ds-tokens/theme-default.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--ds-color-bg-muted, var(--ds-color-bg));
+  color: var(--ds-color-fg);
+  font-family: var(--ds-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.gallery-page {
+  padding: var(--ds-space-6) var(--ds-space-6) var(--ds-space-10);
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.gallery-page > header {
+  margin-bottom: var(--ds-space-6);
+}
+
+.gallery-page h1 {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-font-size-3xl);
+  letter-spacing: var(--ds-letter-spacing-display);
+  margin: 0 0 var(--ds-space-2);
+}
+
+.gallery-page p {
+  margin: 0;
+  color: var(--ds-color-fg-muted);
+  max-width: 60ch;
+}
+
+.gallery-screen {
+  margin: var(--ds-space-8) 0;
+  border-top: 1px solid var(--ds-color-border);
+  padding-top: var(--ds-space-5);
+}
+
+.gallery-screen h2 {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-font-size-xl);
+  margin: 0 0 var(--ds-space-1);
+  letter-spacing: var(--ds-letter-spacing-display);
+}
+
+.gallery-screen .meta {
+  color: var(--ds-color-fg-muted);
+  font-size: var(--ds-font-size-sm);
+  margin: 0 0 var(--ds-space-4);
+}
+
+.frames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-5);
+  align-items: flex-start;
+}
+
+.frame {
+  background: var(--ds-color-bg);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-md, 8px);
+  box-shadow: var(--ds-shadow-md);
+  overflow: hidden;
+}
+
+.frame > .frame-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-bottom: 1px solid var(--ds-color-border);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-color-fg-muted);
+  background: var(--ds-color-bg);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.frame iframe {
+  display: block;
+  border: 0;
+  background: var(--ds-color-bg);
+}
+
+.frame.frame-360 iframe {
+  width: 360px;
+  height: 720px;
+}
+
+.frame.frame-768 iframe {
+  width: 768px;
+  height: 720px;
+}
+
+.frame.frame-1280 iframe {
+  width: 1280px;
+  height: 720px;
+}
+
+@media (max-width: 1700px) {
+  .frame.frame-1280 iframe {
+    width: 1180px;
+  }
+}
+
+.gallery-page footer {
+  margin-top: var(--ds-space-10);
+  padding-top: var(--ds-space-5);
+  border-top: 1px solid var(--ds-color-border);
+  color: var(--ds-color-fg-muted);
+  font-size: var(--ds-font-size-sm);
+}
