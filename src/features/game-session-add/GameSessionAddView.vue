@@ -5,26 +5,23 @@ import GameSessionAddCard from './components/GameSessionAddCard.vue'
 
 <template>
   <BaseLayout>
-    <template #header><span></span></template>
-
-    <div class="add-page">
+    <template #header>
       <header class="add-page__hero">
         <h1 class="add-page__title">New session</h1>
         <p class="add-page__lede">
           Set up your players and the game before the first turn starts.
-          You can rename, recolour, or remove anyone before tracking begins.
+          You can rename, recolor, or remove anyone before tracking begins.
         </p>
       </header>
+    </template>
 
-      <GameSessionAddCard class="add-page__form" />
-    </div>
+    <GameSessionAddCard />
   </BaseLayout>
 </template>
 
 <style scoped>
-.add-page {
-  display: grid;
-  gap: var(--ds-space-5);
+.add-page__hero {
+  margin-bottom: var(--ds-space-5);
 }
 
 .add-page__title {
@@ -39,23 +36,6 @@ import GameSessionAddCard from './components/GameSessionAddCard.vue'
   margin: var(--ds-space-2) 0 0;
   color: var(--ds-color-fg-muted);
   font-size: var(--ds-font-size-sm);
-  max-width: 56ch;
-}
-
-@media (min-width: 960px) {
-  .add-page {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-    gap: var(--ds-space-8);
-    align-items: start;
-  }
-
-  .add-page__hero {
-    position: sticky;
-    top: var(--ds-space-6);
-  }
-
-  .add-page__title {
-    font-size: var(--ds-font-size-2xl);
-  }
+  max-width: 60ch;
 }
 </style>

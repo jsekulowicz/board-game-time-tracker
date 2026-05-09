@@ -340,10 +340,6 @@ function relativeUpdated(session: GameSessionResource): string {
   padding: var(--ds-space-2) var(--ds-space-4);
 }
 
-.table tfoot ds-table-pagination {
-  display: block;
-}
-
 .cell-game {
   display: flex;
   align-items: center;

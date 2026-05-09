@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import '@jsekulowicz/ds-components/icon/define'
 import '@jsekulowicz/ds-components/icon/x-mark'
 import '@jsekulowicz/ds-components/icon/plus'
-import '@jsekulowicz/ds-components/list/define'
 import '@jsekulowicz/ds-components/divider/define'
 
 import { UiFormControl, UiFormField, UiFormItem, UiFormMessage } from '@/components/ui/ui-form'
@@ -53,8 +52,8 @@ function cancel() {
 
       <h2 class="players-heading">Players</h2>
 
-      <ds-list>
-        <ds-list-item v-for="(player, index) in playerFields" :key="player.key" class="player-row">
+      <div class="player-grid">
+        <div v-for="(player, index) in playerFields" :key="player.key" class="player-row">
           <UiFormField v-slot="{ componentField }" :name="`players[${index}].name`">
             <UiFormItem class="player-row__name">
               <UiFormControl>
@@ -84,7 +83,7 @@ function cancel() {
           </UiFormField>
 
           <DsButton
-            slot="trailing"
+            class="player-row__remove"
             size="sm"
             variant="ghost"
             label="Remove player"
@@ -93,8 +92,8 @@ function cancel() {
           >
             <ds-icon slot="leading" name="x-mark" size="lg" />
           </DsButton>
-        </ds-list-item>
-      </ds-list>
+        </div>
+      </div>
 
       <DsButton
         class="add-player-btn"
@@ -151,6 +150,31 @@ form {
   font-weight: var(--ds-font-weight-semibold);
 }
 
+.player-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ds-space-3);
+}
+
+@media (min-width: 600px) {
+  .player-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .player-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.player-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
 .player-row__name {
   min-width: 0;
   display: block;
@@ -163,6 +187,10 @@ form {
   left: 0;
   margin-top: 2px;
   pointer-events: none;
+}
+
+.player-row__remove {
+  align-self: center;
 }
 
 .add-player-btn {
