@@ -47,9 +47,7 @@ const gameSessionStatusTagText = computed(() => `#${playerOrdinalNumber.value} $
 </script>
 
 <template>
-  <CardStatusTag class="px-2" :variant="gameSessionStatusTagVariant">
-    <div class="flex items-center gap-2">
-      <span>{{ gameSessionStatusTagText }}</span>
-    </div>
+  <CardStatusTag :variant="gameSessionStatusTagVariant">
+    {{ gameSessionStatusTagText }}
   </CardStatusTag>
 </template>

@@ -40,5 +40,5 @@ const gameSessionStatusTagText = computed<string>(() => {
 </script>
 
 <template>
-  <CardStatusTag class="px-2" :variant="gameSessionStatusTagVariant">{{ gameSessionStatusTagText }}</CardStatusTag>
+  <CardStatusTag :variant="gameSessionStatusTagVariant">{{ gameSessionStatusTagText }}</CardStatusTag>
 </template>

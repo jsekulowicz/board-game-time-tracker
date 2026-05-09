@@ -44,13 +44,19 @@ function detailValue(event: Event) {
   return (event as CustomEvent<{ value: string }>).detail.value
 }
 
+function isOwnEvent(event: Event) {
+  return (event.target as HTMLElement | null)?.tagName === 'DS-TEXT-FIELD'
+}
+
 function onInput(event: Event) {
+  if (!isOwnEvent(event)) return
   const value = detailValue(event)
   emit('update:modelValue', value)
   emit('input', value)
 }
 
 function onChange(event: Event) {
+  if (!isOwnEvent(event)) return
   const value = detailValue(event)
   emit('update:modelValue', value)
   emit('change', value)

@@ -51,13 +51,10 @@ function cancel() {
         </UiFormField>
       </section>
 
-      <header class="players-header">
-        <span class="players-header__title">Players</span>
-        <span class="players-header__count">{{ playerFields.length }} added</span>
-      </header>
+      <h2 class="players-heading">Players</h2>
 
       <ds-list>
-        <ds-list-item v-for="(player, index) in playerFields" :key="player.key">
+        <ds-list-item v-for="(player, index) in playerFields" :key="player.key" class="player-row">
           <UiFormField v-slot="{ componentField }" :name="`players[${index}].name`">
             <UiFormItem class="player-row__name">
               <UiFormControl>
@@ -126,8 +123,6 @@ function cancel() {
 
 <style scoped>
 .add-card {
-  max-width: 640px;
-  margin-inline: auto;
   display: block;
 }
 
@@ -148,31 +143,26 @@ form {
   }
 }
 
-.players-header {
+.players-heading {
   margin: var(--ds-space-4) 0 var(--ds-space-2);
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--ds-space-2);
-}
-
-.players-header__title {
   font-family: var(--ds-font-display);
   font-size: var(--ds-font-size-md);
   letter-spacing: var(--ds-letter-spacing-display);
-}
-
-.players-header__count {
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-font-size-2xs);
-  color: var(--ds-color-fg-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: var(--ds-font-weight-semibold);
 }
 
 .player-row__name {
   min-width: 0;
   display: block;
+  padding-bottom: 0;
+}
+
+.player-row__name :deep([data-slot='form-message']) {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+  pointer-events: none;
 }
 
 .add-player-btn {

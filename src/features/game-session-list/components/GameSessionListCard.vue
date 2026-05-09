@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import '@jsekulowicz/ds-components/icon/define'
 import '@jsekulowicz/ds-components/icon/puzzle-piece'
 import '@jsekulowicz/ds-components/icon/users'
 import '@jsekulowicz/ds-components/icon/chevron-right'
+import '@jsekulowicz/ds-components/table/define'
 
 import GameSessionListTableLoading from './GameSessionListTableLoading.vue'
 import GameSessionStatusTag from '@/features/game-session/components/GameSessionStatusTag.vue'
@@ -20,6 +21,26 @@ const router = useRouter()
 gameSessionListStore.getGameSessionList()
 
 const sessions = computed<GameSessionResource[]>(() => gameSessionListStore.gameSessions)
+
+const page = ref(1)
+const pageSize = ref(10)
+const totalSessions = computed(() => sessions.value.length)
+const pagedSessions = computed(() => {
+  const start = (page.value - 1) * pageSize.value
+  return sessions.value.slice(start, start + pageSize.value)
+})
+
+function onPageChange(event: Event) {
+  const detail = (event as CustomEvent<{ page: number; pageSize: number }>).detail
+  page.value = detail.page
+  pageSize.value = detail.pageSize
+}
+
+function onPageSizeChange(event: Event) {
+  const detail = (event as CustomEvent<{ pageSize: number; page: number }>).detail
+  pageSize.value = detail.pageSize
+  page.value = detail.page
+}
 
 function openSession(id: string) {
   router.push({ name: RouteName.GameSession, params: { id } })
@@ -61,7 +82,7 @@ function relativeUpdated(session: GameSessionResource): string {
 
   <template v-else>
     <ul class="cards">
-      <li v-for="session in sessions" :key="session.id">
+      <li v-for="session in pagedSessions" :key="session.id">
         <button class="card" type="button" @click="openSession(session.id)">
           <span class="card__icon">
             <ds-icon name="puzzle-piece" size="lg" />
@@ -97,13 +118,13 @@ function relativeUpdated(session: GameSessionResource): string {
           <tr>
             <th>Game</th>
             <th>Status</th>
-            <th>Players</th>
+            <th class="align-right">Players</th>
             <th class="col-updated">Updated</th>
             <th class="align-right">Duration</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="session in sessions" :key="session.id" @click="openSession(session.id)">
+          <tr v-for="session in pagedSessions" :key="session.id" @click="openSession(session.id)">
             <td>
               <div class="cell-game">
                 <span class="cell-game__icon">
@@ -116,7 +137,7 @@ function relativeUpdated(session: GameSessionResource): string {
               </div>
             </td>
             <td><GameSessionStatusTag :status="session.status" /></td>
-            <td>
+            <td class="align-right">
               <span class="cell-players">
                 <span class="card__players">
                   <span
@@ -136,7 +157,13 @@ function relativeUpdated(session: GameSessionResource): string {
         <tfoot>
           <tr>
             <td colspan="5" class="table-footer">
-              {{ sessions.length }} {{ sessions.length === 1 ? 'session' : 'sessions' }}
+              <ds-table-pagination
+                :page.prop="page"
+                :page-size.prop="pageSize"
+                :total.prop="totalSessions"
+                @ds-page-change="onPageChange"
+                @ds-page-size-change="onPageSizeChange"
+              ></ds-table-pagination>
             </td>
           </tr>
         </tfoot>
@@ -309,13 +336,12 @@ function relativeUpdated(session: GameSessionResource): string {
 }
 
 .table tfoot td.table-footer {
-  background: var(--ds-color-bg-subtle);
   border-top: 1px solid var(--ds-color-border-subtle);
-  color: var(--ds-color-fg-muted);
-  font-size: var(--ds-font-size-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   padding: var(--ds-space-2) var(--ds-space-4);
+}
+
+.table tfoot ds-table-pagination {
+  display: block;
 }
 
 .cell-game {
