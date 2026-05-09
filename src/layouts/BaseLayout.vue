@@ -35,12 +35,16 @@ const pageTitle = usePageTitle(route.name as RouteName)
 </template>
 
 <style scoped>
+ds-page-shell::part(main) {
+  max-width: none;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-2);
   font-family: var(--ds-font-display);
-  font-size: var(--ds-font-size-md);
+  font-size: var(--ds-font-size-lg);
   letter-spacing: var(--ds-letter-spacing-display);
 }
 
@@ -55,7 +59,7 @@ const pageTitle = usePageTitle(route.name as RouteName)
 
 .page-title {
   font-family: var(--ds-font-display);
-  font-size: var(--ds-font-size-2xl);
+  font-size: var(--ds-font-size-xl);
   letter-spacing: var(--ds-letter-spacing-display);
   margin: 0 0 var(--ds-space-5);
   line-height: 1.1;

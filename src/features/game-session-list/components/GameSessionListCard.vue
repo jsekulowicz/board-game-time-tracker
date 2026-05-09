@@ -358,7 +358,9 @@ function relativeUpdated(session: GameSessionResource): string {
   font-variant-numeric: tabular-nums;
 }
 
-.align-right {
+.align-right,
+.table th.align-right,
+.table td.align-right {
   text-align: right;
 }
 

@@ -58,18 +58,6 @@ function cancel() {
 
       <ds-list>
         <ds-list-item v-for="(player, index) in playerFields" :key="player.key">
-          <UiFormField v-slot="{ componentField: colorField }" :name="`players[${index}].color`">
-            <UiFormControl slot="leading">
-              <DsColorPicker
-                compact
-                :colors="playerColorOptions"
-                :label="`Player ${index + 1} color`"
-                placeholder="Player color"
-                v-bind="colorField"
-              />
-            </UiFormControl>
-          </UiFormField>
-
           <UiFormField v-slot="{ componentField }" :name="`players[${index}].name`">
             <UiFormItem class="player-row__name">
               <UiFormControl>
@@ -78,7 +66,21 @@ function cancel() {
                   :input-label="`Player ${index + 1}`"
                   :placeholder="`e.g. ${PLAYER_PLACEHOLDERS[index]}`"
                   v-bind="componentField"
-                />
+                >
+                  <template #leading>
+                    <UiFormField v-slot="{ componentField: colorField }" :name="`players[${index}].color`">
+                      <UiFormControl>
+                        <DsColorPicker
+                          compact
+                          :colors="playerColorOptions"
+                          :label="`Player ${index + 1} color`"
+                          placeholder="Player color"
+                          v-bind="colorField"
+                        />
+                      </UiFormControl>
+                    </UiFormField>
+                  </template>
+                </DsTextField>
               </UiFormControl>
               <UiFormMessage />
             </UiFormItem>
@@ -170,7 +172,7 @@ form {
 
 .player-row__name {
   min-width: 0;
-  flex: 1 1 auto;
+  display: block;
 }
 
 .add-player-btn {

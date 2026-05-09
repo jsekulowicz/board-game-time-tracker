@@ -38,7 +38,7 @@ import { RouteName } from '@/router/consts'
 
 .title {
   font-family: var(--ds-font-display);
-  font-size: var(--ds-font-size-2xl);
+  font-size: var(--ds-font-size-xl);
   letter-spacing: var(--ds-letter-spacing-display);
   margin: 0;
   line-height: 1.1;
@@ -49,7 +49,7 @@ import { RouteName } from '@/router/consts'
     flex-wrap: wrap;
   }
   .title {
-    font-size: var(--ds-font-size-xl);
+    font-size: var(--ds-font-size-lg);
     flex: 1 1 auto;
   }
 }

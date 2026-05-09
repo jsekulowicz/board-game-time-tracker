@@ -54,7 +54,7 @@ watch(() => route.params.id, fetchGameSession, { immediate: true })
 
 .session-header__title {
   font-family: var(--ds-font-display);
-  font-size: var(--ds-font-size-2xl);
+  font-size: var(--ds-font-size-xl);
   letter-spacing: var(--ds-letter-spacing-display);
   margin: 0;
   line-height: 1.1;
@@ -87,7 +87,7 @@ watch(() => route.params.id, fetchGameSession, { immediate: true })
 
 @media (max-width: 480px) {
   .session-header__title {
-    font-size: var(--ds-font-size-xl);
+    font-size: var(--ds-font-size-lg);
   }
 }
 </style>
