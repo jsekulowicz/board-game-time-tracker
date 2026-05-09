@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
 import '@jsekulowicz/ds-components/icon/define'
 import '@jsekulowicz/ds-components/icon/x-mark'
 import '@jsekulowicz/ds-components/icon/plus'
@@ -13,18 +12,12 @@ import DsTextField from '@/components/ds/DsTextField.vue'
 import DsColorPicker from '@/components/ds/DsColorPicker.vue'
 
 import { useGameSessionAdd } from '../composables/useGameSessionAdd'
-import { RouteName } from '@/router/consts'
 
-const router = useRouter()
 const { MAX_PLAYERS_COUNT, PLAYER_PLACEHOLDERS, PLAYER_COLORS, hasMinPlayers, hasMaxPlayers, playerFields, addPlayer, removePlayer, onSubmit } =
   useGameSessionAdd()
 
 const playersAddTooltip = computed(() => (hasMaxPlayers.value ? `Cannot have more than ${MAX_PLAYERS_COUNT} players.` : undefined))
 const playerColorOptions = computed(() => PLAYER_COLORS.map((color) => ({ value: color })))
-
-function cancel() {
-  router.push({ name: RouteName.GameSessionList })
-}
 </script>
 
 <template>
@@ -114,7 +107,6 @@ function cancel() {
           <ds-icon slot="leading" name="plus" size="md" />
           Create session
         </DsButton>
-        <DsButton type="button" variant="ghost" @click="cancel">Cancel</DsButton>
       </footer>
     </form>
   </DsCard>
