@@ -35,6 +35,7 @@ html {
   font-family: var(--ds-font-body);
   background: var(--ds-color-bg);
   color: var(--ds-color-fg);
+  line-height: var(--ds-line-height-snug);
 }
 
 body {
