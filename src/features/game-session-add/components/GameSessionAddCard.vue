@@ -171,26 +171,17 @@ form {
 .player-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--ds-space-2);
+  align-items: start;
+  gap: 0 var(--ds-space-2);
 }
 
 .player-row__name {
   min-width: 0;
   display: block;
-  padding-bottom: 0;
-}
-
-.player-row__name :deep([data-slot='form-message']) {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 2px;
-  pointer-events: none;
 }
 
 .player-row__remove {
-  align-self: center;
+  margin-top: calc((var(--ds-size-md) - var(--ds-size-sm)) / 2);
 }
 
 .add-player-btn {

@@ -62,7 +62,7 @@ defineExpose({
 </script>
 
 <template>
-  <ds-tooltip v-if="tooltip" v-bind="layoutAttrs" delay="150">
+  <ds-tooltip v-if="tooltip" v-bind="layoutAttrs" delay="150" :full-width="fullWidth || null">
     <ds-button
       ref="buttonRef"
       v-bind="buttonAttrs"

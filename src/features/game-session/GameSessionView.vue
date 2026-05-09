@@ -27,10 +27,12 @@ watch(() => route.params.id, fetchGameSession, { immediate: true })
   <BaseLayout>
     <template v-if="gameSession" #header>
       <div class="session-header">
-        <h1 class="session-header__title">{{ gameSession.game }}</h1>
+        <h1 class="session-header__title">{{ gameSession.name }}</h1>
         <div class="session-header__meta">
           <GameSessionStatusTag :status="gameSession.status" />
           <span class="session-header__sub">
+            <span>{{ gameSession.game }}</span>
+            <span class="session-header__dot"></span>
             <span>Turn {{ gameSession.currentTurnIndex + 1 }}</span>
             <span class="session-header__dot"></span>
             <span>Move {{ gameSession.currentMoveIndex + 1 }}</span>

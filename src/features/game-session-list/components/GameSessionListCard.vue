@@ -117,7 +117,7 @@ function relativeUpdated(session: GameSessionResource): string {
         <thead>
           <tr>
             <th>Game</th>
-            <th>Status</th>
+            <th class="align-center">Status</th>
             <th class="align-right">Players</th>
             <th class="col-updated">Updated</th>
             <th class="align-right">Duration</th>
@@ -136,7 +136,7 @@ function relativeUpdated(session: GameSessionResource): string {
                 </div>
               </div>
             </td>
-            <td><GameSessionStatusTag :status="session.status" /></td>
+            <td class="align-center"><GameSessionStatusTag :status="session.status" /></td>
             <td class="align-right">
               <span class="cell-players">
                 <span class="card__players">
@@ -384,6 +384,12 @@ function relativeUpdated(session: GameSessionResource): string {
 .table th.align-right,
 .table td.align-right {
   text-align: right;
+}
+
+.align-center,
+.table th.align-center,
+.table td.align-center {
+  text-align: center;
 }
 
 .empty {

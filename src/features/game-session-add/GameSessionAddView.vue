@@ -36,6 +36,6 @@ import GameSessionAddCard from './components/GameSessionAddCard.vue'
   margin: var(--ds-space-2) 0 0;
   color: var(--ds-color-fg-muted);
   font-size: var(--ds-font-size-sm);
-  max-width: 60ch;
+  max-width: 90ch;
 }
 </style>
