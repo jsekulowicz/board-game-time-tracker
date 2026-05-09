@@ -110,11 +110,11 @@ function cancel() {
       <ds-divider class="form-divider"></ds-divider>
 
       <footer class="form-actions">
-        <DsButton type="button" variant="ghost" @click="cancel">Cancel</DsButton>
         <DsButton type="submit" variant="primary">
           <ds-icon slot="leading" name="plus" size="md" />
           Create session
         </DsButton>
+        <DsButton type="button" variant="ghost" @click="cancel">Cancel</DsButton>
       </footer>
     </form>
   </DsCard>
@@ -197,12 +197,13 @@ form {
   margin-top: var(--ds-space-4);
   display: flex;
   gap: var(--ds-space-2);
-  justify-content: flex-end;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 600px) {
   .form-actions {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
   .form-actions :deep(ds-button) {
     width: 100%;

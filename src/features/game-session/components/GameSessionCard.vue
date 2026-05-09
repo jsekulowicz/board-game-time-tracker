@@ -37,13 +37,6 @@ const gameSessionPlayerItemRefs = ref<InstanceType<typeof GameSessionPlayerItem>
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-4);
-  padding-bottom: 6rem;
-}
-
-@media (min-width: 600px) {
-  .game-session {
-    padding-bottom: var(--ds-space-6);
-  }
 }
 
 .player-grid {

@@ -45,7 +45,6 @@ const toggleTimeVisibilityLabel = computed(() => {
 <template>
   <section class="action-bar">
     <DsButton
-      class="action-bar__visibility"
       size="sm"
       variant="ghost"
       @click="gameSessionStateActions.toggleTimeVisibility"
@@ -74,36 +73,10 @@ const toggleTimeVisibilityLabel = computed(() => {
 
 <style scoped>
 .action-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: color-mix(in oklab, var(--ds-color-bg) 92%, transparent);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--ds-color-border);
-  padding: var(--ds-space-3) var(--ds-space-4);
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--ds-space-2);
-  z-index: 10;
-}
-
-.action-bar__visibility {
-  flex: 1;
-  text-align: left;
-}
-
-.action-bar__visibility :deep(::part(button)) {
-  justify-content: flex-start;
-}
-
-@media (min-width: 600px) {
-  .action-bar {
-    position: sticky;
-    bottom: var(--ds-space-4);
-    margin-top: var(--ds-space-4);
-    border-radius: var(--ds-radius-md);
-    border: 1px solid var(--ds-color-border);
-  }
+  padding-top: var(--ds-space-2);
 }
 </style>
