@@ -8,9 +8,8 @@ import GameSessionAddCard from './components/GameSessionAddCard.vue'
     <template #header>
       <header class="add-page__hero">
         <h1 class="add-page__title">New session</h1>
-        <p class="add-page__lede">
-          Set up your players and the game before the first turn starts.
-          You can rename, recolor, or remove anyone before tracking begins.
+        <p class="add-page__description">
+          Set up your players and the game before the first turn starts. You can rename, recolor, or remove anyone before tracking begins.
         </p>
       </header>
     </template>
@@ -32,10 +31,9 @@ import GameSessionAddCard from './components/GameSessionAddCard.vue'
   line-height: 1.1;
 }
 
-.add-page__lede {
+.add-page__description {
   margin: var(--ds-space-2) 0 0;
   color: var(--ds-color-fg-muted);
   font-size: var(--ds-font-size-sm);
-  max-width: 90ch;
 }
 </style>

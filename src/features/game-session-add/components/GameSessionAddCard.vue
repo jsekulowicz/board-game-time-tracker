@@ -13,8 +13,17 @@ import DsColorPicker from '@/components/ds/DsColorPicker.vue'
 
 import { useGameSessionAdd } from '../composables/useGameSessionAdd'
 
-const { MAX_PLAYERS_COUNT, PLAYER_PLACEHOLDERS, PLAYER_COLORS, hasMinPlayers, hasMaxPlayers, playerFields, addPlayer, removePlayer, onSubmit } =
-  useGameSessionAdd()
+const {
+  MAX_PLAYERS_COUNT,
+  PLAYER_PLACEHOLDERS,
+  PLAYER_COLORS,
+  hasMinPlayers,
+  hasMaxPlayers,
+  playerFields,
+  addPlayer,
+  removePlayer,
+  onSubmit,
+} = useGameSessionAdd()
 
 const playersAddTooltip = computed(() => (hasMaxPlayers.value ? `Cannot have more than ${MAX_PLAYERS_COUNT} players.` : undefined))
 const playerColorOptions = computed(() => PLAYER_COLORS.map((color) => ({ value: color })))
@@ -187,10 +196,6 @@ form {
 
 .form-actions {
   margin-top: var(--ds-space-4);
-  display: flex;
-  gap: var(--ds-space-2);
-  justify-content: flex-start;
-  flex-wrap: wrap;
 }
 
 @media (max-width: 600px) {
