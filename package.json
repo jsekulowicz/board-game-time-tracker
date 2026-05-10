@@ -21,9 +21,9 @@
     "openapi-ts": "openapi-ts"
   },
   "dependencies": {
-    "@jsekulowicz/ds-components": "0.2.0",
-    "@jsekulowicz/ds-core": "0.2.0",
-    "@jsekulowicz/ds-tokens": "0.2.0",
+    "@jsekulowicz/ds-components": "0.3.1",
+    "@jsekulowicz/ds-core": "0.3.1",
+    "@jsekulowicz/ds-tokens": "0.3.1",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/vue-table": "^8.21.3",
     "@unovis/ts": "1.5.2",

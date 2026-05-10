@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@jsekulowicz/ds-components':
-        specifier: 0.2.0
-        version: 0.2.0
+        specifier: 0.3.1
+        version: 0.3.1
       '@jsekulowicz/ds-core':
-        specifier: 0.2.0
-        version: 0.2.0
+        specifier: 0.3.1
+        version: 0.3.1
       '@jsekulowicz/ds-tokens':
-        specifier: 0.2.0
-        version: 0.2.0
+        specifier: 0.3.1
+        version: 0.3.1
       '@tailwindcss/vite':
         specifier: ^4.1.17
         version: 4.1.17(vite@7.2.6(@types/node@22.19.1)(jiti@2.6.1)(lightningcss@1.30.2))
@@ -700,14 +700,14 @@ packages:
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
 
-  '@jsekulowicz/ds-components@0.2.0':
-    resolution: {integrity: sha512-xBJ9z95TKePuFI1EWBGFHX5gmSMJ2tNiCMHJO8QiMC+fCY7Gy0i+zjy2Mztb06pQThGbKP1kFfSkTaDxmektrQ==}
+  '@jsekulowicz/ds-components@0.3.1':
+    resolution: {integrity: sha512-n5JUlxsOkqo4FF1qrp3MYSixsD0k9FRALmj/XFqcz9ZCtwIptGJeY9TKbBNT/a0+JwiNgIoRHYOT/Hr00adJSw==}
 
-  '@jsekulowicz/ds-core@0.2.0':
-    resolution: {integrity: sha512-njJZbpiCB6Dy57DxH5v/4EP0XQbnm8sl81A8YBtHuR/A/lLjKN6aYUAwCtROTfyVzECL6QCENXcZhuNBrgmDoQ==}
+  '@jsekulowicz/ds-core@0.3.1':
+    resolution: {integrity: sha512-2ZBMWy2tg4vHRJhTEMHRcQK+FrGl4wbBhBGqCU3xwnHW3hlDA5Hg8U/1xcb63ZX0iWLAgfFFmKX11+Odx+6iEQ==}
 
-  '@jsekulowicz/ds-tokens@0.2.0':
-    resolution: {integrity: sha512-NLzzJnQ75+BzKSrIHQ5QK+sBc4fE5vgLYBNYOpDXFcvXFQt+Iqki+6rBPQCq/B4x4PqO1948APh3XpfR9McSEw==}
+  '@jsekulowicz/ds-tokens@0.3.1':
+    resolution: {integrity: sha512-TjGnNa9W/W6qppq4X2f2LQVttUt8WfONxkW+uw03nm60eGUbKsMWbfUld0WP/M4RYKzj5fF1HCuc7Y5yJWMFbA==}
 
   '@juggle/resize-observer@3.4.0':
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
@@ -4131,17 +4131,17 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
-  '@jsekulowicz/ds-components@0.2.0':
+  '@jsekulowicz/ds-components@0.3.1':
     dependencies:
-      '@jsekulowicz/ds-core': 0.2.0
-      '@jsekulowicz/ds-tokens': 0.2.0
+      '@jsekulowicz/ds-core': 0.3.1
+      '@jsekulowicz/ds-tokens': 0.3.1
       lit: 3.3.2
 
-  '@jsekulowicz/ds-core@0.2.0':
+  '@jsekulowicz/ds-core@0.3.1':
     dependencies:
       lit: 3.3.2
 
-  '@jsekulowicz/ds-tokens@0.2.0': {}
+  '@jsekulowicz/ds-tokens@0.3.1': {}
 
   '@juggle/resize-observer@3.4.0': {}
 
