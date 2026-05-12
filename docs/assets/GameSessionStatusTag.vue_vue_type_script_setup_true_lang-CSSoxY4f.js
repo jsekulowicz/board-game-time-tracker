@@ -1,4 +1,4 @@
-import{c as b}from"./utils-Hb4QJKja.js";import{j as u,k as f,Z as v,u as m,o as i,i as _,D as g,h,n as x,c as l,Y as y,q as w,z as S,B as k,v as T}from"./index-RCJLMDGl.js";const P=u({__name:"UiSkeleton",props:{class:{}},setup(t){const e=t;return(s,r)=>(i(),f("div",{"data-slot":"skeleton",class:v(m(b)("animate-pulse rounded-md bg-primary/10",e.class))},null,2))}}),E=_`
+import{c as b}from"./utils-COTZCyyf.js";import{j as u,k as f,Z as v,u as m,o as i,i as _,D as g,h,n as x,c as l,Y as y,q as w,z as S,B as k,v as T}from"./index-D-efC_Pj.js";const P=u({__name:"UiSkeleton",props:{class:{}},setup(t){const e=t;return(s,r)=>(i(),f("div",{"data-slot":"skeleton",class:v(m(b)("animate-pulse rounded-md bg-primary/10",e.class))},null,2))}}),E=_`
   :host {
     display: inline-flex;
   }
