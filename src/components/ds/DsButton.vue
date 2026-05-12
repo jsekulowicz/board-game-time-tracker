@@ -10,8 +10,9 @@ defineOptions({
 type DsButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
 type DsButtonSize = 'sm' | 'md' | 'lg'
 type DsButtonType = 'button' | 'submit' | 'reset'
+type DsTooltipPlacement = 'top' | 'right' | 'bottom' | 'left'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     variant?: DsButtonVariant
     size?: DsButtonSize
@@ -21,12 +22,16 @@ const props = withDefaults(
     fullWidth?: boolean
     label?: string
     tooltip?: string | null
+    tooltipPlacement?: DsTooltipPlacement
+    tooltipHoverOnly?: boolean
   }>(),
   {
     variant: 'primary',
     size: 'md',
     type: 'button',
     tooltip: null,
+    tooltipPlacement: 'top',
+    tooltipHoverOnly: false,
   },
 )
 
@@ -43,7 +48,10 @@ const layoutAttrs = computed(() => ({
 }))
 
 const buttonAttrs = computed(() => {
-  const { class: _class, style: _style, ...rest } = attrs
+  const rest = { ...attrs }
+  delete rest.class
+  delete rest.style
+
   return rest
 })
 
@@ -62,7 +70,14 @@ defineExpose({
 </script>
 
 <template>
-  <ds-tooltip v-if="tooltip" v-bind="layoutAttrs" delay="150" :full-width="fullWidth || null">
+  <ds-tooltip
+    v-if="tooltip"
+    v-bind="layoutAttrs"
+    delay="150"
+    :placement="tooltipPlacement"
+    :hover-only="tooltipHoverOnly || null"
+    :full-width="fullWidth || null"
+  >
     <ds-button
       ref="buttonRef"
       v-bind="buttonAttrs"

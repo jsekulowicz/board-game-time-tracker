@@ -22,7 +22,15 @@ function toggleDarkMode() {
 </script>
 
 <template>
-  <DsButton variant="ghost" size="sm" :tooltip="toggleTooltip" aria-label="Toggle theme" @click="toggleDarkMode">
+  <DsButton
+    variant="ghost"
+    size="sm"
+    :tooltip="toggleTooltip"
+    tooltip-placement="left"
+    tooltip-hover-only
+    aria-label="Toggle theme"
+    @click="toggleDarkMode"
+  >
     <ds-icon slot="leading" :name="iconName" size="lg" />
   </DsButton>
 </template>
