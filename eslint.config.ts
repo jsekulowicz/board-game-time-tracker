@@ -21,6 +21,17 @@ export default defineConfigWithVueTs(
     files: ['**/*.{ts,mts,tsx,vue}'],
   },
   pluginVue.configs['flat/essential'],
+  {
+    rules: {
+      'vue/no-deprecated-slot-attribute': [
+        'error',
+        {
+          ignore: ['/^ds-/'],
+          ignoreParents: ['/^ds-/', '/^Ds[A-Z]/'],
+        },
+      ],
+    },
+  },
   vueTsConfigs.recommended,
   {
     ...pluginPlaywright.configs['flat/recommended'],
